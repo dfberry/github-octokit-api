@@ -98,6 +98,34 @@ export default class GitHubRequestor {
     }
   }
 
+  /**
+   * Get contents of a repository at a specific path
+   * @param org Repository owner
+   * @param repo Repository name
+   * @param path Path to get contents from (root = '')
+   * @returns Array of content items or a single content item
+   */
+  async getRepoContents(
+    org: string,
+    repo: string,
+    path: string
+  ): Promise<any[] | any | GitHubRequestorError> {
+    try {
+      console.log(`Fetching contents at path "${path}" for ${org}/${repo}`);
+      const response = await this.octokit.rest.repos.getContent({
+        owner: org,
+        repo: repo,
+        path: path,
+      });
+      return response.data;
+    } catch (error) {
+      console.error(
+        `Error fetching repository contents at "${path}": ${error}`
+      );
+      return this.createError('getRepoContents', error, { org, repo, path });
+    }
+  }
+
   async getSearchRepository(
     q: string = 'org:azure-samples',
     per_page: number = 5,

@@ -3,6 +3,7 @@ import GenerateReadme from './categories/generate-readme.js';
 import SuggestRepos from './categories/suggest-repos.js';
 import ContributorActivity from './categories/contributor-activity.js';
 import WorkflowReport from './categories/workflow-report.js';
+import InfrastructureReport from './categories/infrastructure-report.js';
 import { getAuthToken } from './auth/get-auth-token.js';
 import { printEnv } from './utils/print-env.js';
 import path from 'path';
@@ -71,6 +72,13 @@ async function main(): Promise<void> {
 
   Features.workflowReport &&
     (await WorkflowReport(
+      process.env.GITHUB_TOKEN || process.argv[2],
+      dataDirectory,
+      generatedDirectory
+    ));
+
+  Features.infrastructureReport &&
+    (await InfrastructureReport(
       process.env.GITHUB_TOKEN || process.argv[2],
       dataDirectory,
       generatedDirectory

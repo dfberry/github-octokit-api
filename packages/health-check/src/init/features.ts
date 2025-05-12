@@ -4,6 +4,7 @@ interface Features {
   suggestRepos: boolean;
   contributorActivity: boolean;
   workflowReport: boolean;
+  infrastructureReport: boolean;
 }
 
 const features: Features = {
@@ -12,7 +13,10 @@ const features: Features = {
   suggestRepos: process.env.RUN_SUGGEST_REPOS == '1',
   contributorActivity: process.env.RUN_CONTRIBUTOR_ACTIVITY == '1',
   workflowReport: process.env.RUN_WORKFLOW_REPORT == '1',
+  infrastructureReport: process.env.RUN_INFRASTRUCTURE_REPORT == '1',
 };
+
+console.log(`\n\n🔍 ---------------------------------------\nFeatures\n`);
 
 export default features;
 export type { Features };

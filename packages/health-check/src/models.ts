@@ -82,6 +82,40 @@ export interface RepoData {
   topics: string[];
 }
 
+// Infrastructure types
+export type InfrastructureType =
+  | 'bicep'
+  | 'terraform'
+  | 'arm'
+  | 'other'
+  | 'none';
+
+export interface InfrastructureFolder {
+  path: string;
+  type: InfrastructureType;
+  hasFiles: boolean;
+  fileCount?: number;
+}
+
+export interface InfrastructureData {
+  org: string;
+  repo: string;
+  full_name: string;
+  hasInfrastructure: boolean;
+  infrastructureType: InfrastructureType[];
+  infrastructureFolders: InfrastructureFolder[];
+  hasAzureYaml: boolean;
+  azureYamlPath?: string;
+  lastUpdated: string;
+}
+
+// export interface RepoInfrastructureData {
+//   org: string;
+//   repo: string;
+//   full_name: string;
+//   infrastructureData: InfrastructureData;
+// }
+
 // Replace custom GetRepoParams with Octokit's type
 export type GetRepoParams = OctokitGetRepoParams;
 
