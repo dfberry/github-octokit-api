@@ -1,6 +1,11 @@
 import { promises as fs } from 'fs';
-import { RepositoryItemExtened, RepoData, PrSearchItem } from '../models.js';
-import { getProcessDate } from '../utils/dates.js';
+import {
+  RepositoryItemExtened,
+  RepoData,
+  PrSearchItem,
+  InfrastructureData,
+} from '../models.js';
+import { getProcessDate, formatDate } from '../utils/dates.js';
 
 export default class ReportGenerator {
   static async saveReport(markdown: string, filePath: string): Promise<void> {
@@ -9,16 +14,7 @@ export default class ReportGenerator {
   }
 
   static generateHealthCheckMarkdownReport(repoDataList: RepoData[]): string {
-    const timestamp = new Date().toISOString();
-    const formattedDate = new Date(timestamp).toLocaleString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      timeZoneName: 'short',
-    });
+    const formattedDate = getProcessDate();
 
     let markdown: string = '# Repository Health Check Report\n\n';
     markdown += `*Generated on: ${formattedDate}*\n\n`;
@@ -47,11 +43,7 @@ export default class ReportGenerator {
         : '';
 
       const lastCommitDate = data.lastCommitDate
-        ? new Date(data.lastCommitDate).toLocaleDateString('en-US', {
-            month: 'short',
-            day: '2-digit',
-            year: 'numeric',
-          })
+        ? formatDate(data.lastCommitDate)
         : 'N/A or 404';
 
       markdown += `| [${repoName}](https://github.com/${org}/${repo}) |  ${data.issues} | ${data.prsCount} | ${data.stars} | ${data.forks} | ${data.watchers} | ${lastCommitDate} | ${committerCell} |\n`;
@@ -90,16 +82,7 @@ export default class ReportGenerator {
     repositories: RepositoryItemExtened[],
     limit: number = 100
   ): string {
-    const timestamp = new Date().toISOString();
-    const formattedDate = new Date(timestamp).toLocaleString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      timeZoneName: 'short',
-    });
+    const formattedDate = getProcessDate();
     let newReadmeReferences: string = '';
 
     // sort by org then repo name
@@ -136,8 +119,13 @@ export default class ReportGenerator {
 
       const repoMarker = `${repo?.org}-${repo?.repo}`;
 
+      // Format the last commit date using formatDate
+      const lastCommitDate = repo.last_commit_date
+        ? formatDate(repo.last_commit_date)
+        : 'N/A';
+
       // Add row to table
-      markdown += `| [${repoMarker}][${repoMarker}] | ${repo.description} | ${repo.stargazers_count || 0} | ${repo.last_commit_date || 'N/A'} | ${status} | ${topics} |\n`;
+      markdown += `| [${repoMarker}][${repoMarker}] | ${repo.description} | ${repo.stargazers_count || 0} | ${lastCommitDate} | ${status} | ${topics} |\n`;
 
       newReadmeReferences += `[${repoMarker}]: https://github.com/${repo.org}/${repo.repo}\n`;
     }
@@ -176,7 +164,10 @@ export default class ReportGenerator {
       const repoSlug = repo?.repo || repoName.toLowerCase().replace(/\s/g, '-');
 
       // Format repository stats without using pipe characters
-      const stats = `⭐ ${repo?.stars} <br> 👀 ${repo?.watchers} <br> 🔄 ${repo?.lastCommitDate}`;
+      const formattedLastCommitDate = repo?.lastCommitDate
+        ? formatDate(repo?.lastCommitDate)
+        : 'N/A';
+      const stats = `⭐ ${repo?.stars} <br> 👀 ${repo?.watchers} <br> 🔄 ${formattedLastCommitDate}`;
 
       // Format topics as badges
       const topicsFormatted =
@@ -251,23 +242,8 @@ export default class ReportGenerator {
 
         for (const pr of repoPRs) {
           const status = pr.state === 'open' ? '🔄 Open' : '✅ Closed';
-          const createdDate = new Date(pr.created_at).toLocaleDateString(
-            'en-US',
-            {
-              month: 'short',
-              day: '2-digit',
-              year: 'numeric',
-            }
-          );
-
-          const updatedDate = new Date(pr.updated_at).toLocaleDateString(
-            'en-US',
-            {
-              month: 'short',
-              day: '2-digit',
-              year: 'numeric',
-            }
-          );
+          const createdDate = formatDate(pr.created_at);
+          const updatedDate = formatDate(pr.updated_at);
 
           markdown += `| [${repoName}](${pr.repository_url.replace('api.github.com/repos', 'github.com')}) | [${pr.title}](${pr.html_url}) | ${status} | ${createdDate} | ${updatedDate} |\n`;
         }
@@ -310,16 +286,7 @@ export default class ReportGenerator {
       }[];
     }[]
   ): string {
-    const timestamp = new Date().toISOString();
-    const formattedDate = new Date(timestamp).toLocaleString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      timeZoneName: 'short',
-    });
+    const formattedDate = getProcessDate();
 
     let markdown = `# GitHub Actions Workflows Report\n\n`;
     markdown += `*Generated on: ${formattedDate}*\n\n`;
@@ -407,13 +374,7 @@ export default class ReportGenerator {
         if (workflow.latestRun) {
           runStatus = workflow.latestRun.status || 'unknown';
           conclusion = workflow.latestRun.conclusion || 'pending';
-          lastUpdated = new Date(
-            workflow.latestRun.updatedAt
-          ).toLocaleDateString('en-US', {
-            month: 'short',
-            day: '2-digit',
-            year: 'numeric',
-          });
+          lastUpdated = formatDate(workflow.latestRun.updatedAt);
           runUrl = workflow.latestRun.htmlUrl;
 
           // Format conclusion with appropriate icon
@@ -441,6 +402,182 @@ export default class ReportGenerator {
       }
 
       markdown += `\n`;
+    }
+
+    return markdown;
+  }
+
+  /**
+   * Generate a report for infrastructure across repositories
+   * @param infraDataList List of infrastructure data for repositories
+   * @returns Markdown formatted report
+   */
+  static generateInfrastructureReport(
+    infraDataList: InfrastructureData[]
+  ): string {
+    const formattedDate = getProcessDate();
+
+    let markdown = `# Repository Infrastructure Report\n\n`;
+    markdown += `*Generated on: ${formattedDate}*\n\n`;
+    markdown += `This report shows infrastructure details for repositories, including infrastructure folders, types, and Azure Developer CLI configuration.\n\n`;
+
+    // Summary section
+    markdown += `## Summary\n\n`;
+
+    let totalRepos = infraDataList.length;
+    let reposWithInfra = 0;
+    let reposWithBicep = 0;
+    let reposWithTerraform = 0;
+    let reposWithArm = 0;
+    let reposWithOther = 0;
+    let reposWithAzureYaml = 0;
+
+    // Count infrastructure types
+    for (const infra of infraDataList) {
+      if (infra.hasInfrastructure) {
+        reposWithInfra++;
+      }
+
+      if (infra.infrastructureType.includes('bicep')) {
+        reposWithBicep++;
+      }
+
+      if (infra.infrastructureType.includes('terraform')) {
+        reposWithTerraform++;
+      }
+
+      if (infra.infrastructureType.includes('arm')) {
+        reposWithArm++;
+      }
+
+      if (infra.infrastructureType.includes('other')) {
+        reposWithOther++;
+      }
+
+      if (infra.hasAzureYaml) {
+        reposWithAzureYaml++;
+      }
+    }
+
+    markdown += `- Total Repositories: ${totalRepos}\n`;
+    markdown += `- Repositories with Infrastructure: ${reposWithInfra} (${Math.round((reposWithInfra / totalRepos) * 100)}%)\n`;
+    markdown += `- Repositories with Bicep: ${reposWithBicep}\n`;
+    markdown += `- Repositories with Terraform: ${reposWithTerraform}\n`;
+    markdown += `- Repositories with ARM Templates: ${reposWithArm}\n`;
+    markdown += `- Repositories with Azure Developer CLI (azure.yaml): ${reposWithAzureYaml}\n\n`;
+
+    // Main table with infrastructure details
+    markdown += `## Repository Infrastructure Details\n\n`;
+    markdown += `| Repository | Has Infrastructure | Infrastructure Types | Azure Developer CLI | Infrastructure Folders |\n`;
+    markdown += `|------------|-------------------|---------------------|---------------------|-------------------------|\n`;
+
+    // Sort repositories alphabetically
+    const sortedInfra = [...infraDataList].sort((a, b) =>
+      a.full_name.localeCompare(b.full_name)
+    );
+
+    for (const infra of sortedInfra) {
+      const repoName = infra.full_name;
+      const repoLink = `https://github.com/${infra.full_name}`;
+
+      // Format infrastructure types
+      const infraTypes =
+        infra.infrastructureType.length > 0
+          ? infra.infrastructureType.join(', ')
+          : 'None';
+
+      // Format Azure Developer CLI
+      const azureDevCli = infra.hasAzureYaml
+        ? `✅ [azure.yaml](${repoLink}/blob/main/${infra.azureYamlPath})`
+        : '❌ Not found';
+
+      // Format infrastructure folders
+      const infraFolders =
+        infra.infrastructureFolders.length > 0
+          ? infra.infrastructureFolders
+              .map(folder => {
+                const path = folder.path === 'root' ? '/' : `/${folder.path}`;
+                return `- ${folder.type}: ${path} (${folder.fileCount} ${folder.fileCount === 1 ? 'file' : 'files'})`;
+              })
+              .join('<br>')
+          : 'None';
+
+      const hasInfra = infra.hasInfrastructure ? '✅ Yes' : '❌ No';
+
+      markdown += `| [${repoName}](${repoLink}) | ${hasInfra} | ${infraTypes} | ${azureDevCli} | ${infraFolders} |\n`;
+    }
+
+    return markdown;
+  }
+
+  /**
+   * Generate a repository index with H2 headings that can be used as bookmarks
+   * @param reposWithData List of repositories with their data
+   * @returns Markdown formatted index
+   */
+  static generateRepoIndex(reposWithData: RepoData[]): string {
+    const formattedDate = getProcessDate();
+
+    let markdown = `# Repository Index\n\n`;
+    markdown += `*Generated on: ${formattedDate}*\n\n`;
+    markdown += `This index provides an alphabetical listing of all repositories with details and links. Each repository name is an H2 heading that can be used as a bookmark target from other markdown files.\n\n`;
+
+    // Table of Contents
+    markdown += `## Table of Contents\n\n`;
+
+    for (const repo of reposWithData) {
+      const repoName =
+        repo?.name || repo?.full_name?.split('/')[1] || 'Unknown';
+      markdown += `- [${repoName}](#${repoName
+        .toLowerCase()
+        .replace(/\s/g, '-')
+        .replace(/[^\w-]/g, '')})\n`;
+    }
+
+    markdown += `\n## Repository Details\n\n`;
+
+    // Add each repository with detailed information
+    for (const repo of reposWithData) {
+      const repoName =
+        repo?.name || repo?.full_name?.split('/')[1] || 'Unknown';
+      const orgName = repo?.org || repo?.full_name?.split('/')[0] || 'github';
+      const repoSlug = repo?.repo || repoName.toLowerCase().replace(/\s/g, '-');
+
+      // Use H2 for repository names to make them linkable bookmarks
+      markdown += `## ${repoName}\n\n`;
+
+      // Repository details
+      markdown += `**Repository:** [${orgName}/${repoSlug}](https://github.com/${orgName}/${repoSlug})\n\n`;
+      markdown += `**Description:** ${repo?.description || 'No description available'}\n\n`;
+
+      // Stats in a small table
+      markdown += `| Stat | Value |\n`;
+      markdown += `| ---- | ----- |\n`;
+      markdown += `| Stars | ${repo?.stars || 0} |\n`;
+      markdown += `| Forks | ${repo?.forks || 0} |\n`;
+      markdown += `| Open Issues | ${repo?.issues || 0} |\n`;
+      markdown += `| Pull Requests | ${repo?.prsCount || 0} |\n`;
+      markdown += `| Watchers | ${repo?.watchers || 0} |\n`;
+      markdown += `| Last Updated | ${repo?.lastCommitDate ? formatDate(repo?.lastCommitDate) : 'N/A'} |\n`;
+
+      // Topics as badges
+      if (Array.isArray(repo?.topics) && repo?.topics?.length > 0) {
+        markdown += `\n**Topics:** ${repo?.topics?.map(topic => `\`${topic}\``).join(' ')}\n\n`;
+      }
+
+      // Security information
+      markdown += `\n**Security Status:**\n\n`;
+      const securityStatus = repo?.hasVulnerabilities
+        ? '⚠️ Has vulnerabilities'
+        : repo?.dependabotAlerts === 0 && !repo?.codeScanning
+          ? '⚠️ No protections'
+          : '✅ Good';
+
+      markdown += `- ${securityStatus}\n`;
+      markdown += `- Dependabot: ${repo?.dependabotAlerts >= 0 ? '✅ Enabled' : '❌ Not enabled'}\n`;
+      markdown += `- Code Scanning: ${repo?.codeScanning ? '✅ Enabled' : '❌ Not enabled'}\n`;
+
+      markdown += `\n---\n\n`;
     }
 
     return markdown;

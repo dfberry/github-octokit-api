@@ -59,7 +59,7 @@ export default async function run(
 
     ReportGenerator.saveReport(
       newReadmeContent,
-      configData.generatedDirectoryName + '/README.new.md'
+      configData.generatedDirectoryName + '/README.md'
     );
 
     if (process.argv.includes('--print') || !process.env.GITHUB_ACTIONS) {

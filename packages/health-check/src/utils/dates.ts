@@ -21,3 +21,16 @@ export function getProcessDate() {
   });
   return formattedDate;
 }
+
+/**
+ * Format a date string into a standard short format (Month DD, YYYY)
+ * @param dateString ISO date string to format
+ * @returns Formatted date string
+ */
+export function formatDate(dateString: string): string {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    month: 'short',
+    day: '2-digit',
+    year: 'numeric',
+  });
+}

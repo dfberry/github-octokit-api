@@ -1,6 +1,6 @@
 # Repository Health Check Report
 
-*Generated on: Monday, May 12, 2025 at 10:38 AM PDT*
+*Generated on: Monday, May 12, 2025 at 2:14 PM PDT*
 
 ## Repository Statistics
 
@@ -24,10 +24,10 @@
 | [cosmos-db-mongodb-vcore-nodejs-quickstart](https://github.com/microsoft/cosmos-db-mongodb-vcore-nodejs-quickstart) |  0 | 0 | 0 | 1 | 0 | May 02, 2025 | [![seesharprun](https://avatars.githubusercontent.com/u/5067401?v=4&s=20)](https://github.com/seesharprun) |
 | [cosmos-db-nosql-javascript-samples](https://github.com/microsoft/cosmos-db-nosql-javascript-samples) |  0 | 0 | 0 | 0 | 0 | Sep 19, 2023 | [![seesharprun](https://avatars.githubusercontent.com/u/5067401?v=4&s=20)](https://github.com/seesharprun) |
 | [cosmos-db-table-javascript-samples](https://github.com/microsoft/cosmos-db-table-javascript-samples) |  0 | 0 | 0 | 0 | 0 | Sep 19, 2023 | [![seesharprun](https://avatars.githubusercontent.com/u/5067401?v=4&s=20)](https://github.com/seesharprun) |
-| [durablefunctions-apiscraping-nodejs](https://github.com/microsoft/durablefunctions-apiscraping-nodejs) |  1 | 1 | 33 | 13 | 33 | Dec 13, 2021 | [![MaximRouiller](https://avatars.githubusercontent.com/u/209384?v=4&s=20)](https://github.com/MaximRouiller) |
+| [durablefunctions-apiscraping-nodejs](https://github.com/microsoft/durablefunctions-apiscraping-nodejs) |  1 | 1 | 34 | 13 | 34 | Dec 13, 2021 | [![MaximRouiller](https://avatars.githubusercontent.com/u/209384?v=4&s=20)](https://github.com/MaximRouiller) |
 | [key-vault-node-authentication](https://github.com/microsoft/key-vault-node-authentication) |  1 | 1 | 3 | 14 | 3 | Jun 20, 2022 | [![qiaozha](https://avatars.githubusercontent.com/u/55688292?v=4&s=20)](https://github.com/qiaozha) |
 | [langchainjs-quickstart-demo](https://github.com/microsoft/langchainjs-quickstart-demo) |  0 | 0 | 63 | 28 | 63 | Jan 10, 2025 | [![sinedied](https://avatars.githubusercontent.com/u/593151?v=4&s=20)](https://github.com/sinedied) |
-| [llama-index-javascript](https://github.com/microsoft/llama-index-javascript) |  1 | 1 | 61 | 29 | 61 | Mar 13, 2025 | [![manekinekko](https://avatars.githubusercontent.com/u/1699357?v=4&s=20)](https://github.com/manekinekko) |
+| [llama-index-javascript](https://github.com/microsoft/llama-index-javascript) |  1 | 1 | 61 | 29 | 61 | May 12, 2025 | [![manekinekko](https://avatars.githubusercontent.com/u/1699357?v=4&s=20)](https://github.com/manekinekko) |
 | [mcp-container-ts](https://github.com/microsoft/mcp-container-ts) |  1 | 1 | 5 | 1 | 5 | May 02, 2025 | [![achandmsft](https://avatars.githubusercontent.com/u/14188700?v=4&s=20)](https://github.com/achandmsft) |
 | [microblog-ai-remix](https://github.com/microsoft/microblog-ai-remix) |  1 | 1 | 40 | 8 | 40 | May 07, 2025 | [![glaucia86](https://avatars.githubusercontent.com/u/1631477?v=4&s=20)](https://github.com/glaucia86) |
 | [remote-mcp-functions-typescript](https://github.com/microsoft/remote-mcp-functions-typescript) |  1 | 1 | 27 | 12 | 27 | May 02, 2025 | [![paulyuk](https://avatars.githubusercontent.com/u/1968137?v=4&s=20)](https://github.com/paulyuk) |
@@ -62,7 +62,7 @@
 | [durablefunctions-apiscraping-nodejs](https://github.com/microsoft/durablefunctions-apiscraping-nodejs) | 0 | ✅ | ❌ | ⚠️ No protections |
 | [key-vault-node-authentication](https://github.com/microsoft/key-vault-node-authentication) | 0 | ✅ | ❌ | ⚠️ No protections |
 | [langchainjs-quickstart-demo](https://github.com/microsoft/langchainjs-quickstart-demo) | 0 | ✅ | ❌ | ⚠️ No protections |
-| [llama-index-javascript](https://github.com/microsoft/llama-index-javascript) | 1 | ✅ | ❌ | ⚠️ Issues |
+| [llama-index-javascript](https://github.com/microsoft/llama-index-javascript) | 0 | ✅ | ❌ | ⚠️ No protections |
 | [mcp-container-ts](https://github.com/microsoft/mcp-container-ts) | 0 | ✅ | ❌ | ⚠️ No protections |
 | [microblog-ai-remix](https://github.com/microsoft/microblog-ai-remix) | 1 | ✅ | ✅ | ⚠️ Issues |
 | [remote-mcp-functions-typescript](https://github.com/microsoft/remote-mcp-functions-typescript) | 0 | ✅ | ❌ | ⚠️ No protections |

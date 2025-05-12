@@ -1,6 +1,6 @@
 # Contributor Repository Activity
 
-*Generated on: Monday, May 12, 2025 at 10:51 AM PDT*
+*Generated on: Monday, May 12, 2025 at 2:26 PM PDT*
 
 This report shows Azure contributions to sample repositories over the last 30 days.
 
@@ -29,7 +29,7 @@ Total PRs by burkeholland: 1
 | [MicrosoftDocs/azure-dev-docs-pr](https://github.com/MicrosoftDocs/azure-dev-docs-pr) | [Navigation for LangChain.js tutorial ](https://github.com/MicrosoftDocs/azure-dev-docs-pr/pull/7207) | ✅ Closed | Apr 30, 2025 | May 06, 2025 |
 | [MicrosoftDocs/azure-dev-docs-pr](https://github.com/MicrosoftDocs/azure-dev-docs-pr) | [TypeSpec quickstart for a scaffolded server](https://github.com/MicrosoftDocs/azure-dev-docs-pr/pull/7198) | 🔄 Open | Apr 28, 2025 | May 06, 2025 |
 | [MicrosoftDocs/azure-dev-docs-pr](https://github.com/MicrosoftDocs/azure-dev-docs-pr) | [Content compliance improvements for JavaScript Node.js tools content](https://github.com/MicrosoftDocs/azure-dev-docs-pr/pull/7192) | ✅ Closed | Apr 24, 2025 | May 06, 2025 |
-| [MicrosoftDocs/azure-docs-pr](https://github.com/MicrosoftDocs/azure-docs-pr) | [Azure Functions - JS/TS Http request with JSON Body](https://github.com/MicrosoftDocs/azure-docs-pr/pull/299243) | 🔄 Open | May 02, 2025 | May 02, 2025 |
+| [MicrosoftDocs/azure-docs-pr](https://github.com/MicrosoftDocs/azure-docs-pr) | [Azure Functions - JS/TS Http request with JSON Body](https://github.com/MicrosoftDocs/azure-docs-pr/pull/299243) | 🔄 Open | May 02, 2025 | May 12, 2025 |
 | [MicrosoftDocs/docs-help-pr](https://github.com/MicrosoftDocs/docs-help-pr) | [Code Samples SFI - public dependencies - image requirements](https://github.com/MicrosoftDocs/docs-help-pr/pull/11370) | ✅ Closed | May 01, 2025 | May 02, 2025 |
 
 Total PRs by diberry: 15
@@ -82,7 +82,8 @@ Total PRs by manekinekko: 10
 
 | Repository | PR Title | Status | Created | Updated |
 |------------|----------|--------|---------|--------|
-| [MicrosoftDocs/windowsserverdocs-pr](https://github.com/MicrosoftDocs/windowsserverdocs-pr) | [Add Migrate existing DHCP failover server](https://github.com/MicrosoftDocs/windowsserverdocs-pr/pull/7009) | 🔄 Open | May 09, 2025 | May 12, 2025 |
+| [MicrosoftDocs/azure-docs-pr](https://github.com/MicrosoftDocs/azure-docs-pr) | [[Build 2025 ship room] Microsoft Planetary Computer Pro #418783](https://github.com/MicrosoftDocs/azure-docs-pr/pull/299692) | 🔄 Open | May 12, 2025 | May 12, 2025 |
+| [MicrosoftDocs/windowsserverdocs-pr](https://github.com/MicrosoftDocs/windowsserverdocs-pr) | [Add Migrate existing DHCP failover server](https://github.com/MicrosoftDocs/windowsserverdocs-pr/pull/7009) | ✅ Closed | May 09, 2025 | May 12, 2025 |
 | [MicrosoftDocs/windowsserverdocs-pr](https://github.com/MicrosoftDocs/windowsserverdocs-pr) | [Add migration guide for DHCP failover and update table of contents](https://github.com/MicrosoftDocs/windowsserverdocs-pr/pull/7006) | ✅ Closed | May 08, 2025 | May 09, 2025 |
 | [MicrosoftDocs/windowsserverdocs-pr](https://github.com/MicrosoftDocs/windowsserverdocs-pr) | [Add article for replicating DHCP failover settings](https://github.com/MicrosoftDocs/windowsserverdocs-pr/pull/6945) | ✅ Closed | Apr 25, 2025 | Apr 28, 2025 |
 | [MicrosoftDocs/windowsserverdocs-pr](https://github.com/MicrosoftDocs/windowsserverdocs-pr) | [Add manage dhcp failover article](https://github.com/MicrosoftDocs/windowsserverdocs-pr/pull/6932) | ✅ Closed | Apr 23, 2025 | Apr 28, 2025 |
@@ -91,7 +92,6 @@ Total PRs by manekinekko: 10
 | [MicrosoftDocs/windowsserverdocs-pr](https://github.com/MicrosoftDocs/windowsserverdocs-pr) | [Update Install-Active-Directory-Domain-Services--Level-100-.md](https://github.com/MicrosoftDocs/windowsserverdocs-pr/pull/6919) | ✅ Closed | Apr 21, 2025 | Apr 21, 2025 |
 | [MicrosoftDocs/windowsserverdocs-pr](https://github.com/MicrosoftDocs/windowsserverdocs-pr) | [Freshness pass: Group Policy overview](https://github.com/MicrosoftDocs/windowsserverdocs-pr/pull/6916) | ✅ Closed | Apr 18, 2025 | Apr 18, 2025 |
 | [MicrosoftDocs/windowsserverdocs-pr](https://github.com/MicrosoftDocs/windowsserverdocs-pr) | [Freshness pass: Install Active Directory Domain Services](https://github.com/MicrosoftDocs/windowsserverdocs-pr/pull/6915) | ✅ Closed | Apr 18, 2025 | Apr 21, 2025 |
-| [MicrosoftDocs/windowsserverdocs-pr](https://github.com/MicrosoftDocs/windowsserverdocs-pr) | [Freshness pass: Install and configure DHCP Server](https://github.com/MicrosoftDocs/windowsserverdocs-pr/pull/6913) | ✅ Closed | Apr 18, 2025 | Apr 18, 2025 |
 
 Total PRs by meaghanlewis: 10
 

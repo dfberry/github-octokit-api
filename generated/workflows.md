@@ -1,6 +1,6 @@
 # GitHub Actions Workflows Report
 
-*Generated on: Monday, May 12, 2025 at 10:51 AM PDT*
+*Generated on: Monday, May 12, 2025 at 2:26 PM PDT*
 
 This report shows GitHub Actions workflows for repositories and their current status.
 
@@ -9,7 +9,7 @@ This report shows GitHub Actions workflows for repositories and their current st
 - Total Repositories: 29
 - Total Workflows: 44
 - Active Workflows: 42
-- Successful Runs: 26
+- Successful Runs: 27
 - Failed Runs: 10
 - Pending Runs: 0
 
@@ -54,7 +54,7 @@ This report shows GitHub Actions workflows for repositories and their current st
 | [CodeQL Python](https://github.com/Azure-Samples/azure-ai-travel-agents/blob/main/.github/workflows/codeql-python.yml ".github/workflows/codeql-python.yml") | ✅ Active | [completed](https://github.com/Azure-Samples/azure-ai-travel-agents/actions/runs/14961288248) | ✅ Success | May 11, 2025 |
 | [CodeQL TypeScript](https://github.com/Azure-Samples/azure-ai-travel-agents/blob/main/.github/workflows/codeql-typescript.yml ".github/workflows/codeql-typescript.yml") | ✅ Active | [completed](https://github.com/Azure-Samples/azure-ai-travel-agents/actions/runs/14961288007) | ❌ Failure | May 11, 2025 |
 | [Codespaces Prebuilds](https://github.com/Azure-Samples/azure-ai-travel-agents/blob/main/dynamic/codespaces/create_codespaces_prebuilds "dynamic/codespaces/create_codespaces_prebuilds") | ✅ Active | [completed](https://github.com/Azure-Samples/azure-ai-travel-agents/actions/runs/13996705284) | ❌ Failure | Mar 21, 2025 |
-| [Dependabot Updates](https://github.com/Azure-Samples/azure-ai-travel-agents/blob/main/dynamic/dependabot/dependabot-updates "dynamic/dependabot/dependabot-updates") | ✅ Active | [completed](https://github.com/Azure-Samples/azure-ai-travel-agents/actions/runs/14845744863) | ✅ Success | May 05, 2025 |
+| [Dependabot Updates](https://github.com/Azure-Samples/azure-ai-travel-agents/blob/main/dynamic/dependabot/dependabot-updates "dynamic/dependabot/dependabot-updates") | ✅ Active | [completed](https://github.com/Azure-Samples/azure-ai-travel-agents/actions/runs/14981635064) | ✅ Success | May 12, 2025 |
 
 ## Repository: [Azure-Samples/azure-container-apps-durable-functions](https://github.com/Azure-Samples/azure-container-apps-durable-functions)
 
@@ -140,9 +140,9 @@ This report shows GitHub Actions workflows for repositories and their current st
 
 | Workflow | Status | Last Run | Conclusion | Last Updated |
 |---------|--------|----------|------------|-------------|
-| [Build and test](https://github.com/Azure-Samples/llama-index-javascript/blob/main/.github/workflows/build-test.yaml ".github/workflows/build-test.yaml") | ✅ Active | [completed](https://github.com/Azure-Samples/llama-index-javascript/actions/runs/14969701125) | action_required | May 12, 2025 |
+| [Build and test](https://github.com/Azure-Samples/llama-index-javascript/blob/main/.github/workflows/build-test.yaml ".github/workflows/build-test.yaml") | ✅ Active | [completed](https://github.com/Azure-Samples/llama-index-javascript/actions/runs/14982731824) | ✅ Success | May 12, 2025 |
 | [Dependabot Updates](https://github.com/Azure-Samples/llama-index-javascript/blob/main/dynamic/dependabot/dependabot-updates "dynamic/dependabot/dependabot-updates") | ✅ Active | [completed](https://github.com/Azure-Samples/llama-index-javascript/actions/runs/14041408299) | ❌ Failure | Mar 24, 2025 |
-| [Deploy to Azure](https://github.com/Azure-Samples/llama-index-javascript/blob/main/.github/workflows/azure-dev.yml ".github/workflows/azure-dev.yml") | ✅ Active | [completed](https://github.com/Azure-Samples/llama-index-javascript/actions/runs/13844298055) | ❌ Failure | Mar 13, 2025 |
+| [Deploy to Azure](https://github.com/Azure-Samples/llama-index-javascript/blob/main/.github/workflows/azure-dev.yml ".github/workflows/azure-dev.yml") | ✅ Active | [completed](https://github.com/Azure-Samples/llama-index-javascript/actions/runs/14982731841) | ❌ Failure | May 12, 2025 |
 | [Validate AZD template](https://github.com/Azure-Samples/llama-index-javascript/blob/main/.github/workflows/validate-infra.yaml ".github/workflows/validate-infra.yaml") | ✅ Active | [completed](https://github.com/Azure-Samples/llama-index-javascript/actions/runs/14969701146) | action_required | May 12, 2025 |
 
 ## Repository: [Azure-Samples/mcp-container-ts](https://github.com/Azure-Samples/mcp-container-ts)
