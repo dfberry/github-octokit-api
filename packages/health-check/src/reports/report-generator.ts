@@ -4,6 +4,7 @@ import {
   RepoData,
   PrSearchItem,
   InfrastructureData,
+  ContributorData,
 } from '../models.js';
 import { getProcessDate, formatDate } from '../utils/dates.js';
 
@@ -579,6 +580,79 @@ export default class ReportGenerator {
 
       markdown += `\n---\n\n`;
     }
+
+    return markdown;
+  }
+
+  /**
+   * Generate a markdown report for the contributor index
+   * Provides detailed information about each contributor profile
+   */
+  static generateContributorIndexReport(
+    contributorDataList: ContributorData[]
+  ): string {
+    const formattedDate = getProcessDate();
+
+    let markdown = `# Microsoft Contributor Index\n\n`;
+    markdown += `*Generated on: ${formattedDate}*\n\n`;
+    markdown += `This report provides information about Microsoft contributors.\n\n`;
+    markdown += `## Contributors\n\n`;
+
+    // Sort contributors alphabetically by login
+    contributorDataList.sort((a, b) => a.login.localeCompare(b.login));
+
+    // Create a table of contents for easy navigation
+    markdown += '### Quick Navigation\n\n';
+    for (const contributor of contributorDataList) {
+      markdown += `- [${contributor.name || contributor.login}](#${contributor.login.toLowerCase()})\n`;
+    }
+    markdown += '\n';
+
+    // Generate detailed sections for each contributor
+    for (const contributor of contributorDataList) {
+      markdown += `<a id="${contributor.login.toLowerCase()}"></a>\n`;
+      markdown += `## ${contributor.name || contributor.login}\n\n`;
+
+      // Profile information with avatar
+      markdown += `<img src="${contributor.avatarUrl}" width="100" height="100" style="border-radius: 50%" align="left" hspace="10" />\n\n`;
+      markdown += `**GitHub**: [@${contributor.login}](https://github.com/${contributor.login})`;
+
+      if (contributor.twitter) {
+        markdown += ` | **Twitter**: [@${contributor.twitter}](https://twitter.com/${contributor.twitter})`;
+      }
+
+      markdown += `\n\n`;
+
+      if (contributor.company) {
+        markdown += `**Company**: ${contributor.company}\n\n`;
+      }
+
+      if (contributor.location) {
+        markdown += `**Location**: ${contributor.location}\n\n`;
+      }
+
+      if (contributor.bio) {
+        markdown += `**Bio**: ${contributor.bio}\n\n`;
+      }
+
+      if (contributor.blog) {
+        const blogUrl = contributor.blog.startsWith('http')
+          ? contributor.blog
+          : `https://${contributor.blog}`;
+        markdown += `**Blog**: [${contributor.blog}](${blogUrl})\n\n`;
+      }
+
+      markdown += `**GitHub Stats**: ${contributor.publicRepos} public repositories | ${contributor.followers} followers | Following ${contributor.following}\n\n`;
+
+      // Clear the floating avatar
+      markdown += `<div style="clear: both"></div>\n\n`;
+
+      markdown += `---\n\n`;
+    }
+
+    // Summary statistics
+    markdown += `## Summary\n\n`;
+    markdown += `Total Contributors: ${contributorDataList.length}\n`;
 
     return markdown;
   }

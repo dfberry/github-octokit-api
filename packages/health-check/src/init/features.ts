@@ -6,6 +6,7 @@ interface Features {
   workflowReport: boolean;
   infrastructureReport: boolean;
   repoIndex: boolean;
+  contributorIndex: boolean;
 }
 
 const features: Features = {
@@ -16,6 +17,7 @@ const features: Features = {
   workflowReport: process.env.RUN_WORKFLOW_REPORT == '1',
   infrastructureReport: process.env.RUN_INFRASTRUCTURE_REPORT == '1',
   repoIndex: process.env.RUN_REPO_INDEX == '1',
+  contributorIndex: process.env.RUN_CONTRIBUTOR_INDEX == '1',
 };
 
 console.log(`\n\n🔍 ---------------------------------------\nFeatures\n`);

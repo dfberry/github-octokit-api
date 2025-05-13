@@ -195,3 +195,31 @@ export interface GitHubApiError {
   };
   [key: string]: unknown;
 }
+
+// New Contributor Types
+export interface ContributorRepo {
+  fullName: string;
+  url: string;
+  description: string;
+  stars: number;
+  forks: number;
+  language: string;
+  lastUpdated: string;
+}
+
+export interface ContributorData {
+  login: string;
+  name: string;
+  avatarUrl: string;
+  bio: string;
+  company: string;
+  blog: string;
+  location: string;
+  twitter: string;
+  followers: number;
+  following: number;
+  publicRepos: number;
+  publicGists: number;
+  repos: ContributorRepo[];
+  recentPRs: PrSearchItem[];
+}

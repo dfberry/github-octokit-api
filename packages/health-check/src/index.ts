@@ -5,6 +5,7 @@ import ContributorActivity from './categories/contributor-activity.js';
 import WorkflowReport from './categories/workflow-report.js';
 import InfrastructureReport from './categories/infrastructure-report.js';
 import RepoIndex from './categories/repo-index.js';
+import ContributorIndex from './categories/contributor-index.js';
 import { getAuthToken } from './auth/get-auth-token.js';
 import { printEnv } from './utils/print-env.js';
 import path from 'path';
@@ -87,6 +88,13 @@ async function main(): Promise<void> {
 
   Features.repoIndex &&
     (await RepoIndex(
+      process.env.GITHUB_TOKEN || process.argv[2],
+      dataDirectory,
+      generatedDirectory
+    ));
+
+  Features.contributorIndex &&
+    (await ContributorIndex(
       process.env.GITHUB_TOKEN || process.argv[2],
       dataDirectory,
       generatedDirectory

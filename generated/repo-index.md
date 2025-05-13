@@ -1,6 +1,6 @@
 # Repository Index
 
-*Generated on: Monday, May 12, 2025 at 3:20 PM PDT*
+*Generated on: Tuesday, May 13, 2025 at 12:45 PM UTC*
 
 This index provides an alphabetical listing of all repositories with details and links. Each repository name is an H2 heading that can be used as a bookmark target from other markdown files.
 
@@ -103,7 +103,7 @@ This index provides an alphabetical listing of all repositories with details and
 | Open Issues | 0 |
 | Pull Requests | 0 |
 | Watchers | 2 |
-| Last Updated | Mar 13, 2020 |
+| Last Updated | Mar 14, 2020 |
 
 **Topics:** `microsoft` `identity` `azure-ad-b2c` `azure-active-directory` `javascript` `single-page-app`
 
@@ -124,11 +124,11 @@ This index provides an alphabetical listing of all repositories with details and
 
 | Stat | Value |
 | ---- | ----- |
-| Stars | 589 |
+| Stars | 591 |
 | Forks | 215 |
 | Open Issues | 1 |
 | Pull Requests | 1 |
-| Watchers | 589 |
+| Watchers | 591 |
 | Last Updated | May 08, 2025 |
 
 **Topics:** `apimanagement` `azure` `openai` `openai-api` `genai` `agents` `autogen` `foundry` `mcp` `mcp-server`
@@ -176,11 +176,11 @@ This index provides an alphabetical listing of all repositories with details and
 
 | Stat | Value |
 | ---- | ----- |
-| Stars | 23 |
+| Stars | 24 |
 | Forks | 19 |
 | Open Issues | 0 |
 | Pull Requests | 0 |
-| Watchers | 23 |
+| Watchers | 24 |
 | Last Updated | Apr 15, 2025 |
 
 **Topics:** `agent` `ai` `azure`
@@ -202,11 +202,11 @@ This index provides an alphabetical listing of all repositories with details and
 
 | Stat | Value |
 | ---- | ----- |
-| Stars | 13 |
+| Stars | 14 |
 | Forks | 3 |
 | Open Issues | 1 |
 | Pull Requests | 1 |
-| Watchers | 13 |
+| Watchers | 14 |
 | Last Updated | Apr 30, 2025 |
 
 **Topics:** `agents` `ai` `azure` `container` `llamaindex` `aspire` `dotnet` `java` `javascript` `mcp` `onnx` `python` `opentelemetry`
@@ -550,7 +550,7 @@ This index provides an alphabetical listing of all repositories with details and
 | Open Issues | 1 |
 | Pull Requests | 1 |
 | Watchers | 3 |
-| Last Updated | Jun 20, 2022 |
+| Last Updated | Jun 21, 2022 |
 
 **Topics:** `key-vault` `azure` `node`
 
@@ -680,7 +680,7 @@ This index provides an alphabetical listing of all repositories with details and
 | Open Issues | 1 |
 | Pull Requests | 1 |
 | Watchers | 27 |
-| Last Updated | May 02, 2025 |
+| Last Updated | May 03, 2025 |
 
 **Security Status:**
 

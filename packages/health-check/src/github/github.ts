@@ -464,4 +464,22 @@ export default class GitHubRequestor {
       });
     }
   }
+
+  /**
+   * Get detailed information about a GitHub user
+   * @param username GitHub username
+   * @returns User data object or error
+   */
+  async getUserData(username: string): Promise<any | GitHubRequestorError> {
+    try {
+      console.log(`Fetching user data for ${username}`);
+      const response = await this.octokit.rest.users.getByUsername({
+        username: username,
+      });
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching user data for ${username}: ${error}`);
+      return this.createError('getUserData', error, { username });
+    }
+  }
 }
