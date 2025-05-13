@@ -22,7 +22,14 @@
     "start:health": "node ./dist/health-check.js",
     "start:readme": "node ./dist/generate-readme.js",
     "start:advocate-activity": "node ./dist/cloud-advocate-activity.js",
-    "start:contributor-index": "node -r dotenv/config ./dist/index.js --contributor-index"
+    "start:contributor-index": "node -r dotenv/config ./dist/index.js --contributor-index",
+    "start:health-check": "node -r dotenv/config ./dist/index.js --health-check",
+    "start:generate-readme": "node -r dotenv/config ./dist/index.js --generate-readme",
+    "start:suggest-repos": "node -r dotenv/config ./dist/index.js --suggest-repos",
+    "start:contributor-activity": "node -r dotenv/config ./dist/index.js --contributor-activity",
+    "start:workflow-report": "node -r dotenv/config ./dist/index.js --workflow-report",
+    "start:infrastructure-report": "node -r dotenv/config ./dist/index.js --infrastructure-report",
+    "start:repo-index": "node -r dotenv/config ./dist/index.js --repo-index"
   },
   "author": "",
   "license": "ISC",

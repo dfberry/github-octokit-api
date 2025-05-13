@@ -9,7 +9,7 @@ import ContributorIndex from './categories/contributor-index.js';
 import { getAuthToken } from './auth/get-auth-token.js';
 import { printEnv } from './utils/print-env.js';
 import path from 'path';
-import Features from './init/features.js';
+import Features, { Features as FeaturesType } from './init/features.js';
 import Settings from './init/settings.js';
 printEnv();
 
@@ -26,6 +26,39 @@ const dataDirectory = path.join(__dirname, dataDir);
 const generatedDirectory = path.join(__dirname, generatedDir);
 
 const limit = 100;
+
+// Define the mapping between command-line switches and feature keys
+const commandSwitchMap: Record<string, keyof FeaturesType> = {
+  '--health-check': 'healthCheck',
+  '--generate-readme': 'generateReadme',
+  '--suggest-repos': 'suggestRepos',
+  '--contributor-activity': 'contributorActivity',
+  '--workflow-report': 'workflowReport',
+  '--infrastructure-report': 'infrastructureReport',
+  '--repo-index': 'repoIndex',
+  '--contributor-index': 'contributorIndex',
+};
+
+// Check for command-line arguments that should take precedence over environment settings
+const requestedSwitches = Object.keys(commandSwitchMap).filter(flag =>
+  process.argv.includes(flag)
+);
+
+if (requestedSwitches.length > 0) {
+  // If any switch is present, disable all features first
+  (Object.keys(Features) as Array<keyof FeaturesType>).forEach(key => {
+    Features[key] = false;
+  });
+
+  // Then enable only the requested features
+  requestedSwitches.forEach(flag => {
+    const featureKey = commandSwitchMap[flag];
+    Features[featureKey] = true;
+    console.log(
+      `✅ Command line flag ${flag} detected, enabling ${featureKey}`
+    );
+  });
+}
 
 if (!process.env.GITHUB_TOKEN && !process.argv[2]) {
   throw new Error(
