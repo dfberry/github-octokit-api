@@ -1,4 +1,5 @@
 import { promises as fs } from 'fs';
+import path from 'path';
 import {
   RepositoryItemExtened,
   RepoData,
@@ -102,6 +103,17 @@ export default class ReportGenerator {
 
     let markdown = `# Suggested Azure JavaScript/TypeScript Repositories\n\n`;
     markdown += `*Generated on: ${formattedDate}*\n\n`;
+
+    // Add database information if available
+    const dbPath =
+      repositories.length > 0 && (repositories[0] as any).dbPath
+        ? (repositories[0] as any).dbPath
+        : null;
+
+    if (dbPath) {
+      markdown += `Repository data stored in SQLite database: \`${path.relative(process.cwd(), dbPath)}\`\n\n`;
+    }
+
     markdown += `Found ${repositories.length} repositories updated in the last 3 months.\n\n`;
 
     markdown += `## Top Repositories\n\n`;
@@ -142,6 +154,37 @@ export default class ReportGenerator {
     markdown +=
       '[service-doc-link]: https://learn.microsoft.com/azure/service-name/\n';
     markdown += '```\n';
+
+    if (dbPath) {
+      markdown += `\n## Database Information\n\n`;
+      markdown += `All repository data is stored in a SQLite database. You can query it using standard SQL commands.\n\n`;
+      markdown += `**Database path:** \`${dbPath}\`\n\n`;
+      markdown += `**Example query:**\n\n`;
+      markdown += '```sql\n';
+      markdown +=
+        'SELECT org, repo, stars, topics, status FROM repositories ORDER BY stars DESC LIMIT 10;\n';
+      markdown += '```\n\n';
+      markdown += '**Schema:**\n\n';
+      markdown += '```\n';
+      markdown += 'CREATE TABLE repositories (\n';
+      markdown += '  id TEXT PRIMARY KEY,\n';
+      markdown += '  org TEXT NOT NULL,\n';
+      markdown += '  repo TEXT NOT NULL,\n';
+      markdown += '  full_name TEXT,\n';
+      markdown += '  description TEXT,\n';
+      markdown += '  stars INTEGER DEFAULT 0,\n';
+      markdown += '  forks INTEGER DEFAULT 0,\n';
+      markdown += '  watchers INTEGER DEFAULT 0,\n';
+      markdown += '  issues INTEGER DEFAULT 0,\n';
+      markdown += '  pulls INTEGER DEFAULT 0,\n';
+      markdown += '  last_commit_date TEXT,\n';
+      markdown += '  archived INTEGER DEFAULT 0,\n';
+      markdown += '  topics TEXT,\n';
+      markdown += '  status TEXT,\n';
+      markdown += '  timestamp DATETIME DEFAULT CURRENT_TIMESTAMP\n';
+      markdown += ')\n';
+      markdown += '```\n';
+    }
 
     markdown += newReadmeReferences;
 
@@ -274,7 +317,6 @@ export default class ReportGenerator {
       workflows: {
         id: number;
         name: string;
-        path: string;
         state: string;
         latestRun: {
           id: number;
@@ -352,7 +394,6 @@ export default class ReportGenerator {
 
       for (const workflow of sortedWorkflows) {
         const workflowName = workflow.name;
-        const workflowPath = workflow.path;
         const workflowState = workflow.state;
 
         // Format status with appropriate icon
@@ -385,21 +426,12 @@ export default class ReportGenerator {
             conclusion = '❌ Failure';
           } else if (conclusion === 'cancelled') {
             conclusion = '⚠️ Cancelled';
-          } else if (conclusion === 'skipped') {
-            conclusion = '⏭️ Skipped';
-          } else if (conclusion === 'pending' || conclusion === 'in_progress') {
-            conclusion = '🔄 In Progress';
+          } else {
+            conclusion = '❓ ' + conclusion;
           }
         }
 
-        const workflowUrl = `https://github.com/${repo.full_name}/blob/main/${workflowPath}`;
-        const workflowLinkWithTooltip = `[${workflowName}](${workflowUrl} "${workflowPath}")`;
-
-        if (runUrl) {
-          runStatus = `[${runStatus}](${runUrl})`;
-        }
-
-        markdown += `| ${workflowLinkWithTooltip} | ${statusIcon} | ${runStatus} | ${conclusion} | ${lastUpdated} |\n`;
+        markdown += `| [${workflowName}](${runUrl}) | ${statusIcon} | ${runStatus} | ${conclusion} | ${lastUpdated} |\n`;
       }
 
       markdown += `\n`;
@@ -512,79 +544,6 @@ export default class ReportGenerator {
   }
 
   /**
-   * Generate a repository index with H2 headings that can be used as bookmarks
-   * @param reposWithData List of repositories with their data
-   * @returns Markdown formatted index
-   */
-  static generateRepoIndex(reposWithData: RepoData[]): string {
-    const formattedDate = getProcessDate();
-
-    let markdown = `# Repository Index\n\n`;
-    markdown += `*Generated on: ${formattedDate}*\n\n`;
-    markdown += `This index provides an alphabetical listing of all repositories with details and links. Each repository name is an H2 heading that can be used as a bookmark target from other markdown files.\n\n`;
-
-    // Table of Contents
-    markdown += `## Table of Contents\n\n`;
-
-    for (const repo of reposWithData) {
-      const repoName =
-        repo?.name || repo?.full_name?.split('/')[1] || 'Unknown';
-      markdown += `- [${repoName}](#${repoName
-        .toLowerCase()
-        .replace(/\s/g, '-')
-        .replace(/[^\w-]/g, '')})\n`;
-    }
-
-    markdown += `\n## Repository Details\n\n`;
-
-    // Add each repository with detailed information
-    for (const repo of reposWithData) {
-      const repoName =
-        repo?.name || repo?.full_name?.split('/')[1] || 'Unknown';
-      const orgName = repo?.org || repo?.full_name?.split('/')[0] || 'github';
-      const repoSlug = repo?.repo || repoName.toLowerCase().replace(/\s/g, '-');
-
-      // Use H2 for repository names to make them linkable bookmarks
-      markdown += `## ${repoName}\n\n`;
-
-      // Repository details
-      markdown += `**Repository:** [${orgName}/${repoSlug}](https://github.com/${orgName}/${repoSlug})\n\n`;
-      markdown += `**Description:** ${repo?.description || 'No description available'}\n\n`;
-
-      // Stats in a small table
-      markdown += `| Stat | Value |\n`;
-      markdown += `| ---- | ----- |\n`;
-      markdown += `| Stars | ${repo?.stars || 0} |\n`;
-      markdown += `| Forks | ${repo?.forks || 0} |\n`;
-      markdown += `| Open Issues | ${repo?.issues || 0} |\n`;
-      markdown += `| Pull Requests | ${repo?.prsCount || 0} |\n`;
-      markdown += `| Watchers | ${repo?.watchers || 0} |\n`;
-      markdown += `| Last Updated | ${repo?.lastCommitDate ? formatDate(repo?.lastCommitDate) : 'N/A'} |\n`;
-
-      // Topics as badges
-      if (Array.isArray(repo?.topics) && repo?.topics?.length > 0) {
-        markdown += `\n**Topics:** ${repo?.topics?.map(topic => `\`${topic}\``).join(' ')}\n\n`;
-      }
-
-      // Security information
-      markdown += `\n**Security Status:**\n\n`;
-      const securityStatus = repo?.hasVulnerabilities
-        ? '⚠️ Has vulnerabilities'
-        : repo?.dependabotAlerts === 0 && !repo?.codeScanning
-          ? '⚠️ No protections'
-          : '✅ Good';
-
-      markdown += `- ${securityStatus}\n`;
-      markdown += `- Dependabot: ${repo?.dependabotAlerts >= 0 ? '✅ Enabled' : '❌ Not enabled'}\n`;
-      markdown += `- Code Scanning: ${repo?.codeScanning ? '✅ Enabled' : '❌ Not enabled'}\n`;
-
-      markdown += `\n---\n\n`;
-    }
-
-    return markdown;
-  }
-
-  /**
    * Generate a markdown report for the contributor index
    * Provides detailed information about each contributor profile
    */
@@ -653,6 +612,79 @@ export default class ReportGenerator {
     // Summary statistics
     markdown += `## Summary\n\n`;
     markdown += `Total Contributors: ${contributorDataList.length}\n`;
+
+    return markdown;
+  }
+
+  /**
+   * Generate a repository index with H2 headings that can be used as bookmarks
+   * @param reposWithData List of repositories with their data
+   * @returns Markdown formatted index
+   */
+  static generateRepoIndex(reposWithData: RepoData[]): string {
+    const formattedDate = getProcessDate();
+
+    let markdown = `# Repository Index\n\n`;
+    markdown += `*Generated on: ${formattedDate}*\n\n`;
+    markdown += `This index provides an alphabetical listing of all repositories with details and links. Each repository name is an H2 heading that can be used as a bookmark target from other markdown files.\n\n`;
+
+    // Table of Contents
+    markdown += `## Table of Contents\n\n`;
+
+    for (const repo of reposWithData) {
+      const repoName =
+        repo?.name || repo?.full_name?.split('/')[1] || 'Unknown';
+      markdown += `- [${repoName}](#${repoName
+        .toLowerCase()
+        .replace(/\s/g, '-')
+        .replace(/[^\w-]/g, '')})\n`;
+    }
+
+    markdown += `\n## Repository Details\n\n`;
+
+    // Add each repository with detailed information
+    for (const repo of reposWithData) {
+      const repoName =
+        repo?.name || repo?.full_name?.split('/')[1] || 'Unknown';
+      const orgName = repo?.org || repo?.full_name?.split('/')[0] || 'github';
+      const repoSlug = repo?.repo || repoName.toLowerCase().replace(/\s/g, '-');
+
+      // Use H2 for repository names to make them linkable bookmarks
+      markdown += `## ${repoName}\n\n`;
+
+      // Repository details
+      markdown += `**Repository:** [${orgName}/${repoSlug}](https://github.com/${orgName}/${repoSlug})\n\n`;
+      markdown += `**Description:** ${repo?.description || 'No description available'}\n\n`;
+
+      // Stats in a small table
+      markdown += `| Stat | Value |\n`;
+      markdown += `| ---- | ----- |\n`;
+      markdown += `| Stars | ${repo?.stars || 0} |\n`;
+      markdown += `| Forks | ${repo?.forks || 0} |\n`;
+      markdown += `| Open Issues | ${repo?.issues || 0} |\n`;
+      markdown += `| Pull Requests | ${repo?.prsCount || 0} |\n`;
+      markdown += `| Watchers | ${repo?.watchers || 0} |\n`;
+      markdown += `| Last Updated | ${repo?.lastCommitDate ? formatDate(repo?.lastCommitDate) : 'N/A'} |\n`;
+
+      // Topics as badges
+      if (Array.isArray(repo?.topics) && repo?.topics?.length > 0) {
+        markdown += `\n**Topics:** ${repo?.topics?.map(topic => `\`${topic}\``).join(' ')}\n\n`;
+      }
+
+      // Security information
+      markdown += `\n**Security Status:**\n\n`;
+      const securityStatus = repo?.hasVulnerabilities
+        ? '⚠️ Has vulnerabilities'
+        : repo?.dependabotAlerts === 0 && !repo?.codeScanning
+          ? '⚠️ No protections'
+          : '✅ Good';
+
+      markdown += `- ${securityStatus}\n`;
+      markdown += `- Dependabot: ${repo?.dependabotAlerts >= 0 ? '✅ Enabled' : '❌ Not enabled'}\n`;
+      markdown += `- Code Scanning: ${repo?.codeScanning ? '✅ Enabled' : '❌ Not enabled'}\n`;
+
+      markdown += `\n---\n\n`;
+    }
 
     return markdown;
   }

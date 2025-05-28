@@ -2,6 +2,13 @@ import { RepositoryItemExtened } from '../models.js';
 import ReportGenerator from '../reports/report-generator.js';
 import GitHubSearcher from '../github/github-search.js';
 import { getConfigData } from '../init/initialize-with-data.js';
+import {
+  createDatabaseConnection,
+  initializeDatabase,
+  insertRepository,
+  closeDatabase,
+  getDateBasedDbFilename,
+} from '../utils/db.js';
 
 export default async function run(
   token: string,
@@ -34,12 +41,42 @@ export default async function run(
   // Sort by stars - add null checking to handle undefined values
   repos.sort((a, b) => (b.stargazers_count || 0) - (a.stargazers_count || 0));
 
-  // Create markdown report - fix the method name spelling
-  const mdReport = ReportGenerator.generateSuggestedReposMarkdownReport(repos);
+  // Store repositories in SQLite database
+  const dbFilename = getDateBasedDbFilename(generatedDirectory);
+  console.log(`Creating SQLite database: ${dbFilename}`);
 
-  // Write to file
-  ReportGenerator.saveReport(
-    mdReport,
-    configData.generatedDirectoryName + '/suggested_repos.md'
-  );
+  try {
+    // Create database connection and initialize schema
+    const db = await createDatabaseConnection(dbFilename);
+    await initializeDatabase(db);
+
+    // Insert each repository into the database
+    for (const repo of repos) {
+      await insertRepository(db, repo);
+    }
+
+    // Close the database connection
+    await closeDatabase(db);
+    console.log(
+      `Successfully stored ${repos.length} repositories in the database`
+    );
+
+    // Add the database info to the repositories for report generation
+    const reposWithDb = repos.map(repo => ({
+      ...repo,
+      dbPath: dbFilename,
+    }));
+
+    // Create markdown report with database info
+    const mdReport =
+      ReportGenerator.generateSuggestedReposMarkdownReport(reposWithDb);
+
+    // Write to file
+    await ReportGenerator.saveReport(
+      mdReport,
+      configData.generatedDirectoryName + '/suggested_repos.md'
+    );
+  } catch (error) {
+    console.error(`Error storing repository data in database: ${error}`);
+  }
 }

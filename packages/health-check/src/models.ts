@@ -46,6 +46,7 @@ export interface RepositoryItemExtened extends Partial<OctokitSearchRepo> {
   hasVulnerabilities?: boolean;
   dependabotAlerts?: number;
   codeScanning?: boolean;
+  dbPath?: string; // Path to SQLite database where this repository is stored
 }
 
 export interface SimpleRepositoryError {

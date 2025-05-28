@@ -1,6 +1,6 @@
 # Repository Index
 
-*Generated on: Tuesday, May 13, 2025 at 12:45 PM UTC*
+*Generated on: Tuesday, May 13, 2025 at 4:46 PM UTC*
 
 This index provides an alphabetical listing of all repositories with details and links. Each repository name is an H2 heading that can be used as a bookmark target from other markdown files.
 
@@ -124,11 +124,11 @@ This index provides an alphabetical listing of all repositories with details and
 
 | Stat | Value |
 | ---- | ----- |
-| Stars | 591 |
+| Stars | 592 |
 | Forks | 215 |
 | Open Issues | 1 |
 | Pull Requests | 1 |
-| Watchers | 591 |
+| Watchers | 592 |
 | Last Updated | May 08, 2025 |
 
 **Topics:** `apimanagement` `azure` `openai` `openai-api` `genai` `agents` `autogen` `foundry` `mcp` `mcp-server`
@@ -344,7 +344,7 @@ This index provides an alphabetical listing of all repositories with details and
 | Stat | Value |
 | ---- | ----- |
 | Stars | 293 |
-| Forks | 188 |
+| Forks | 189 |
 | Open Issues | 1 |
 | Pull Requests | 0 |
 | Watchers | 293 |
@@ -602,7 +602,7 @@ This index provides an alphabetical listing of all repositories with details and
 | Open Issues | 1 |
 | Pull Requests | 1 |
 | Watchers | 61 |
-| Last Updated | May 12, 2025 |
+| Last Updated | May 13, 2025 |
 
 **Topics:** `azure` `azure-openai` `docker` `llama-index` `llm` `nextjs` `openai` `ai-azd-templates` `azd-templates`
 

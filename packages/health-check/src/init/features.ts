@@ -7,6 +7,8 @@ interface Features {
   infrastructureReport: boolean;
   repoIndex: boolean;
   contributorIndex: boolean;
+  queryRepos: boolean;
+  queryContributors: boolean;
 }
 
 const features: Features = {
@@ -18,6 +20,8 @@ const features: Features = {
   infrastructureReport: process.env.RUN_INFRASTRUCTURE_REPORT == '1',
   repoIndex: process.env.RUN_REPO_INDEX == '1',
   contributorIndex: process.env.RUN_CONTRIBUTOR_INDEX == '1',
+  queryRepos: process.env.RUN_QUERY_REPOS == '1',
+  queryContributors: process.env.RUN_QUERY_CONTRIBUTORS == '1',
 };
 
 console.log(`\n\n🔍 ---------------------------------------\nFeatures\n`);

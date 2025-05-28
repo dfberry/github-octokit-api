@@ -137,3 +137,4 @@ dist
 
 # act secrets
 .secrets
+.DS_Store

@@ -6,6 +6,8 @@ import WorkflowReport from './categories/workflow-report.js';
 import InfrastructureReport from './categories/infrastructure-report.js';
 import RepoIndex from './categories/repo-index.js';
 import ContributorIndex from './categories/contributor-index.js';
+import QueryRepos from './categories/query-repos.js';
+import QueryContributors from './categories/query-contributors.js';
 import { getAuthToken } from './auth/get-auth-token.js';
 import { printEnv } from './utils/print-env.js';
 import path from 'path';
@@ -37,6 +39,8 @@ const commandSwitchMap: Record<string, keyof FeaturesType> = {
   '--infrastructure-report': 'infrastructureReport',
   '--repo-index': 'repoIndex',
   '--contributor-index': 'contributorIndex',
+  '--query-repos': 'queryRepos',
+  '--query-contributors': 'queryContributors',
 };
 
 // Check for command-line arguments that should take precedence over environment settings
@@ -132,6 +136,52 @@ async function main(): Promise<void> {
       dataDirectory,
       generatedDirectory
     ));
+
+  // Check for query-repos command and extract additional arguments
+  if (Features.queryRepos) {
+    // Find the index of the --query-repos flag
+    const queryFlagIndex = process.argv.findIndex(
+      arg => arg === '--query-repos'
+    );
+
+    // Extract all arguments after the flag
+    const queryArgs =
+      queryFlagIndex >= 0
+        ? process.argv
+            .slice(queryFlagIndex + 1)
+            .filter(arg => !arg.startsWith('--'))
+        : [];
+
+    await QueryRepos(
+      process.env.GITHUB_TOKEN || process.argv[2],
+      dataDirectory,
+      generatedDirectory,
+      queryArgs
+    );
+  }
+
+  // Check for query-contributors command and extract additional arguments
+  if (Features.queryContributors) {
+    // Find the index of the --query-contributors flag
+    const queryFlagIndex = process.argv.findIndex(
+      arg => arg === '--query-contributors'
+    );
+
+    // Extract all arguments after the flag
+    const queryArgs =
+      queryFlagIndex >= 0
+        ? process.argv
+            .slice(queryFlagIndex + 1)
+            .filter(arg => !arg.startsWith('--'))
+        : [];
+
+    await QueryContributors(
+      process.env.GITHUB_TOKEN || process.argv[2],
+      dataDirectory,
+      generatedDirectory,
+      queryArgs
+    );
+  }
 }
 
 main().catch((error: unknown) => {

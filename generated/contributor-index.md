@@ -1,6 +1,6 @@
 # Microsoft Contributor Index
 
-*Generated on: Tuesday, May 13, 2025 at 1:08 PM UTC*
+*Generated on: Tuesday, May 13, 2025 at 4:46 PM UTC*
 
 This report provides information about Microsoft contributors.
 
@@ -81,7 +81,7 @@ This report provides information about Microsoft contributors.
 
 **Bio**: Pretty fly for a bald guy
 
-**GitHub Stats**: 422 public repositories | 1025 followers | Following 4
+**GitHub Stats**: 422 public repositories | 1026 followers | Following 4
 
 <div style="clear: both"></div>
 
@@ -438,6 +438,46 @@ https://aka.ms/sitefeedback
 
 ---
 
+
+## Database Information
+
+All contributor data is stored in a SQLite database. You can query it using standard SQL commands.
+
+**Database path:** `/workspaces/github-octokit-api/generated/oss/repos_2025_05_13.db`
+
+**Example queries:**
+
+```sql
+-- Get all contributors
+SELECT login, name, company, followers, following FROM contributors;
+
+-- Get top contributors by number of followers
+SELECT login, name, followers FROM contributors ORDER BY followers DESC LIMIT 10;
+
+-- Search for contributors by name or company
+SELECT * FROM contributors WHERE name LIKE '%Microsoft%' OR company LIKE '%Microsoft%';
+```
+
+**Schema:**
+
+```
+CREATE TABLE contributors (
+  login TEXT PRIMARY KEY,
+  name TEXT,
+  company TEXT,
+  blog TEXT,
+  location TEXT,
+  email TEXT,
+  bio TEXT,
+  twitter TEXT,
+  followers INTEGER DEFAULT 0,
+  following INTEGER DEFAULT 0,
+  public_repos INTEGER DEFAULT 0,
+  public_gists INTEGER DEFAULT 0,
+  avatar_url TEXT,
+  last_updated DATETIME DEFAULT CURRENT_TIMESTAMP
+)
+```
 ## Summary
 
 Total Contributors: 21
