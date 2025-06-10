@@ -1,3 +1,4 @@
+
 {
     // Use IntelliSense to learn about possible attributes.
     // Hover to view descriptions of existing attributes.
@@ -5,11 +6,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch via NPM",
+            "name": "health-check",
             "request": "launch",
             "runtimeArgs": [
                 "run-script",
-                "dev"
+                "start:full"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -17,6 +18,34 @@
             ],
             "type": "node",
             "cwd": "${workspaceFolder}/packages/health-check"
+        },
+                {
+            "name": "Chat load",
+            "request": "launch",
+            "runtimeArgs": [
+                "run-script",
+                "start:load"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node",
+            "cwd": "${workspaceFolder}/packages/chat"
+        },
+                        {
+            "name": "Chat run",
+            "request": "launch",
+            "runtimeArgs": [
+                "run-script",
+                "start:run"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node",
+            "cwd": "${workspaceFolder}/packages/chat"
         }
     ]
 }
