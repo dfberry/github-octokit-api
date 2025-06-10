@@ -8,7 +8,7 @@
 		"ghcr.io/devcontainers-extra/features/act:1": {},
 		"ghcr.io/devcontainers-extra/features/actionlint:1": {},
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
-		"ghcr.io/devcontainers-contrib/features/gitleaks:1": {}
+		"ghcr.io/jsburckhardt/devcontainer-features/gitleaks:1": {}
 	},
 	"customizations": {
 		"vscode": {
@@ -25,7 +25,8 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "npm install && npm install --save-dev husky && npm pkg set scripts.prepare='husky install' && npm run prepare && npx husky add .husky/pre-commit 'gitleaks protect --staged --no-banner'"
+	// 
+	// "postCreateCommand": ""
 
 	// Configure tool-specific properties.
 	// "customizations": {},
