@@ -1,0 +1,256 @@
+import fs from 'fs';
+import path from 'path';
+
+/**
+ * Configuration object that contains data loaded from JSON files
+ */
+export  public getMicrosoftRepos(): string[] {
+    // First try to load active-repos.json if it exists
+    const activeReposPath = path.join(this.dataDirectory, 'active-repos.json');
+    try {
+      if (fs.existsSync(activeReposPath)) {
+        const data = this.readJsonFile<{ org: string; repo: string }[]>(activeReposPath);
+        console.log(`Using filtered list of ${data.length} active repositories`);
+        return data.map(r => `${r.org}/${r.repo}`);
+      }
+    } catch (error) {
+      console.warn(`Error reading active-repos.json: ${error instanceof Error ? error.message : String(error)}`);
+    }
+
+    // Fall back to microsoft-repos.json if no active repos list
+    const filePath = path.join(this.dataDirectory, 'microsoft-repos.json');
+    try {
+      const data = this.readJsonFile<string[]>(filePath);
+      console.log(`Loaded ${data.length} repositories from full list`);
+      return data || [];
+    } catch (error) {
+      console.warn(
+        `Couldn't load repos: ${error instanceof Error ? error.message : String(error)}`
+      );
+      return [];
+    }
+  }taConfig {
+  generatedDirectoryName?: string;
+  microsoftContributors: string[];
+  microsoftOrgs: string[];
+  microsoftRepos: string[];
+  microsoftLanguages: string[];
+  microsoftTopics: string[];
+  activeRepos?: { org: string; repo: string }[]; // Optional list of active repos from contributor activity
+}
+
+/**
+ * Class responsible for initializing the application with data from JSON files
+ */
+export class DataInitializer {
+  private dataDirectory: string;
+  private generatedDirectory: string;
+
+  /**
+   * Initialize the DataInitializer
+   * @param rootPath Optional path to the root directory containing the data folder
+   */
+  constructor(dataDirectory: string, generatedDirectory: string) {
+    this.generatedDirectory = generatedDirectory;
+    console.log(`Generated path set to: ${this.generatedDirectory}`);
+
+    this.dataDirectory = dataDirectory;
+    console.log(`Data path set to: ${this.dataDirectory}`);
+  }
+
+  private checkVars() {
+    if (!this.dataDirectory) {
+      throw new Error('Data directory is not set');
+    }
+    if (!this.generatedDirectory) {
+      throw new Error('Generated directory is not set');
+    }
+  }
+  private async createGeneratedDirectory(): Promise<string> {
+    try {
+      await fs.promises.access(this.generatedDirectory).catch(async () => {
+        await fs.promises.mkdir(this.generatedDirectory, { recursive: true });
+        console.log(`Created directory: ${this.generatedDirectory}`);
+      });
+
+      console.log(`Directory exists: ${this.generatedDirectory}`);
+      return this.generatedDirectory;
+    } catch (error) {
+      console.error(
+        `Error creating directory: ${error instanceof Error ? error.message : String(error)}`
+      );
+      throw error;
+    }
+  }
+  public init() {
+    this.checkVars();
+    const generatedDir = this.createGeneratedDirectory();
+    console.log(`Generated directory initialized: ${generatedDir}`);
+  }
+
+  /**
+   * Read JSON data from a file
+   * @param filePath Path to the JSON file
+   * @returns Parsed JSON content
+   */
+  private readJsonFile<T>(filePath: string): T {
+    try {
+      console.log(`Reading JSON file: ${filePath}`);
+      const fileContent = fs.readFileSync(filePath, 'utf-8');
+      console.log(`Read ${fileContent.length} characters from ${filePath}`);
+      return JSON.parse(fileContent) as T;
+    } catch (error) {
+      console.error(
+        `Error reading file ${filePath}: ${error instanceof Error ? error.message : String(error)}`
+      );
+      throw error;
+    }
+  }
+
+  /**
+   * Get Microsoft contributors from JSON file
+   * @returns Array of contributor GitHub usernames
+   */
+  public getMicrosoftContributors(): string[] {
+    const filePath = path.join(
+      this.dataDirectory,
+      'microsoft-contributors.json'
+    );
+    try {
+      const data = this.readJsonFile<string[]>(filePath);
+      console.log(`Loaded ${data.length} contributors`);
+      return data || [];
+    } catch (error) {
+      console.warn(
+        `Couldn't load contributors: ${error instanceof Error ? error.message : String(error)}`
+      );
+      return [];
+    }
+  }
+
+  /**
+   * Get Microsoft organizations from JSON file
+   * @returns Array of Microsoft GitHub organization names
+   */
+  public getMicrosoftOrgs(): string[] {
+    const filePath = path.join(this.dataDirectory, 'microsoft-orgs.json');
+    try {
+      const data = this.readJsonFile<string[]>(filePath);
+      console.log(`Loaded ${data.length} organizations`);
+      return data || [];
+    } catch (error) {
+      console.warn(
+        `Couldn't load organizations: ${error instanceof Error ? error.message : String(error)}`
+      );
+      return [];
+    }
+  }
+
+  /**
+   * Get Microsoft repositories from JSON file
+   * @returns Array of Microsoft repository URLs
+   */
+  public getMicrosoftRepos(): string[] {
+    const filePath = path.join(this.dataDirectory, 'microsoft-repos.json');
+    try {
+      const data = this.readJsonFile<string[]>(filePath);
+      console.log(`Loaded ${data.length} repositories`);
+      return data || [];
+    } catch (error) {
+      console.warn(
+        `Couldn't load repositories: ${error instanceof Error ? error.message : String(error)}`
+      );
+      return [];
+    }
+  }
+
+  public getMicrosoftLanguages(): string[] {
+    const filePath = path.join(this.dataDirectory, 'microsoft-languages.json');
+    try {
+      const data = this.readJsonFile<string[]>(filePath);
+      console.log(`Loaded ${data.length} languages`);
+      return data || [];
+    } catch (error) {
+      console.warn(
+        `Couldn't load languages: ${error instanceof Error ? error.message : String(error)}`
+      );
+      return [];
+    }
+  }
+
+  public getMicrosoftTopics(): string[] {
+    const filePath = path.join(this.dataDirectory, 'microsoft-topics.json');
+    try {
+      const data = this.readJsonFile<string[]>(filePath);
+      console.log(`Loaded ${data.length} topics`);
+      return data || [];
+    } catch (error) {
+      console.warn(
+        `Couldn't load topics: ${error instanceof Error ? error.message : String(error)}`
+      );
+      return [];
+    }
+  }
+
+  /**
+   * Load the configuration data from JSON files
+   */
+  public async readConfigData(): Promise<DataConfig> {
+    this.checkVars();
+
+    const microsoftContributorsPath = path.join(
+      this.dataDirectory,
+      'microsoft-contributors.json'
+    );
+    const microsoftOrgsPath = path.join(this.dataDirectory, 'microsoft-orgs.json');
+    const microsoftReposPath = path.join(
+      this.dataDirectory,
+      'microsoft-repos.json'
+    );
+    const microsoftLanguagesPath = path.join(
+      this.dataDirectory,
+      'microsoft-languages.json'
+    );
+    const microsoftTopicsPath = path.join(
+      this.dataDirectory,
+      'microsoft-topics.json'
+    );
+    const activeReposPath = path.join(this.dataDirectory, 'active-repos.json');
+
+    const config: DataConfig = {
+      microsoftContributors: await this.readJsonFile(microsoftContributorsPath),
+      microsoftOrgs: await this.readJsonFile(microsoftOrgsPath),
+      microsoftRepos: await this.readJsonFile(microsoftReposPath),
+      microsoftLanguages: await this.readJsonFile(microsoftLanguagesPath),
+      microsoftTopics: await this.readJsonFile(microsoftTopicsPath),
+    };
+
+    // Try to load active repos if file exists
+    try {
+      config.activeRepos = await this.readJsonFile(activeReposPath);
+    } catch (error) {
+      // Active repos file is optional, so ignore if not found
+      console.log('No active-repos.json found, will use full repo list');
+    }
+
+    return config;
+  }
+}
+
+/**
+ * Helper function to get a DataInitializer instance with default settings
+ * @returns DataConfig object with all data loaded
+ */
+export function getConfigData(
+  dataDirectory: string,
+  generatedDirectory: string
+): DataConfig {
+  const initializer = new DataInitializer(dataDirectory, generatedDirectory);
+
+  initializer.init();
+  console.log(
+    `DataInitializer initialized with dataDirectory: ${dataDirectory}, generatedDirectory: ${generatedDirectory}`
+  );
+
+  return initializer.loadAllData();
+}

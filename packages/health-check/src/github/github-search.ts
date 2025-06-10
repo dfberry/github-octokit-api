@@ -7,7 +7,7 @@ import GitHubRequestor, {
  * Class for searching GitHub repositories with various criteria
  */
 export default class GitHubSearcher {
-  private requestor: GitHubRequestor;
+  public readonly requestor: GitHubRequestor;
 
   constructor(token: string) {
     this.requestor = new GitHubRequestor(token);

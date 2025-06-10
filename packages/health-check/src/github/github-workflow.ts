@@ -2,7 +2,7 @@ import GitHubRequestor, { isGitHubRequestorError } from './github.js';
 import { WorkflowWithStatus } from '../models.js';
 
 export default class GitHubWorkflow {
-  private requestor: GitHubRequestor;
+  protected requestor: GitHubRequestor;
 
   constructor(token: string) {
     this.requestor = new GitHubRequestor(token);

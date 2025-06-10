@@ -5,7 +5,7 @@ import { ContributorData, ContributorRepo, PrSearchItem } from '../models.js';
  * Class for retrieving contributor data from GitHub
  */
 export default class GitHubContributor {
-  private requestor: GitHubRequestor;
+  protected requestor: GitHubRequestor;
 
   constructor(token: string) {
     this.requestor = new GitHubRequestor(token);
@@ -16,7 +16,15 @@ export default class GitHubContributor {
    * @param username GitHub username
    * @returns Contributor data object
    */
-  async getContributorData(username: string): Promise<ContributorData> {
+  async getContributorData(username: string): Promise<
+    ContributorData & {
+      contributedReposList?: any[];
+      repositoriesList?: any[];
+      starredRepositoriesList?: any[];
+      issuesList?: any[];
+      pullRequestsList?: any[];
+    }
+  > {
     console.log(`Fetching contributor data for ${username}`);
 
     try {
@@ -24,7 +32,7 @@ export default class GitHubContributor {
 
       if (isGitHubRequestorError(userData)) {
         console.error(`Error fetching user data: ${userData.errorMessage}`);
-        // Return minimal data if we can't get the full profile
+
         return {
           login: username,
           name: username,
@@ -40,10 +48,15 @@ export default class GitHubContributor {
           publicGists: 0,
           repos: [],
           recentPRs: [],
+          contributedReposList: [],
+          repositoriesList: [],
+          starredRepositoriesList: [],
+          issuesList: [],
+          pullRequestsList: [],
         };
       }
 
-      // Transform user data to ContributorData
+      // Use the new lists from getUserData
       return {
         login: userData.login,
         name: userData.name || userData.login,
@@ -57,8 +70,13 @@ export default class GitHubContributor {
         following: userData.following || 0,
         publicRepos: userData.public_repos || 0,
         publicGists: userData.public_gists || 0,
-        repos: [],
-        recentPRs: [],
+        repos: userData.contributed_repositories_list || [],
+        recentPRs: userData.pull_requests_list || [],
+        contributedReposList: userData.contributed_repositories_list || [],
+        repositoriesList: userData.repositories_list || [],
+        starredRepositoriesList: userData.starred_repositories_list || [],
+        issuesList: userData.issues_list || [],
+        pullRequestsList: userData.pull_requests_list || [],
       };
     } catch (error) {
       console.error(`Error in getContributorData: ${error}`);
@@ -78,6 +96,11 @@ export default class GitHubContributor {
         publicGists: 0,
         repos: [],
         recentPRs: [],
+        contributedReposList: [],
+        repositoriesList: [],
+        starredRepositoriesList: [],
+        issuesList: [],
+        pullRequestsList: [],
       };
     }
   }

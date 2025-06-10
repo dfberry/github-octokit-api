@@ -9,6 +9,7 @@ interface Features {
   contributorIndex: boolean;
   queryRepos: boolean;
   queryContributors: boolean;
+  discoverRepos: boolean; // When true, discover new repos from contributor activity
 }
 
 const features: Features = {
@@ -22,6 +23,7 @@ const features: Features = {
   contributorIndex: process.env.RUN_CONTRIBUTOR_INDEX == '1',
   queryRepos: process.env.RUN_QUERY_REPOS == '1',
   queryContributors: process.env.RUN_QUERY_CONTRIBUTORS == '1',
+  discoverRepos: process.env.RUN_DISCOVER_REPOS == '1',
 };
 
 console.log(`\n\n🔍 ---------------------------------------\nFeatures\n`);

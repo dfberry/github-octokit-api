@@ -3,7 +3,6 @@ import path from 'path';
 import {
   RepositoryItemExtened,
   RepoData,
-  PrSearchItem,
   InfrastructureData,
   ContributorData,
 } from '../models.js';
@@ -227,79 +226,71 @@ export default class ReportGenerator {
     return newReadme + `\n\n` + newReadmeReferences;
   }
 
-  static generateContributorActivityReport(prItems: PrSearchItem[]): string {
+  static generateContributorActivityReport(activityRows: any[]): string {
     const formattedDate = getProcessDate();
 
     let markdown = `# Contributor Repository Activity\n\n`;
     markdown += `*Generated on: ${formattedDate}*\n\n`;
     markdown += `This report shows Azure contributions to sample repositories over the last 30 days.\n\n`;
 
-    // Group PRs by contributor
-    const contributorMap = new Map<string, PrSearchItem[]>();
-
-    for (const pr of prItems) {
-      const contributor = pr.user?.login || 'anonymous';
+    // Group by contributor, then by repo
+    const contributorMap = new Map<string, Map<string, any[]>>();
+    for (const row of activityRows) {
+      const contributor = row.login;
+      const repo = row.repo_id;
       if (!contributorMap.has(contributor)) {
-        contributorMap.set(contributor, []);
+        contributorMap.set(contributor, new Map());
       }
-      contributorMap.get(contributor)?.push(pr);
+      const repoMap = contributorMap.get(contributor)!;
+      if (!repoMap.has(repo)) {
+        repoMap.set(repo, []);
+      }
+      repoMap.get(repo)!.push(row);
     }
 
     // Sort contributors alphabetically
     const sortedContributors = Array.from(contributorMap.keys()).sort();
 
-    // For each contributor, create a section
     for (const contributor of sortedContributors) {
-      const contributorPRs = contributorMap.get(contributor) || [];
-
-      markdown += `## Contributor: [${contributor}](${contributorPRs[0]?.user?.html_url || '#'})\n\n`;
-
-      // Group PRs by repository
-      const repoMap = new Map<string, PrSearchItem[]>();
-
-      for (const pr of contributorPRs) {
-        const repoFullName = pr.repository_url.replace(
-          'https://api.github.com/repos/',
-          ''
-        );
-        if (!repoMap.has(repoFullName)) {
-          repoMap.set(repoFullName, []);
-        }
-        repoMap.get(repoFullName)?.push(pr);
-      }
-
-      // Sort repositories alphabetically
+      const repoMap = contributorMap.get(contributor)!;
+      const contributorName =
+        activityRows.find(r => r.login === contributor)?.name || contributor;
+      markdown += `## Contributor: [${contributorName}](https://github.com/${contributor})\n\n`;
+      // Table header
+      markdown += `| Repository | PR/Issue | Title | Status | Created | Updated | Closed |\n`;
+      markdown += `|------------|----------|-------|--------|---------|--------|--------|\n`;
+      // For each repo
       const sortedRepos = Array.from(repoMap.keys()).sort();
-
-      // Create a table for this contributor
-      markdown += `| Repository | PR Title | Status | Created | Updated |\n`;
-      markdown += `|------------|----------|--------|---------|--------|\n`;
-
-      for (const repoName of sortedRepos) {
-        const repoPRs = repoMap.get(repoName) || [];
-
-        // Sort PRs by creation date (newest first)
-        repoPRs.sort(
-          (a, b) =>
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-        );
-
-        for (const pr of repoPRs) {
-          const status = pr.state === 'open' ? '🔄 Open' : '✅ Closed';
-          const createdDate = formatDate(pr.created_at);
-          const updatedDate = formatDate(pr.updated_at);
-
-          markdown += `| [${repoName}](${pr.repository_url.replace('api.github.com/repos', 'github.com')}) | [${pr.title}](${pr.html_url}) | ${status} | ${createdDate} | ${updatedDate} |\n`;
+      let prCount = 0;
+      for (const repo of sortedRepos) {
+        const items = repoMap.get(repo)!;
+        for (const item of items) {
+          if (!item.item_type) continue; // skip if no PR/issue
+          const isPR = item.item_type === 'pr';
+          const status = item.item_state === 'open' ? '🔄 Open' : '✅ Closed';
+          const created = item.item_created_at
+            ? formatDate(item.item_created_at)
+            : '';
+          const updated = item.item_updated_at
+            ? formatDate(item.item_updated_at)
+            : '';
+          const closed = item.item_closed_at
+            ? formatDate(item.item_closed_at)
+            : '';
+          const title = item.item_title || '';
+          const url = item.item_url || '';
+          const typeLabel = isPR ? 'PR' : 'Issue';
+          if (isPR) prCount++;
+          markdown += `| [${repo}](https://github.com/${repo}) | ${typeLabel} | [${title}](${url}) | ${status} | ${created} | ${updated} | ${closed} |\n`;
         }
       }
-
-      markdown += `\nTotal PRs by ${contributor}: ${contributorPRs.length}\n\n`;
+      markdown += `\nTotal PRs by ${contributor}: ${prCount}\n\n`;
     }
 
     // Summary section
     markdown += `## Summary\n\n`;
     markdown += `Total Contributors: ${sortedContributors.length}\n`;
-    markdown += `Total PRs: ${prItems.length}\n\n`;
+    markdown += `Total PRs: ${activityRows.filter(r => r.item_type === 'pr').length}\n\n`;
 
     return markdown;
   }

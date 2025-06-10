@@ -62,10 +62,18 @@ export function extractRepositoriesFromReadme(
  */
 export function extractOrgAndRepo(githubUrls: string[]): SimpleRepository[] {
   return githubUrls.map((url: string) => {
-    const [org, repo] = url.split('/');
-
+    // Use regex to extract org and repo from GitHub URLs or org/repo strings
+    // Handles: https://github.com/org/repo, github.com/org/repo, org/repo, etc.
+    let org = '',
+      repo = '';
+    const match = url.match(
+      /(?:https?:\/\/)?(?:www\.)?(?:github\.com\/)?([^\/\s]+)\/([^\/\s]+)/
+    );
+    if (match) {
+      org = match[1];
+      repo = match[2];
+    }
     console.log(`Extracted org: ${org}, repo: ${repo} from URL: ${url}`);
-
     return {
       name: url,
       org,

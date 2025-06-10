@@ -2,122 +2,110 @@ import fs from 'fs';
 import path from 'path';
 
 /**
- * Configuration object that contains data loaded from JSON files
+ * Configuration data class that provides access to repository and contributor information
  */
-export interface DataConfig {
-  generatedDirectoryName?: string;
-  microsoftContributors: string[];
-  microsoftOrgs: string[];
-  microsoftRepos: string[];
-  microsoftLanguages: string[];
-  microsoftTopics: string[];
-}
-
-/**
- * Class responsible for initializing the application with data from JSON files
- */
-export class DataInitializer {
+export class DataConfig {
   private dataDirectory: string;
   private generatedDirectory: string;
+  private _microsoftRepos: string[] | null = null;
+  private _microsoftOrgs: string[] | null = null;
+  private _microsoftLanguages: string[] | null = null;
+  private _microsoftTopics: string[] | null = null;
+  private _microsoftContributors: string[] | null = null;
+  private _activeRepos: Array<{ org: string; repo: string }> | null = null;
 
-  /**
-   * Initialize the DataInitializer
-   * @param rootPath Optional path to the root directory containing the data folder
-   */
   constructor(dataDirectory: string, generatedDirectory: string) {
-    this.generatedDirectory = generatedDirectory;
-    console.log(`Generated path set to: ${this.generatedDirectory}`);
-
     this.dataDirectory = dataDirectory;
-    console.log(`Data path set to: ${this.dataDirectory}`);
+    this.generatedDirectory = generatedDirectory;
   }
 
-  private checkVars() {
-    if (!this.dataDirectory) {
-      throw new Error('Data directory is not set');
+  // Add getter for activeRepos
+  public get activeRepos(): Array<{ org: string; repo: string }> {
+    if (!this._activeRepos) {
+      const filePath = path.join(this.dataDirectory, 'active-repos.json');
+      try {
+        this._activeRepos =
+          this.readJsonFile<Array<{ org: string; repo: string }>>(filePath);
+        console.log(
+          `Loaded ${this._activeRepos.length} repositories from active repos list`
+        );
+      } catch (error) {
+        console.error(
+          `Error reading active-repos.json: ${error instanceof Error ? error.message : String(error)}`
+        );
+        // Fallback to an empty array
+        this._activeRepos = [];
+      }
     }
-    if (!this.generatedDirectory) {
-      throw new Error('Generated directory is not set');
-    }
+    return this._activeRepos;
   }
-  private async createGeneratedDirectory(): Promise<string> {
-    try {
-      await fs.promises.access(this.generatedDirectory).catch(async () => {
-        await fs.promises.mkdir(this.generatedDirectory, { recursive: true });
-        console.log(`Created directory: ${this.generatedDirectory}`);
-      });
 
-      console.log(`Directory exists: ${this.generatedDirectory}`);
-      return this.generatedDirectory;
-    } catch (error) {
-      console.error(
-        `Error creating directory: ${error instanceof Error ? error.message : String(error)}`
+  public get microsoftRepos(): string[] {
+    if (!this._microsoftRepos) {
+      const filePath = path.join(this.dataDirectory, 'microsoft-repos.json');
+      try {
+        this._microsoftRepos = this.readJsonFile<string[]>(filePath);
+        console.log(
+          `Loaded ${this._microsoftRepos.length} repositories from complete list`
+        );
+      } catch (error) {
+        console.error(
+          `Error reading microsoft-repos.json: ${error instanceof Error ? error.message : String(error)}`
+        );
+        throw error;
+      }
+    }
+    return this._microsoftRepos;
+  }
+
+  public get microsoftOrgs(): string[] {
+    if (this._microsoftOrgs === null) {
+      const filePath = path.join(this.dataDirectory, 'microsoft-orgs.json');
+      this._microsoftOrgs = this.readJsonFile(filePath);
+    }
+    return this._microsoftOrgs || [];
+  }
+
+  public get microsoftLanguages(): string[] {
+    if (!this._microsoftLanguages) {
+      const filePath = path.join(
+        this.dataDirectory,
+        'microsoft-languages.json'
       );
-      throw error;
+      this._microsoftLanguages = this.readJsonFile(filePath);
     }
-  }
-  public init() {
-    this.checkVars();
-    const generatedDir = this.createGeneratedDirectory();
-    console.log(`Generated directory initialized: ${generatedDir}`);
+    return this._microsoftLanguages || [];
   }
 
-  /**
-   * Read JSON data from a file
-   * @param filePath Path to the JSON file
-   * @returns Parsed JSON content
-   */
-  private readJsonFile<T>(filePath: string): T {
-    try {
-      console.log(`Reading JSON file: ${filePath}`);
-      const fileContent = fs.readFileSync(filePath, 'utf-8');
-      console.log(`Read ${fileContent.length} characters from ${filePath}`);
-      return JSON.parse(fileContent) as T;
-    } catch (error) {
-      console.error(
-        `Error reading file ${filePath}: ${error instanceof Error ? error.message : String(error)}`
-      );
-      throw error;
+  public get microsoftTopics(): string[] {
+    if (!this._microsoftTopics) {
+      const filePath = path.join(this.dataDirectory, 'microsoft-topics.json');
+      this._microsoftTopics = this.readJsonFile(filePath);
     }
+    return this._microsoftTopics || [];
   }
 
-  /**
-   * Get Microsoft contributors from JSON file
-   * @returns Array of contributor GitHub usernames
-   */
-  public getMicrosoftContributors(): string[] {
-    const filePath = path.join(
-      this.dataDirectory,
-      'microsoft-contributors.json'
-    );
-    try {
-      const data = this.readJsonFile<string[]>(filePath);
-      console.log(`Loaded ${data.length} contributors`);
-      return data || [];
-    } catch (error) {
-      console.warn(
-        `Couldn't load contributors: ${error instanceof Error ? error.message : String(error)}`
+  public get microsoftContributors(): string[] {
+    console.log(`Getting Microsoft contributors`);
+    if (!this._microsoftContributors) {
+      console.log(`Loading Microsoft contributors from file`);
+      const filePath = path.join(
+        this.dataDirectory,
+        process.env.CONTRIBUTOR_LIST_FILE || 'advocates.json'
       );
-      return [];
-    }
-  }
+      console.log(`Loading Microsoft contributors from ${filePath}`);
+      const peopleInfo: [] = this.readJsonFile(filePath);
+      console.log(`Found ${peopleInfo.length} total contributors in the list`);
 
-  /**
-   * Get Microsoft organizations from JSON file
-   * @returns Array of Microsoft GitHub organization names
-   */
-  public getMicrosoftOrgs(): string[] {
-    const filePath = path.join(this.dataDirectory, 'microsoft-orgs.json');
-    try {
-      const data = this.readJsonFile<string[]>(filePath);
-      console.log(`Loaded ${data.length} organizations`);
-      return data || [];
-    } catch (error) {
-      console.warn(
-        `Couldn't load organizations: ${error instanceof Error ? error.message : String(error)}`
-      );
-      return [];
+      // remove all nulls from the array
+      this._microsoftContributors = peopleInfo
+        .map((x: any) => x.github)
+        .filter(
+          (github: string | null | undefined) =>
+            typeof github === 'string' && github.trim() !== ''
+        );
     }
+    return this._microsoftContributors || [];
   }
 
   /**
@@ -125,77 +113,72 @@ export class DataInitializer {
    * @returns Array of Microsoft repository URLs
    */
   public getMicrosoftRepos(): string[] {
+    // First try to load active-repos.json if it exists
+    const activeReposPath = path.join(this.dataDirectory, 'active-repos.json');
+    try {
+      if (fs.existsSync(activeReposPath)) {
+        const data =
+          this.readJsonFile<{ org: string; repo: string }[]>(activeReposPath);
+        console.log(
+          `Using filtered list of ${data.length} active repositories`
+        );
+        return data.map(r => `${r.org}/${r.repo}`);
+      }
+    } catch (error) {
+      console.warn(
+        `⚠️ Error reading active-repos.json: ${error instanceof Error ? error.message : String(error)}`
+      );
+      console.log('Falling back to full repository list...');
+    }
+
+    // Fall back to microsoft-repos.json if no active repos list
     const filePath = path.join(this.dataDirectory, 'microsoft-repos.json');
     try {
       const data = this.readJsonFile<string[]>(filePath);
-      console.log(`Loaded ${data.length} repositories`);
-      return data || [];
+      console.log(`Loaded ${data.length} repositories from full list`);
+      return data;
     } catch (error) {
-      console.warn(
-        `Couldn't load repositories: ${error instanceof Error ? error.message : String(error)}`
+      console.error(
+        `❌ Error reading microsoft-repos.json: ${error instanceof Error ? error.message : String(error)}`
       );
-      return [];
+      throw error;
     }
   }
 
-  public getMicrosoftLanguages(): string[] {
-    const filePath = path.join(this.dataDirectory, 'microsoft-languages.json');
+  public get generatedDirectoryName(): string {
+    return this.generatedDirectory;
+  }
+
+  public get dataDirectoryName(): string {
+    return this.dataDirectory;
+  }
+
+  private readJsonFile<T>(filePath: string): T {
     try {
-      const data = this.readJsonFile<string[]>(filePath);
-      console.log(`Loaded ${data.length} languages`);
-      return data || [];
+      const content = fs.readFileSync(filePath, 'utf8');
+      return JSON.parse(content) as T;
     } catch (error) {
-      console.warn(
-        `Couldn't load languages: ${error instanceof Error ? error.message : String(error)}`
+      throw new Error(
+        `Failed to read/parse ${path.basename(filePath)}: ${error instanceof Error ? error.message : String(error)}`
       );
-      return [];
     }
-  }
-
-  public getMicrosoftTopics(): string[] {
-    const filePath = path.join(this.dataDirectory, 'microsoft-topics.json');
-    try {
-      const data = this.readJsonFile<string[]>(filePath);
-      console.log(`Loaded ${data.length} topics`);
-      return data || [];
-    } catch (error) {
-      console.warn(
-        `Couldn't load topics: ${error instanceof Error ? error.message : String(error)}`
-      );
-      return [];
-    }
-  }
-
-  /**
-   * Load all configuration data from JSON files
-   * @returns DataConfig object containing all loaded data
-   */
-  public loadAllData(): DataConfig {
-    return {
-      microsoftContributors: this.getMicrosoftContributors(),
-      microsoftOrgs: this.getMicrosoftOrgs(),
-      microsoftRepos: this.getMicrosoftRepos(),
-      microsoftLanguages: this.getMicrosoftLanguages(),
-      microsoftTopics: this.getMicrosoftTopics(),
-      generatedDirectoryName: this.generatedDirectory,
-    };
   }
 }
 
 /**
- * Helper function to get a DataInitializer instance with default settings
- * @returns DataConfig object with all data loaded
+ * Get configuration data from the correct directories
+ * @param dataDirectory Directory containing input data files
+ * @param generatedDirectory Directory to output generated files
+ * @returns DataConfig with the correct directory configuration
  */
 export function getConfigData(
   dataDirectory: string,
   generatedDirectory: string
-): DataConfig {
-  const initializer = new DataInitializer(dataDirectory, generatedDirectory);
+): DataConfig | null {
+  if (!dataDirectory || !generatedDirectory) {
+    console.error('Missing required directory configuration');
+    return null;
+  }
 
-  initializer.init();
-  console.log(
-    `DataInitializer initialized with dataDirectory: ${dataDirectory}, generatedDirectory: ${generatedDirectory}`
-  );
-
-  return initializer.loadAllData();
+  return new DataConfig(dataDirectory, generatedDirectory);
 }

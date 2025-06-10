@@ -6,7 +6,7 @@ import {
 } from '../models.js';
 
 export default class GitHubInfrastructure {
-  private requestor: GitHubRequestor;
+  protected requestor: GitHubRequestor;
 
   constructor(token: string) {
     this.requestor = new GitHubRequestor(token);

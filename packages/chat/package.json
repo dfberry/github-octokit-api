@@ -1,0 +1,43 @@
+{
+  "name": "chat",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "load_data": "node -r dotenv/config ./dist/scripts/load_vector_store.js dotenv_config_path=../.env",
+    "studio": "npm run build && npx @langchain/langgraph-cli dev",
+    "prebuild": "prettier --write './src/**/*.{ts,tsx}'",
+    "build": "tsc",
+    "prestart": "npm run build",
+    "start": "node -r dotenv/config ./dist/index.js",
+    "start:cosmosdb": "node -r dotenv/config ./dist/azure_cosmosdb_test.js",
+    "start:cosmosdb:withload": "node -r dotenv/config ./dist/azure_cosmosdb_test_with_load.js",
+    "start:load": "node -r dotenv/config ./dist/azure_load.js",
+    "start:run": "node -r dotenv/config ./dist/azure_ask.js",
+    "langgraph_cli:version": "npx @langchain/langgraph-cli --version"
+  },
+  "author": "diberry",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "@azure/cosmos": "^4.4.1",
+    "@langchain/azure-cosmosdb": "^0.2.8",
+    "@langchain/community": "^0.3.34",
+    "@langchain/core": "^0.3.57",
+    "@langchain/langgraph": "^0.2.74",
+    "@langchain/ollama": "^0.2.1",
+    "@langchain/openai": "^0.4.9",
+    "langchain": "^0.3.27"
+  },
+  "devDependencies": {
+    "@langchain/langgraph-cli": "^0.0.18",
+    "@tsconfig/recommended": "^1.0.8",
+    "dotenv": "^16.4.7",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.2"
+  }
+}
