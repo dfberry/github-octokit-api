@@ -4,16 +4,14 @@ import {
   closeDatabase,
   getDateBasedDbFilename,
 } from '../db/index.js';
-import {
-  SQL_GET_CONTRIBUTOR_ACTIVITY,
-  SQL_GET_CONTRIBUTOR_ACTIVITY_FOR_USER,
-} from '../db/sql-contributor-activity-report.js';
-import path from 'path';
+import type { DataConfig } from '../init/initialize-with-data.js';
+import { SQL_GET_CONTRIBUTOR_ACTIVITY } from '../db/sql-all.js';
 
 export default async function run(
   _token: string,
   generatedDirectory: string,
-  _lastNDays: number
+  _lastNDays: number,
+  configData: DataConfig
 ): Promise<void> {
   let db: import('sqlite3').Database | undefined;
 
@@ -43,7 +41,7 @@ export default async function run(
 
     console.log(`Found ${activityRows.length} contributors with activity.`);
 
-    await createContributorActivityReport(activityRows, dbFilename);
+    await createContributorActivityReport(activityRows, dbFilename, configData);
   } catch (error) {
     console.error(
       `Error generating Contributor activity report: ${error instanceof Error ? error.message : String(error)}`
@@ -54,7 +52,8 @@ export default async function run(
 
 async function createContributorActivityReport(
   activityRows: any[],
-  dbFilename: string
+  dbFilename: string,
+  configData: DataConfig
 ) {
   // You may want to transform activityRows to the format expected by your report generator
   const markdown =
@@ -62,10 +61,9 @@ async function createContributorActivityReport(
   const reportWithDbInfo = addDbInfoToReport(markdown, dbFilename);
   // Save in the same directory as contributor-index.md, as contributor-activity.md
 
-  const reportFileName = path.join(
-    path.dirname(dbFilename),
-    'contributor-activity.md'
-  );
+  const reportFileName =
+    configData.generatedDirectoryName + '/contributor-activity.md';
+
   ReportGenerator.saveReport(reportWithDbInfo, reportFileName);
   console.log(`✅ Contributor activity report saved to ${reportFileName}`);
 }
@@ -90,9 +88,6 @@ All contributor and repository relationship data is stored in a SQLite database.
 -- Get contributors with their repository counts
 ${SQL_GET_CONTRIBUTOR_ACTIVITY.trim()}
 
--- Get repositories for a specific contributor
-${SQL_GET_CONTRIBUTOR_ACTIVITY_FOR_USER.trim()}
-\`\`\`
 `;
 
   // Insert the DB info right before the end of the report or the Summary section

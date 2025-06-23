@@ -1,4 +1,5 @@
 import { Octokit } from 'octokit';
+import GitHubGraphQL from './github-graphql.js';
 
 import {
   Commit,
@@ -97,66 +98,35 @@ export default class GitHubRequestor {
     repo: string
   ): Promise<Repository | GitHubRequestorError> {
     try {
-      console.log(`Fetching repository data for ${org}/${repo} (GraphQL)`);
-      const query = `
-        query($owner: String!, $name: String!) {
-          repository(owner: $owner, name: $name) {
-            id
-            name
-            nameWithOwner
-            owner { login url avatarUrl }
-            description
-            url
-            createdAt
-            updatedAt
-            pushedAt
-            stargazerCount
-            forkCount
-            isPrivate
-            isFork
-            isArchived
-            isDisabled
-            primaryLanguage { name color }
-            licenseInfo { key name spdxId url }
-            diskUsage
-            openIssues: issues(states: OPEN) { totalCount }
-            openPRs: pullRequests(states: OPEN) { totalCount }
-            watchers { totalCount }
-            topics: repositoryTopics(first: 10) { nodes { topic { name } } }
-            defaultBranchRef { name }
-            homepageUrl
-            visibility
-          }
-        }
-      `;
-      const variables = { owner: org, name: repo };
-      const result = (await this.octokit.graphql(query, variables)) as any;
+      const gql = new GitHubGraphQL(
+        (this as any).octokit?.auth?.token || process.env.GITHUB_TOKEN || null
+      );
+      const result = (await gql.getRepositoryData(org, repo)) as any;
       const r = result.repository;
       if (!r) throw new Error('Repository not found');
-      // Map only the properties that exist on the Repository (OctokitRepo) type
-      const mapped: Partial<Repository> = {
+      const mapped: any = {
         id: r.id,
         node_id: r.id,
         name: r.name,
-        full_name: r.nameWithOwner,
+        full_name: r.nameWithOwner || `${org}/${repo}`,
         private: r.isPrivate,
         owner: {
-          login: r.owner.login,
+          login: r.owner?.login || org,
           id: 0,
-          node_id: '',
-          avatar_url: r.owner.avatarUrl,
+          node_id: null,
+          avatar_url: r.owner?.avatarUrl || null,
           gravatar_id: null,
-          url: r.owner.url,
-          html_url: r.owner.url,
-          followers_url: '',
-          following_url: '',
-          gists_url: '',
-          starred_url: '',
-          subscriptions_url: '',
-          organizations_url: '',
-          repos_url: '',
-          events_url: '',
-          received_events_url: '',
+          url: r.owner?.url || null,
+          html_url: r.owner?.url || null,
+          followers_url: null,
+          following_url: null,
+          gists_url: null,
+          starred_url: null,
+          subscriptions_url: null,
+          organizations_url: null,
+          repos_url: null,
+          events_url: null,
+          received_events_url: null,
           type: 'User',
           site_admin: false,
         },
@@ -170,20 +140,20 @@ export default class GitHubRequestor {
         homepage: r.homepageUrl,
         size: r.diskUsage,
         stargazers_count: r.stargazerCount,
-        watchers_count: r.watchers.totalCount,
+        watchers_count: r.watchers?.totalCount || 0,
         language: r.primaryLanguage ? r.primaryLanguage.name : null,
         forks_count: r.forkCount,
-        open_issues_count: r.openIssues.totalCount,
+        open_issues_count: r.openIssues?.totalCount || 0,
         license: r.licenseInfo
           ? {
               key: r.licenseInfo.key,
               name: r.licenseInfo.name,
               spdx_id: r.licenseInfo.spdxId,
               url: r.licenseInfo.url,
-              node_id: '',
+              node_id: null,
             }
           : null,
-        topics: r.topics.nodes.map((n: any) => n.topic.name),
+        topics: r.topics?.nodes?.map((n: any) => n.topic.name) || [],
         archived: r.isArchived,
         disabled: r.isDisabled,
         visibility: r.visibility
@@ -192,10 +162,34 @@ export default class GitHubRequestor {
             ? 'private'
             : 'public',
         default_branch: r.defaultBranchRef ? r.defaultBranchRef.name : null,
+        readme: r.readme?.text || null,
       };
       return mapped as Repository;
     } catch (error) {
-      console.error(`Error fetching repository data (GraphQL): ${error}`);
+      return this.createError('getRepo', error, { org, repo });
+    }
+  }
+
+  async getRepoExtra(
+    org: string,
+    repo: string
+  ): Promise<Repository | GitHubRequestorError> {
+    try {
+      const gql = new GitHubGraphQL(
+        (this as any).octokit?.auth?.token || process.env.GITHUB_TOKEN || null
+      );
+      const result = (await gql.getRepositoryDataExtra(org, repo)) as any;
+      const r = result.repository;
+      if (!r) throw new Error('Repository not found');
+      const mapped: any = {
+        id: r.id,
+        name: r.name,
+        full_name: r.nameWithOwner || `${org}/${repo}`,
+        topics: r.topics?.nodes?.map((n: any) => n.topic.name) || [],
+        readme: r.readme?.text || null,
+      };
+      return mapped as Repository;
+    } catch (error) {
       return this.createError('getRepo', error, { org, repo });
     }
   }
@@ -204,7 +198,7 @@ export default class GitHubRequestor {
    * Get contents of a repository at a specific path
    * @param org Repository owner
    * @param repo Repository name
-   * @param path Path to get contents from (root = '')
+   * @param path Path to get contents from (root = null)
    * @returns Array of content items or a single content item
    */
   async getRepoContents(
@@ -235,45 +229,10 @@ export default class GitHubRequestor {
     order: RepoSearchOrder = 'desc'
   ): Promise<SearchRepositoryItem[] | GitHubRequestorError> {
     try {
-      const graphqlQuery = `
-        query($q: String!, $first: Int!) {
-          search(query: $q, type: REPOSITORY, first: $first) {
-            repositoryCount
-            nodes {
-              ... on Repository {
-                id
-                name
-                nameWithOwner
-                owner { login url avatarUrl }
-                description
-                url
-                createdAt
-                updatedAt
-                pushedAt
-                stargazerCount
-                forkCount
-                isPrivate
-                isFork
-                isArchived
-                isDisabled
-                primaryLanguage { name color }
-                licenseInfo { key name spdxId url }
-                diskUsage
-                openIssues: issues(states: OPEN) { totalCount }
-                openPRs: pullRequests(states: OPEN) { totalCount }
-                watchers { totalCount }
-                topics: repositoryTopics(first: 10) { nodes { topic { name } } }
-              }
-            }
-          }
-        }
-      `;
-      const variables = { q, first: per_page };
-      console.log(`GraphQL search params: ${JSON.stringify(variables)}`);
-      const result = (await this.octokit.graphql(
-        graphqlQuery,
-        variables
-      )) as any;
+      const gql = new GitHubGraphQL(
+        (this as any).octokit?.auth?.token || process.env.GITHUB_TOKEN || null
+      );
+      const result = await gql.searchRepositories(q, per_page, sort, order);
       const items = (result.search.nodes || []).map((repo: any) => ({
         id: repo.id,
         node_id: repo.id,
@@ -283,20 +242,20 @@ export default class GitHubRequestor {
         owner: {
           login: repo.owner.login,
           id: 0,
-          node_id: '',
+          node_id: null,
           avatar_url: repo.owner.avatarUrl,
           gravatar_id: null,
           url: repo.owner.url,
           html_url: repo.owner.url,
-          followers_url: '',
-          following_url: '',
-          gists_url: '',
-          starred_url: '',
-          subscriptions_url: '',
-          organizations_url: '',
-          repos_url: '',
-          events_url: '',
-          received_events_url: '',
+          followers_url: null,
+          following_url: null,
+          gists_url: null,
+          starred_url: null,
+          subscriptions_url: null,
+          organizations_url: null,
+          repos_url: null,
+          events_url: null,
+          received_events_url: null,
           type: 'User',
           site_admin: false,
         },
@@ -320,7 +279,7 @@ export default class GitHubRequestor {
               name: repo.licenseInfo.name,
               spdx_id: repo.licenseInfo.spdxId,
               url: repo.licenseInfo.url,
-              node_id: '',
+              node_id: null,
             }
           : null,
         topics: repo.topics.nodes.map((n: any) => n.topic.name),
@@ -354,86 +313,16 @@ export default class GitHubRequestor {
     try {
       console.log(`Searching issues and PRs for query: ${q} (GraphQL)`);
 
-      // GraphQL query for searching issues and PRs
-      const graphqlQuery = `
-        query($q: String!, $first: Int!, $after: String) {
-          search(query: $q, type: ISSUE, first: $first, after: $after) {
-            issueCount
-            pageInfo {
-              endCursor
-              hasNextPage
-            }
-            nodes {
-              ... on Issue {
-                id
-                number
-                title
-                body
-                url
-                state
-                createdAt
-                updatedAt
-                closedAt
-                author { login url avatarUrl }
-                repository { name owner { login } }
-                labels(first: 10) { nodes { name } }
-                assignees(first: 10) { nodes { login url avatarUrl } }
-                comments { totalCount }
-                __typename
-              }
-              ... on PullRequest {
-                id
-                number
-                title
-                body
-                url
-                state
-                createdAt
-                updatedAt
-                closedAt
-                author { login url avatarUrl }
-                repository { name owner { login } }
-                labels(first: 10) { nodes { name } }
-                assignees(first: 10) { nodes { login url avatarUrl } }
-                comments { totalCount }
-                merged
-                mergedAt
-                mergedBy { login url avatarUrl }
-                __typename
-              }
-            }
-          }
-        }
-      `;
-
-      // Calculate the GraphQL pagination cursor
-      let after: string | null = null;
-      let fetched = 0;
-      let items: any[] = [];
-      let hasNextPage = true;
-      let currentPage = 1;
-
-      while (fetched < per_page && hasNextPage && currentPage <= page) {
-        // Wait before each request to avoid hitting rate limits
-        if (currentPage > 1) await this.wait(this.requestDelayMs);
-        const variables = {
-          q,
-          first: Math.min(per_page, 100),
-          after,
-        };
-        const result = (await this.octokit.graphql(
-          graphqlQuery,
-          variables
-        )) as any;
-        const search = result.search;
-        hasNextPage = search.pageInfo.hasNextPage;
-        after = search.pageInfo.endCursor;
-        if (currentPage === page) {
-          items = search.nodes;
-          break;
-        }
-        currentPage++;
-      }
+      const gql = new GitHubGraphQL(
+        (this as any).octokit?.auth?.token || process.env.GITHUB_TOKEN || null
+      );
+      const items = await gql.searchIssuesAndPrs(
+        q,
+        page,
+        per_page,
+        sort,
+        order
+      );
 
       // Map GraphQL nodes to REST API shape (PrSearchItem)
       const mappedItems = items.map((item: any) => {
@@ -445,20 +334,20 @@ export default class GitHubRequestor {
           ? {
               login: item.author.login,
               id: 0, // Not available in GraphQL
-              node_id: '',
+              node_id: null,
               avatar_url: item.author.avatarUrl,
               gravatar_id: null,
               url: item.author.url,
               html_url: item.author.url,
-              followers_url: '',
-              following_url: '',
-              gists_url: '',
-              starred_url: '',
-              subscriptions_url: '',
-              organizations_url: '',
-              repos_url: '',
-              events_url: '',
-              received_events_url: '',
+              followers_url: null,
+              following_url: null,
+              gists_url: null,
+              starred_url: null,
+              subscriptions_url: null,
+              organizations_url: null,
+              repos_url: null,
+              events_url: null,
+              received_events_url: null,
               type: 'User',
               site_admin: false,
               name: null,
@@ -486,7 +375,7 @@ export default class GitHubRequestor {
           events_url: `${item.url}/events`,
           html_url: item.url,
           id: typeof item.id === 'number' ? item.id : 0,
-          node_id: typeof item.id === 'string' ? item.id : '',
+          node_id: typeof item.id === 'string' ? item.id : null,
           number: item.number,
           title: item.title,
           user,
@@ -497,20 +386,20 @@ export default class GitHubRequestor {
           assignees: item.assignees.nodes.map((a: any) => ({
             login: a.login,
             id: 0,
-            node_id: '',
+            node_id: null,
             avatar_url: a.avatarUrl,
             gravatar_id: null,
             url: a.url,
             html_url: a.url,
-            followers_url: '',
-            following_url: '',
-            gists_url: '',
-            starred_url: '',
-            subscriptions_url: '',
-            organizations_url: '',
-            repos_url: '',
-            events_url: '',
-            received_events_url: '',
+            followers_url: null,
+            following_url: null,
+            gists_url: null,
+            starred_url: null,
+            subscriptions_url: null,
+            organizations_url: null,
+            repos_url: null,
+            events_url: null,
+            received_events_url: null,
             type: 'User',
             site_admin: false,
             name: null,
@@ -548,20 +437,20 @@ export default class GitHubRequestor {
                   ? {
                       login: item.mergedBy.login,
                       id: 0,
-                      node_id: '',
+                      node_id: null,
                       avatar_url: item.mergedBy.avatarUrl,
                       gravatar_id: null,
                       url: item.mergedBy.url,
                       html_url: item.mergedBy.url,
-                      followers_url: '',
-                      following_url: '',
-                      gists_url: '',
-                      starred_url: '',
-                      subscriptions_url: '',
-                      organizations_url: '',
-                      repos_url: '',
-                      events_url: '',
-                      received_events_url: '',
+                      followers_url: null,
+                      following_url: null,
+                      gists_url: null,
+                      starred_url: null,
+                      subscriptions_url: null,
+                      organizations_url: null,
+                      repos_url: null,
+                      events_url: null,
+                      received_events_url: null,
                       type: 'User',
                       site_admin: false,
                       name: null,
@@ -604,27 +493,20 @@ export default class GitHubRequestor {
     }
   }
 
-  async getRepoTopics(
-    org: string,
-    repo: string
+  async getRepoTopics2(
+    orgRepo: string
   ): Promise<string[] | GitHubRequestorError> {
     try {
-      console.log(`Fetching repository topics for ${org}/${repo} (GraphQL)`);
-      const query = `
-        query($owner: String!, $name: String!) {
-          repository(owner: $owner, name: $name) {
-            repositoryTopics(first: 100) {
-              nodes {
-                topic {
-                  name
-                }
-              }
-            }
-          }
-        }
-      `;
-      const variables = { owner: org, name: repo };
-      const result = (await this.octokit.graphql(query, variables)) as any;
+      console.log(`Fetching repository topics for ${orgRepo} (GraphQL)`);
+
+      // // split org/repo into owner and name
+      const [owner, name] = orgRepo.split('/');
+
+      const gql = new GitHubGraphQL(
+        (this as any).octokit?.auth?.token || process.env.GITHUB_TOKEN || null
+      );
+      const result = await gql.getRepoTopics(owner, name);
+
       const topics =
         result?.repository?.repositoryTopics?.nodes?.map(
           (n: any) => n.topic.name
@@ -632,7 +514,7 @@ export default class GitHubRequestor {
       return topics;
     } catch (error) {
       console.error(`Error fetching repository topics (GraphQL): ${error}`);
-      return this.createError('getRepoTopics', error, { org, repo });
+      return this.createError('getRepoTopics', error, { orgRepo });
     }
   }
 
@@ -648,36 +530,17 @@ export default class GitHubRequestor {
       // Wait before making the request to avoid hitting rate limits
       await this.wait(this.requestDelayMs);
       console.log(`Fetching issues for ${org}/${repo} (GraphQL)`);
-      const query = `
-        query($owner: String!, $name: String!, $states: [IssueState!], $first: Int!) {
-          repository(owner: $owner, name: $name) {
-            issues(states: $states, first: $first, orderBy: {field: CREATED_AT, direction: DESC}) {
-              nodes {
-                id
-                number
-                title
-                body
-                url
-                state
-                createdAt
-                updatedAt
-                closedAt
-                author { login url avatarUrl }
-                labels(first: 10) { nodes { name } }
-                assignees(first: 10) { nodes { login url avatarUrl } }
-                comments { totalCount }
-              }
-            }
-          }
-        }
-      `;
-      const variables = {
-        owner: org,
-        name: repo,
-        states: [state.toUpperCase()],
-        first: limit,
-      };
-      const result = (await this.octokit.graphql(query, variables)) as any;
+
+      const gql = new GitHubGraphQL(
+        (this as any).octokit?.auth?.token || process.env.GITHUB_TOKEN || null
+      );
+      const result = await gql.getIssues(
+        org,
+        repo,
+        [state.toUpperCase()],
+        limit
+      );
+
       const nodes = result?.repository?.issues?.nodes || [];
       // Map GraphQL nodes to REST API Issue shape
       const issues = nodes.map((item: any) => ({
@@ -688,27 +551,27 @@ export default class GitHubRequestor {
         events_url: `${item.url}/events`,
         html_url: item.url,
         id: typeof item.id === 'number' ? item.id : 0,
-        node_id: typeof item.id === 'string' ? item.id : '',
+        node_id: typeof item.id === 'string' ? item.id : null,
         number: item.number,
         title: item.title,
         user: item.author
           ? {
               login: item.author.login,
               id: 0,
-              node_id: '',
+              node_id: null,
               avatar_url: item.author.avatarUrl,
               gravatar_id: null,
               url: item.author.url,
               html_url: item.author.url,
-              followers_url: '',
-              following_url: '',
-              gists_url: '',
-              starred_url: '',
-              subscriptions_url: '',
-              organizations_url: '',
-              repos_url: '',
-              events_url: '',
-              received_events_url: '',
+              followers_url: null,
+              following_url: null,
+              gists_url: null,
+              starred_url: null,
+              subscriptions_url: null,
+              organizations_url: null,
+              repos_url: null,
+              events_url: null,
+              received_events_url: null,
               type: 'User',
               site_admin: false,
               name: null,
@@ -735,20 +598,20 @@ export default class GitHubRequestor {
         assignees: item.assignees.nodes.map((a: any) => ({
           login: a.login,
           id: 0,
-          node_id: '',
+          node_id: null,
           avatar_url: a.avatarUrl,
           gravatar_id: null,
           url: a.url,
           html_url: a.url,
-          followers_url: '',
-          following_url: '',
-          gists_url: '',
-          starred_url: '',
-          subscriptions_url: '',
-          organizations_url: '',
-          repos_url: '',
-          events_url: '',
-          received_events_url: '',
+          followers_url: null,
+          following_url: null,
+          gists_url: null,
+          starred_url: null,
+          subscriptions_url: null,
+          organizations_url: null,
+          repos_url: null,
+          events_url: null,
+          received_events_url: null,
           type: 'User',
           site_admin: false,
           name: null,
@@ -795,44 +658,18 @@ export default class GitHubRequestor {
       // Wait before making the request to avoid hitting rate limits
       await this.wait(this.requestDelayMs);
       console.log(`Fetching pull requests for ${org}/${repo} (GraphQL)`);
-      const query = `
-        query($owner: String!, $name: String!, $first: Int!) {
-          repository(owner: $owner, name: $name) {
-            pullRequests(states: OPEN, first: $first, orderBy: {field: CREATED_AT, direction: DESC}) {
-              nodes {
-                id
-                number
-                title
-                body
-                url
-                state
-                createdAt
-                updatedAt
-                closedAt
-                author { login url avatarUrl }
-                labels(first: 10) { nodes { name } }
-                assignees(first: 10) { nodes { login url avatarUrl } }
-                comments { totalCount }
-                merged
-                mergedAt
-                mergedBy { login url avatarUrl }
-              }
-            }
-          }
-        }
-      `;
-      const variables = {
-        owner: org,
-        name: repo,
-        first: limit,
-      };
-      const result = (await this.octokit.graphql(query, variables)) as any;
+
+      const gql = new GitHubGraphQL(
+        (this as any).octokit?.auth?.token || process.env.GITHUB_TOKEN || null
+      );
+      const result = await gql.getPullResult(org, repo);
+
       const nodes = result?.repository?.pullRequests?.nodes || [];
       // Map GraphQL nodes to REST API PullRequest shape
       const pullRequests = nodes.map((item: any) => ({
         url: item.url,
         id: typeof item.id === 'number' ? item.id : 0,
-        node_id: typeof item.id === 'string' ? item.id : '',
+        node_id: typeof item.id === 'string' ? item.id : null,
         html_url: item.url,
         diff_url: null, // Not available from GraphQL
         patch_url: null, // Not available from GraphQL
@@ -845,20 +682,20 @@ export default class GitHubRequestor {
           ? {
               login: item.author.login,
               id: 0,
-              node_id: '',
+              node_id: null,
               avatar_url: item.author.avatarUrl,
               gravatar_id: null,
               url: item.author.url,
               html_url: item.author.url,
-              followers_url: '',
-              following_url: '',
-              gists_url: '',
-              starred_url: '',
-              subscriptions_url: '',
-              organizations_url: '',
-              repos_url: '',
-              events_url: '',
-              received_events_url: '',
+              followers_url: null,
+              following_url: null,
+              gists_url: null,
+              starred_url: null,
+              subscriptions_url: null,
+              organizations_url: null,
+              repos_url: null,
+              events_url: null,
+              received_events_url: null,
               type: 'User',
               site_admin: false,
               name: null,
@@ -888,20 +725,20 @@ export default class GitHubRequestor {
         assignees: item.assignees.nodes.map((a: any) => ({
           login: a.login,
           id: 0,
-          node_id: '',
+          node_id: null,
           avatar_url: a.avatarUrl,
           gravatar_id: null,
           url: a.url,
           html_url: a.url,
-          followers_url: '',
-          following_url: '',
-          gists_url: '',
-          starred_url: '',
-          subscriptions_url: '',
-          organizations_url: '',
-          repos_url: '',
-          events_url: '',
-          received_events_url: '',
+          followers_url: null,
+          following_url: null,
+          gists_url: null,
+          starred_url: null,
+          subscriptions_url: null,
+          organizations_url: null,
+          repos_url: null,
+          events_url: null,
+          received_events_url: null,
           type: 'User',
           site_admin: false,
           name: null,
@@ -934,26 +771,26 @@ export default class GitHubRequestor {
         _links: {}, // Not available in GraphQL
         author_association: 'NONE', // Not available in GraphQL, set to 'NONE'
         auto_merge: null, // Not available in GraphQL
-        active_lock_reason: null, // Not available in GraphQL
+        active_lock_reason: null, // Not available in GraphQL, set to null
         merged: item.merged,
         merged_by: item.mergedBy
           ? {
               login: item.mergedBy.login,
               id: 0,
-              node_id: '',
+              node_id: null,
               avatar_url: item.mergedBy.avatarUrl,
               gravatar_id: null,
               url: item.mergedBy.url,
               html_url: item.mergedBy.url,
-              followers_url: '',
-              following_url: '',
-              gists_url: '',
-              starred_url: '',
-              subscriptions_url: '',
-              organizations_url: '',
-              repos_url: '',
-              events_url: '',
-              received_events_url: '',
+              followers_url: null,
+              following_url: null,
+              gists_url: null,
+              starred_url: null,
+              subscriptions_url: null,
+              organizations_url: null,
+              repos_url: null,
+              events_url: null,
+              received_events_url: null,
               type: 'User',
               site_admin: false,
               name: null,
@@ -997,47 +834,18 @@ export default class GitHubRequestor {
       // Wait before making the request to avoid hitting rate limits
       await this.wait(this.requestDelayMs);
       console.log(`Fetching commits for ${org}/${repo} (GraphQL)`);
-      const query = `
-        query($owner: String!, $name: String!, $first: Int!) {
-          repository(owner: $owner, name: $name) {
-            defaultBranchRef {
-              target {
-                ... on Commit {
-                  history(first: $first) {
-                    nodes {
-                      oid
-                      message
-                      committedDate
-                      authoredDate
-                      pushedDate
-                      url
-                      author {
-                        name
-                        email
-                        user { login avatarUrl url }
-                      }
-                      committer {
-                        name
-                        email
-                        user { login avatarUrl url }
-                      }
-                      parents(first: 10) { nodes { oid } }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      `;
-      const variables = { owner: org, name: repo, first: limit };
-      const result = (await this.octokit.graphql(query, variables)) as any;
+
+      const gql = new GitHubGraphQL(
+        (this as any).octokit?.auth?.token || process.env.GITHUB_TOKEN || null
+      );
+      const result = await gql.getCommits(org, repo);
+
       const nodes =
         result?.repository?.defaultBranchRef?.target?.history?.nodes || [];
       // Map GraphQL nodes to REST API Commit shape
       const commits = nodes.map((item: any) => ({
         sha: item.oid,
-        node_id: '',
+        node_id: null,
         commit: {
           author: {
             name: item.author?.name || null,
@@ -1056,25 +864,25 @@ export default class GitHubRequestor {
         },
         url: item.url,
         html_url: item.url,
-        comments_url: '',
+        comments_url: null,
         author: item.author?.user
           ? {
               login: item.author.user.login,
               id: 0,
-              node_id: '',
+              node_id: null,
               avatar_url: item.author.user.avatarUrl,
               gravatar_id: null,
               url: item.author.user.url,
               html_url: item.author.user.url,
-              followers_url: '',
-              following_url: '',
-              gists_url: '',
-              starred_url: '',
-              subscriptions_url: '',
-              organizations_url: '',
-              repos_url: '',
-              events_url: '',
-              received_events_url: '',
+              followers_url: null,
+              following_url: null,
+              gists_url: null,
+              starred_url: null,
+              subscriptions_url: null,
+              organizations_url: null,
+              repos_url: null,
+              events_url: null,
+              received_events_url: null,
               type: 'User',
               site_admin: false,
               name: null,
@@ -1098,20 +906,20 @@ export default class GitHubRequestor {
           ? {
               login: item.committer.user.login,
               id: 0,
-              node_id: '',
+              node_id: null,
               avatar_url: item.committer.user.avatarUrl,
               gravatar_id: null,
               url: item.committer.user.url,
               html_url: item.committer.user.url,
-              followers_url: '',
-              following_url: '',
-              gists_url: '',
-              starred_url: '',
-              subscriptions_url: '',
-              organizations_url: '',
-              repos_url: '',
-              events_url: '',
-              received_events_url: '',
+              followers_url: null,
+              following_url: null,
+              gists_url: null,
+              starred_url: null,
+              subscriptions_url: null,
+              organizations_url: null,
+              repos_url: null,
+              events_url: null,
+              received_events_url: null,
               type: 'User',
               site_admin: false,
               name: null,
@@ -1133,8 +941,8 @@ export default class GitHubRequestor {
           : null,
         parents: item.parents.nodes.map((p: any) => ({
           sha: p.oid,
-          url: '',
-          html_url: '',
+          url: null,
+          html_url: null,
         })),
         stats: null, // Not available in GraphQL
         files: null, // Not available in GraphQL
@@ -1330,106 +1138,14 @@ export default class GitHubRequestor {
 
       const sizeOfAdditionalData = 30; // Size of additional data to fetch for GraphQL fallback
 
-      // Use GraphQL to fetch user data more efficiently
-      const query = `
-        fragment RepoFields on Repository {
-          id
-          name
-          nameWithOwner
-          url
-          description
-          stargazerCount
-          forkCount
-          isPrivate
-          isFork
-          isArchived
-          isDisabled
-          primaryLanguage { name color }
-          licenseInfo { key name spdxId url }
-          diskUsage
-          createdAt
-          updatedAt
-          pushedAt
-          owner { login url avatarUrl }
-        }
-        fragment IssueFields on Issue {
-          id
-          number
-          title
-          url
-          state
-          createdAt
-          updatedAt
-          closedAt
-          author { login url avatarUrl }
-        }
-        fragment PRFields on PullRequest {
-          id
-          number
-          title
-          url
-          state
-          createdAt
-          updatedAt
-          closedAt
-          author { login url avatarUrl }
-          merged
-          mergedAt
-        }
-        query($username: String!) {
-          user(login: $username) {
-            login
-            id
-            name
-            company
-            bio
-            location
-            email
-            websiteUrl
-            avatarUrl
-            url
-            twitterUsername
-            followers { totalCount }
-            following { totalCount }
-            createdAt
-            updatedAt
-            isHireable
-            isDeveloperProgramMember
-            isCampusExpert
-            isSiteAdmin
-            repositoriesContributedTo(first: ${sizeOfAdditionalData}, contributionTypes: [COMMIT, ISSUE, PULL_REQUEST]) {
-              totalCount
-              nodes { ...RepoFields }
-            }
-            repositories(first: ${sizeOfAdditionalData}, orderBy: {field: UPDATED_AT, direction: DESC}) {
-              totalCount
-              nodes { ...RepoFields }
-            }
-            starredRepositories(first:  ${sizeOfAdditionalData}, orderBy: {field: STARRED_AT, direction: DESC}) {
-              totalCount
-              nodes { ...RepoFields }
-            }
-            issues(first:  ${sizeOfAdditionalData}, orderBy: {field: CREATED_AT, direction: DESC}) {
-              totalCount
-              nodes { ...IssueFields }
-            }
-            pullRequests(first:  ${sizeOfAdditionalData}, orderBy: {field: CREATED_AT, direction: DESC}) {
-              totalCount
-              nodes { ...PRFields }
-            }
-            organizations(first:  ${sizeOfAdditionalData}) {
-              totalCount
-              nodes { login name }
-            }
-          }
-        }
-      `;
-
       try {
-        // Attempt GraphQL request
-        const graphqlResult = (await this.octokit.graphql(query, {
+        const gql = new GitHubGraphQL(
+          (this as any).octokit?.auth?.token || process.env.GITHUB_TOKEN || null
+        );
+        const graphqlResult = await gql.getUserData(
           username,
-        })) as any;
+          sizeOfAdditionalData
+        );
 
         if (graphqlResult && graphqlResult.user) {
           // Transform GraphQL response to match REST API shape and include lists

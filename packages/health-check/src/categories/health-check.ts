@@ -17,7 +17,7 @@ import {
   SQL_GET_REPOS_WITH_NO_PROTECTIONS,
   SQL_GET_REPOS_WITHOUT_CODE_SCANNING,
   CREATE_SECURITY_TABLE,
-} from '../db/sql-health-check.js';
+} from '../db/sql-all.js';
 
 /**
  * Run health check and generate report

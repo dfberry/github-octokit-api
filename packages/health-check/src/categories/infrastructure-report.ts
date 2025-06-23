@@ -17,7 +17,7 @@ import {
   SQL_GET_REPOS_WITH_AZURE_YAML,
   CREATE_INFRASTRUCTURE_TABLE,
   CREATE_INFRASTRUCTURE_FOLDERS_TABLE,
-} from '../db/sql-infrastructure-report.js';
+} from '../db/sql-all.js';
 
 /**
  * Interface for repository infrastructure data

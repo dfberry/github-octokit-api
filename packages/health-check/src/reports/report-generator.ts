@@ -253,9 +253,11 @@ export default class ReportGenerator {
 
     for (const contributor of sortedContributors) {
       const repoMap = contributorMap.get(contributor)!;
-      const contributorName =
-        activityRows.find(r => r.login === contributor)?.name || contributor;
-      markdown += `## Contributor: [${contributorName}](https://github.com/${contributor})\n\n`;
+      // Add a bookmark anchor for this contributor (for linking from the index)
+      markdown += `<a id=\"${contributor.toLowerCase()}\"></a>\n`;
+      // Link back to contributor index
+      markdown += `[← View Profile](contributor-index.md#${contributor.toLowerCase()})\n\n`;
+      markdown += `## Contributor: [${contributor}](https://github.com/${contributor})\n\n`;
       // Table header
       markdown += `| Repository | PR/Issue | Title | Status | Created | Updated | Closed |\n`;
       markdown += `|------------|----------|-------|--------|---------|--------|--------|\n`;
@@ -562,6 +564,9 @@ export default class ReportGenerator {
     for (const contributor of contributorDataList) {
       markdown += `<a id="${contributor.login.toLowerCase()}"></a>\n`;
       markdown += `## ${contributor.name || contributor.login}\n\n`;
+
+      // Link to activity report
+      markdown += `[View Activity →](contributor-activity.md#${contributor.login.toLowerCase()})\n\n`;
 
       // Profile information with avatar
       markdown += `<img src="${contributor.avatarUrl}" width="100" height="100" style="border-radius: 50%" align="left" hspace="10" />\n\n`;

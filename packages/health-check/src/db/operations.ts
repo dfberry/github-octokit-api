@@ -1,10 +1,12 @@
 import sqlite3 from 'sqlite3';
-import {
-  CREATE_USER_REPOSITORY_RELATIONSHIPS_TABLE,
-  INSERT_OR_UPDATE_USER_REPOSITORY_RELATIONSHIP,
-} from './sql-user-repository-relationships.js';
 import { convertIssueToSimpleRepo } from '../utils/convert.js';
-
+import {
+  //INSERT_OR_UPDATE_USER_REPOSITORY_RELATIONSHIP,
+  INSERT_CONTRIBUTOR_ISSUE_PRS,
+  INSERT_REPOSITORIES,
+  INSERT_CONTRIBUTORS,
+  //INSERT_REPO_CONTRIBUTORS,
+} from './sql-all.js';
 /**
  * Insert a repository record into the database
  * @param db The SQLite database connection
@@ -17,30 +19,31 @@ export function insertRepository(
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     const id = `${repo.org}/${repo.repo}`;
-    const topics = Array.isArray(repo.topics) ? repo.topics.join(',') : '';
+    const topics = Array.isArray(repo.topics) ? repo.topics.join(',') : null;
     const archived = repo.archived ? 1 : 0;
     const status = repo.archived ? 'Archived' : 'Active';
 
     db.run(
-      `INSERT OR REPLACE INTO repositories (
-        id, org, repo, full_name, description, stars, forks, watchers, issues, pulls, 
-        last_commit_date, archived, topics, status
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      INSERT_REPOSITORIES,
       [
         id,
         repo.org,
         repo.repo,
         repo.full_name || `${repo.org}/${repo.repo}`,
-        repo.description || '',
+        repo.description || null,
+        repo.disk_usage || 0,
+        repo?.primary_language.name || null,
+        repo?.license_info.name || null,
         repo.stargazers_count || 0,
         repo.forks_count || 0,
         repo.watchers_count || 0,
         repo.open_issues_count || 0,
         repo.pulls || 0,
-        repo.last_commit_date || '',
+        repo.last_commit_date || null,
         archived,
         topics,
         status,
+        repo.readme || null,
       ],
       function (err) {
         if (err) {
@@ -72,24 +75,21 @@ export function insertContributor(
     }
 
     db.run(
-      `INSERT OR REPLACE INTO contributors (
-        login, name, company, blog, location, email, bio, twitter,
-        followers, following, public_repos, public_gists, avatar_url
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      INSERT_CONTRIBUTORS,
       [
         login,
-        contributor.name || '',
-        contributor.company || '',
-        contributor.blog || '',
-        contributor.location || '',
-        contributor.email || '',
-        contributor.bio || '',
-        contributor.twitter_username || '',
+        contributor.name || null,
+        contributor.company || null,
+        contributor.blog || null,
+        contributor.location || null,
+        contributor.email || null,
+        contributor.bio || null,
+        contributor.twitter_username || null,
         contributor.followers || 0,
         contributor.following || 0,
         contributor.public_repos || 0,
         contributor.public_gists || 0,
-        contributor.avatar_url || '',
+        contributor.avatar_url || null,
       ],
       function (err) {
         if (err) {
@@ -103,49 +103,47 @@ export function insertContributor(
   });
 }
 
-/**
- * Link a contributor to a repository
- * @param db The SQLite database connection
- * @param repoId Repository ID (org/repo format)
- * @param contributorLogin Contributor's login
- * @param contributionCount Number of contributions
- * @param isMaintainer Whether the contributor is a maintainer
- * @param lastContributedAt Date of last contribution
- * @returns A promise that resolves when the record has been inserted
- */
-export function linkContributorToRepo(
-  db: sqlite3.Database,
-  repoId: string,
-  contributorLogin: string,
-  contributionCount: number = 0,
-  isMaintainer: boolean = false,
-  lastContributedAt: string = ''
-): Promise<void> {
-  return new Promise((resolve, reject) => {
-    db.run(
-      `INSERT OR REPLACE INTO repo_contributors (
-        repo_id, contributor_login, contribution_count, is_maintainer, last_contributed_at
-      ) VALUES (?, ?, ?, ?, ?)`,
-      [
-        repoId,
-        contributorLogin,
-        contributionCount,
-        isMaintainer ? 1 : 0,
-        lastContributedAt,
-      ],
-      function (err) {
-        if (err) {
-          console.error(
-            `Error linking contributor ${contributorLogin} to repo ${repoId}: ${err.message}`
-          );
-          reject(err);
-        } else {
-          resolve();
-        }
-      }
-    );
-  });
-}
+// /**
+//  * Link a contributor to a repository
+//  * @param db The SQLite database connection
+//  * @param repoId Repository ID (org/repo format)
+//  * @param contributorLogin Contributor's login
+//  * @param contributionCount Number of contributions
+//  * @param isMaintainer Whether the contributor is a maintainer
+//  * @param lastContributedAt Date of last contribution
+//  * @returns A promise that resolves when the record has been inserted
+//  */
+// export function linkContributorToRepo(
+//   db: sqlite3.Database,
+//   repoId: string,
+//   contributorLogin: string,
+//   contributionCount: number = 0,
+//   isMaintainer: boolean = false,
+//   lastContributedAt: string = null
+// ): Promise<void> {
+//   return new Promise((resolve, reject) => {
+//     db.run(
+//       INSERT_REPO_CONTRIBUTORS,
+//       [
+//         repoId,
+//         contributorLogin,
+//         contributionCount,
+//         isMaintainer ? 1 : 0,
+//         lastContributedAt,
+//       ],
+//       function (err) {
+//         if (err) {
+//           console.error(
+//             `Error linking contributor ${contributorLogin} to repo ${repoId}: ${err.message}`
+//           );
+//           reject(err);
+//         } else {
+//           resolve();
+//         }
+//       }
+//     );
+//   });
+// }
 
 /**
  * Insert issues and PRs for a contributor into a separate table
@@ -163,73 +161,54 @@ export async function insertContributorIssuesAndPRs(
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     db.serialize(() => {
-      db.run(
-        `CREATE TABLE IF NOT EXISTS contributor_issues_prs (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          username TEXT,
-          type TEXT, -- 'issue' or 'pr'
-          item_id TEXT,
-          number INTEGER,
-          title TEXT,
-          url TEXT,
-          org TEXT,
-          repo TEXT,
-          state TEXT,
-          created_at TEXT,
-          updated_at TEXT,
-          closed_at TEXT,
-          repo_full_name TEXT
-        )`
-      );
-      const stmt = db.prepare(
-        `INSERT INTO contributor_issues_prs (
-          username, type, item_id, number, title, url, org, repo, state, created_at, updated_at, closed_at, repo_full_name
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-      );
+      const stmt = db.prepare(INSERT_CONTRIBUTOR_ISSUE_PRS);
       for (const issue of issues) {
         // Get org/repo from first item in array or set to empty string
         const { org, repo } = convertIssueToSimpleRepo(issue);
 
-        issue.org = org || '';
-        issue.repo = repo || '';
+        issue.org = org || null;
+        issue.repo = repo || null;
 
         stmt.run([
           username,
           'issue',
-          issue.id || '',
+          issue.id || null,
           issue.number || null,
-          issue.title || '',
-          issue.url || '',
-          issue.org || '',
-          issue.repo || '',
-          issue.state || '',
-          issue.createdAt || issue.created_at || '',
-          issue.updatedAt || issue.updated_at || '',
-          issue.closedAt || issue.closed_at || '',
-          issue.repository?.nameWithOwner || issue.repository_url || '',
+          issue.title || null,
+          issue.url || null,
+          issue.org || null,
+          issue.repo || null,
+          issue.state || null,
+          issue.createdAt || issue.created_at || null,
+          issue.updatedAt || issue.updated_at || null,
+          issue.closedAt || issue.closed_at || null,
+          issue.repository?.nameWithOwner ||
+            issue.repository_url ||
+            `${issue.org}/${issue.repo}` ||
+            null,
         ]);
       }
       for (const pr of pullRequests) {
         // Get org/repo from first item in array or set to empty string
         const { org, repo } = convertIssueToSimpleRepo(pr);
 
-        pr.org = org || '';
-        pr.repo = repo || '';
+        pr.org = org || null;
+        pr.repo = repo || null;
 
         stmt.run([
           username,
           'pr',
-          pr.id || '',
+          pr.id || null,
           pr.number || null,
-          pr.title || '',
-          pr.url || '',
-          pr.org || '',
-          pr.repo || '',
-          pr.state || '',
-          pr.createdAt || pr.created_at || '',
-          pr.updatedAt || pr.updated_at || '',
-          pr.closedAt || pr.closed_at || '',
-          pr.repository?.nameWithOwner || pr.repository_url || '',
+          pr.title || null,
+          pr.url || null,
+          pr.org || null,
+          pr.repo || null,
+          pr.state || null,
+          pr.createdAt || pr.created_at || null,
+          pr.updatedAt || pr.updated_at || null,
+          pr.closedAt || pr.closed_at || null,
+          pr.repository?.nameWithOwner || pr || `${pr.org}/${pr.repo}` || null,
         ]);
       }
       stmt.finalize(err => {
@@ -258,25 +237,34 @@ export async function insertUniqueContributedRepos(
     seen.add(fullName);
     // Insert using insertRepository if available
     await new Promise<void>((resolve, reject) => {
+      console.log(`Inserting contributed repo: ${fullName}`);
+
+      const topics =
+        repo?.topics?.nodes?.length > 0
+          ? repo.topics.nodes.map(item => item.topic.name).join(',')
+          : null;
+
       db.run(
-        `INSERT OR IGNORE INTO repositories (
-          id, org, repo, full_name, description, stars, forks, watchers, issues, pulls, last_commit_date, archived, topics, status
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        INSERT_REPOSITORIES,
         [
           fullName,
-          repo.owner?.login || '',
-          repo.name || '',
+          repo?.owner?.login || null,
+          repo?.name || null,
           fullName,
-          repo.description || '',
-          repo.stargazerCount || repo.stargazers_count || 0,
-          repo.forkCount || repo.forks_count || 0,
-          repo.watchers?.totalCount || repo.watchers_count || 0,
-          repo.issues?.totalCount || repo.open_issues_count || 0,
-          0, // pulls (not available)
-          repo.pushedAt || repo.updatedAt || repo.updated_at || '',
-          repo.isArchived || repo.archived ? 1 : 0,
-          Array.isArray(repo.topics) ? repo.topics.join(',') : '',
-          repo.isArchived || repo.archived ? 'Archived' : 'Active',
+          repo?.description || null,
+          repo?.diskUsage || 0,
+          repo?.primaryLanguage?.name || null,
+          repo?.licenseInfo?.name || null,
+          repo?.stargazerCount || repo?.stargazers_count || 0,
+          repo?.forkCount || repo?.forks_count || 0,
+          repo?.watchers?.totalCount || repo?.watchers_count || 0,
+          repo?.issues?.totalCount || repo?.open_issues_count || 0,
+          repo?.pullRequests?.totalCount || 0,
+          repo?.pushedAt || repo?.updatedAt || repo?.updated_at || null,
+          repo?.isArchived || repo?.archived ? 1 : 0,
+          topics,
+          repo?.isArchived || repo?.archived ? 'Archived' : 'Active',
+          repo?.readme?.text || null, // root readme
         ],
         function (err) {
           if (err) {
@@ -293,56 +281,48 @@ export async function insertUniqueContributedRepos(
   }
 }
 
-/**
- * Create the user-repository relationships table
- * @param db The SQLite database connection
- */
-export async function createUserRepositoryRelationshipsTable(db: any) {
-  await db.exec(CREATE_USER_REPOSITORY_RELATIONSHIPS_TABLE);
-}
-
-/**
- * Insert or update a user-repository relationship
- * @param db The SQLite database connection
- * @param user_login The user's login
- * @param repo_id The repository ID
- * @param contributed_to Whether the user has contributed to the repository
- * @param owned Whether the user owns the repository
- * @param starred Whether the repository is starred by the user
- * @param has_issues Whether the repository has issues
- * @param has_prs Whether the repository has pull requests
- * @param data_inserted_at The date when the data was inserted
- */
-export async function insertOrUpdateUserRepositoryRelationship(
-  db: any,
-  {
-    user_login,
-    repo_id,
-    contributed_to = false,
-    owned = false,
-    starred = false,
-    has_issues = false,
-    has_prs = false,
-    data_inserted_at = new Date().toISOString(),
-  }: {
-    user_login: string;
-    repo_id: string;
-    contributed_to?: boolean;
-    owned?: boolean;
-    starred?: boolean;
-    has_issues?: boolean;
-    has_prs?: boolean;
-    data_inserted_at?: string;
-  }
-) {
-  await db.run(INSERT_OR_UPDATE_USER_REPOSITORY_RELATIONSHIP, {
-    $user_login: user_login,
-    $repo_id: repo_id,
-    $contributed_to: contributed_to ? 1 : 0,
-    $owned: owned ? 1 : 0,
-    $starred: starred ? 1 : 0,
-    $has_issues: has_issues ? 1 : 0,
-    $has_prs: has_prs ? 1 : 0,
-    $data_inserted_at: data_inserted_at,
-  });
-}
+// /**
+//  * Insert or update a user-repository relationship
+//  * @param db The SQLite database connection
+//  * @param user_login The user's login
+//  * @param repo_id The repository ID
+//  * @param contributed_to Whether the user has contributed to the repository
+//  * @param owned Whether the user owns the repository
+//  * @param starred Whether the repository is starred by the user
+//  * @param has_issues Whether the repository has issues
+//  * @param has_prs Whether the repository has pull requests
+//  * @param data_inserted_at The date when the data was inserted
+//  */
+// export async function insertOrUpdateUserRepositoryRelationship(
+//   db: any,
+//   {
+//     user_login,
+//     repo_id,
+//     contributed_to = false,
+//     owned = false,
+//     starred = false,
+//     has_issues = false,
+//     has_prs = false,
+//     data_inserted_at = new Date().toISOString(),
+//   }: {
+//     user_login: string;
+//     repo_id: string;
+//     contributed_to?: boolean;
+//     owned?: boolean;
+//     starred?: boolean;
+//     has_issues?: boolean;
+//     has_prs?: boolean;
+//     data_inserted_at?: string;
+//   }
+// ) {
+//   await db.run(INSERT_OR_UPDATE_USER_REPOSITORY_RELATIONSHIP, {
+//     $user_login: user_login,
+//     $repo_id: repo_id,
+//     $contributed_to: contributed_to ? 1 : 0,
+//     $owned: owned ? 1 : 0,
+//     $starred: starred ? 1 : 0,
+//     $has_issues: has_issues ? 1 : 0,
+//     $has_prs: has_prs ? 1 : 0,
+//     $data_inserted_at: data_inserted_at,
+//   });
+// }

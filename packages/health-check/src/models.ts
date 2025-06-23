@@ -81,6 +81,7 @@ export interface RepoData {
   dependabotAlerts: number;
   codeScanning: boolean;
   topics: string[];
+  readme?: string;
 }
 
 // Infrastructure types

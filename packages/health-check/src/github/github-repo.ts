@@ -57,9 +57,8 @@ export default class RepoDataCollector {
       }
 
       // Get topics with better error handling
-      const topicsResult = await this.requestor.getRepoTopics(
-        repo.org,
-        repo.repo
+      const topicsResult = await this.requestor.getRepoTopics2(
+        `${repo.org}/${repo.repo}`
       );
       const topics = isGitHubRequestorError(topicsResult) ? [] : topicsResult;
       if (isGitHubRequestorError(topicsResult)) {

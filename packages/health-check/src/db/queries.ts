@@ -1,4 +1,9 @@
 import sqlite3 from 'sqlite3';
+import {
+  GET_REPO_CONTRIBUTORS,
+  GET_TOP_REPO_CONTRIBUTORS,
+  SQL_GET_ALL_REPOSITORY_IDs,
+} from './sql-all.js';
 
 /**
  * Get contributors for a specific repository
@@ -11,21 +16,13 @@ export function getRepoContributors(
   repoId: string
 ): Promise<any[]> {
   return new Promise((resolve, reject) => {
-    db.all(
-      `SELECT c.*, rc.contribution_count, rc.is_maintainer, rc.last_contributed_at 
-       FROM contributors c
-       JOIN repo_contributors rc ON c.login = rc.contributor_login
-       WHERE rc.repo_id = ?
-       ORDER BY rc.contribution_count DESC`,
-      [repoId],
-      (err, rows) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(rows);
-        }
+    db.all(GET_REPO_CONTRIBUTORS, [repoId], (err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(rows);
       }
-    );
+    });
   });
 }
 
@@ -40,23 +37,25 @@ export function getTopContributors(
   limit: number = 10
 ): Promise<any[]> {
   return new Promise((resolve, reject) => {
-    db.all(
-      `SELECT c.login, c.name, c.company, c.avatar_url, 
-              COUNT(DISTINCT rc.repo_id) as repo_count,
-              SUM(rc.contribution_count) as total_contributions
-       FROM contributors c
-       JOIN repo_contributors rc ON c.login = rc.contributor_login
-       GROUP BY c.login
-       ORDER BY total_contributions DESC
-       LIMIT ?`,
-      [limit],
-      (err, rows) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(rows);
-        }
+    db.all(GET_TOP_REPO_CONTRIBUTORS, [limit], (err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(rows);
       }
-    );
+    });
+  });
+}
+// select all repository IDs from the database
+export async function getAllRepositoryIDs(db: any): Promise<any> {
+  return new Promise((resolve, reject) => {
+    db.all(SQL_GET_ALL_REPOSITORY_IDs, [], (err: Error | null, rows: any[]) => {
+      if (err) {
+        console.error(`Error fetching repository IDs: ${err.message}`);
+        reject(err);
+      } else {
+        resolve(rows);
+      }
+    });
   });
 }

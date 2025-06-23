@@ -1,5 +1,5 @@
 {
-  "name": "chat",
+  "name": "sqlite-to-cosmos",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -14,6 +14,13 @@
   "dependencies": {
     "@azure/cosmos": "^4.4.1",
     "dotenv": "^16.5.0",
-    "openai": "^5.6.0"
-  }
+    "openai": "^5.6.0",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.8.3"
+  },
+  "type": "module"
 }

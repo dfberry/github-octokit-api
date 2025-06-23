@@ -10,15 +10,14 @@ import {
   getDateBasedDbFilename,
   insertContributorIssuesAndPRs,
   insertUniqueContributedRepos,
-  insertOrUpdateUserRepositoryRelationship, // <-- Add this import
-  createUserRepositoryRelationshipsTable, // <-- Add this import
+  //insertOrUpdateUserRepositoryRelationship,
 } from '../db/index.js';
 import {
   CREATE_CONTRIBUTORS_TABLE,
   SQL_GET_ALL_CONTRIBUTORS,
   SQL_GET_TOP_CONTRIBUTORS,
   SQL_SEARCH_CONTRIBUTORS,
-} from '../db/sql-constants.js';
+} from '../db/sql-all.js';
 
 /**
  * Generate a contributor index report
@@ -52,7 +51,6 @@ export default async function run(
     try {
       db = await createDatabaseConnection(dbFilename);
       await initializeDatabase(db);
-      await createUserRepositoryRelationshipsTable(db); // Ensure table exists
       for (const contributorData of contributorDataList) {
         await insertContributor(db, contributorData);
         // Insert issues and PRs for this contributor
@@ -69,63 +67,9 @@ export default async function run(
             (contributorData as any).repositoriesList || []
           )
         );
+
         // Insert user-repository relationships for contributed, owned, starred, issues, and PRs
-        const now = new Date().toISOString();
-        const userLogin = contributorData.login;
-        const contributedRepos =
-          (contributorData as any).contributedReposList || [];
-        const ownedRepos = (contributorData as any).repositoriesList || [];
-        const starredRepos =
-          (contributorData as any).starredRepositoriesList || [];
-        const issues = (contributorData as any).issuesList || [];
-        const prs = (contributorData as any).pullRequestsList || [];
-        // Helper to get repo_id (use id or nameWithOwner/full_name)
-        const getRepoId = (repo: any) =>
-          repo.id || repo.nameWithOwner || repo.full_name || repo.name;
-        // Build a map of repo_id to relationship flags
-        const repoMap = new Map<string, any>();
-        for (const repo of contributedRepos) {
-          const id = getRepoId(repo);
-          if (!id) continue;
-          repoMap.set(id, { contributed_to: true });
-        }
-        for (const repo of ownedRepos) {
-          const id = getRepoId(repo);
-          if (!id) continue;
-          if (!repoMap.has(id)) repoMap.set(id, {});
-          repoMap.get(id).owned = true;
-        }
-        for (const repo of starredRepos) {
-          const id = getRepoId(repo);
-          if (!id) continue;
-          if (!repoMap.has(id)) repoMap.set(id, {});
-          repoMap.get(id).starred = true;
-        }
-        for (const issue of issues) {
-          const id = getRepoId(issue.repository || {});
-          if (!id) continue;
-          if (!repoMap.has(id)) repoMap.set(id, {});
-          repoMap.get(id).has_issues = true;
-        }
-        for (const pr of prs) {
-          const id = getRepoId(pr.repository || {});
-          if (!id) continue;
-          if (!repoMap.has(id)) repoMap.set(id, {});
-          repoMap.get(id).has_prs = true;
-        }
-        // Insert or update all relationships
-        for (const [repo_id, flags] of repoMap.entries()) {
-          await insertOrUpdateUserRepositoryRelationship(db, {
-            user_login: userLogin,
-            repo_id,
-            contributed_to: !!flags.contributed_to,
-            owned: !!flags.owned,
-            starred: !!flags.starred,
-            has_issues: !!flags.has_issues,
-            has_prs: !!flags.has_prs,
-            data_inserted_at: now,
-          });
-        }
+        //await createAndInsertUserRepositoryRelationships(contributorData, db);
         savedCount++;
       }
     } finally {
@@ -169,13 +113,19 @@ async function getContributorDataFromGitHub(
     try {
       const contributorData =
         await contributorCollector.getContributorData(contributor);
+
+      const repoList = [
+        ...((contributorData as any).contributedReposList || []),
+        ...((contributorData as any).repositoriesList || []),
+      ];
+
       contributorDataList.push({
         ...contributorData,
-        repos: [],
-        recentPRs: [],
+        repos: repoList || [],
+        recentPRs: contributorData.pullRequestsList || [],
       });
     } catch (error) {
-      console.error(
+      console.log(
         `Error processing contributor ${contributor}: ${error instanceof Error ? error.message : String(error)}`
       );
       // Continue with next contributor
@@ -246,3 +196,65 @@ ${CREATE_CONTRIBUTORS_TABLE.trim()}
     );
   }
 }
+
+// async function createAndInsertUserRepositoryRelationships(
+//   contributorData: any,
+//   db: any
+// ) {
+//   const now = new Date().toISOString();
+//   const userLogin = contributorData.login;
+//   const contributedRepos = (contributorData as any).contributedReposList || [];
+//   const ownedRepos = (contributorData as any).repositoriesList || [];
+//   const starredRepos = (contributorData as any).starredRepositoriesList || [];
+//   const issues = (contributorData as any).issuesList || [];
+//   const prs = (contributorData as any).pullRequestsList || [];
+
+//   const getRepoId = (repo: any) =>
+//     repo.id || repo.nameWithOwner || repo.full_name || repo.name;
+
+//   const repoMap = new Map<string, any>();
+//   for (const repo of contributedRepos) {
+//     const id = getRepoId(repo);
+//     if (!id) continue;
+//     repoMap.set(id, { contributed_to: true });
+//   }
+//   for (const repo of ownedRepos) {
+//     const id = getRepoId(repo);
+//     if (!id) continue;
+//     if (!repoMap.has(id)) repoMap.set(id, {});
+//     repoMap.get(id).owned = true;
+//   }
+//   for (const repo of starredRepos) {
+//     const id = getRepoId(repo);
+//     if (!id) continue;
+//     if (!repoMap.has(id)) repoMap.set(id, {});
+//     repoMap.get(id).starred = true;
+//   }
+//   for (const issue of issues) {
+//     const id = getRepoId(issue.repository || {});
+//     if (!id) continue;
+//     if (!repoMap.has(id)) repoMap.set(id, {});
+//     repoMap.get(id).has_issues = true;
+//   }
+//   for (const pr of prs) {
+//     const id = getRepoId(pr.repository || {});
+//     if (!id) continue;
+//     if (!repoMap.has(id)) repoMap.set(id, {});
+//     repoMap.get(id).has_prs = true;
+//   }
+
+//   for (const [repo_id, flags] of repoMap.entries()) {
+//     const doc = {
+//       user_login: userLogin,
+//       repo_id,
+//       contributed_to: !!flags.contributed_to,
+//       owned: !!flags.owned,
+//       starred: !!flags.starred,
+//       has_issues: !!flags.has_issues,
+//       has_prs: !!flags.has_prs,
+//       data_inserted_at: now,
+//     };
+
+//     await insertOrUpdateUserRepositoryRelationship(db, doc);
+//   }
+// }

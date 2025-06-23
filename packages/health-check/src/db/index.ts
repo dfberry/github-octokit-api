@@ -8,7 +8,6 @@ export {
 export * from './operations.js';
 
 export {
-  extendDatabaseSchema,
   insertInfrastructureData,
   insertWorkflowData,
   insertSecurityData,

@@ -1,7 +1,18 @@
 import sqlite3 from 'sqlite3';
 import fs from 'fs';
 import path from 'path';
-
+import {
+  CREATE_REPOSITORY_TABLE,
+  CREATE_CONTRIBUTORS_TABLE,
+  CREATE_CONTRIBUTOR_ISSUES_PRS_TABLE,
+  // CREATE_REPO_CONTRIBUTORS_TABLE,
+  // CREATE_INFRASTRUCTURE_TABLE,
+  // CREATE_INFRASTRUCTURE_FOLDERS_TABLE,
+  // CREATE_SECURITY_TABLE,
+  // CREATE_WORKFLOWS_TABLE,
+  // CREATE_WORKFLOW_RUNS_TABLE,
+  // CREATE_USER_REPOSITORY_RELATIONSHIPS_TABLE,
+} from './sql-all.js';
 /**
  * Creates a database connection with the given filename
  * @param dbFileName The filename for the SQLite database
@@ -37,102 +48,37 @@ export function createDatabaseConnection(
  */
 export function initializeDatabase(db: sqlite3.Database): Promise<void> {
   return new Promise((resolve, reject) => {
-    // Create repositories table
-    db.run(
-      `CREATE TABLE IF NOT EXISTS repositories (
-      id TEXT PRIMARY KEY,
-      org TEXT NOT NULL,
-      repo TEXT NOT NULL,
-      full_name TEXT,
-      description TEXT,
-      stars INTEGER DEFAULT 0,
-      forks INTEGER DEFAULT 0,
-      watchers INTEGER DEFAULT 0,
-      issues INTEGER DEFAULT 0,
-      pulls INTEGER DEFAULT 0,
-      last_commit_date TEXT,
-      archived INTEGER DEFAULT 0,
-      topics TEXT,
-      status TEXT,
-      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-    )`,
-      err => {
+    const tableStatements = [
+      CREATE_REPOSITORY_TABLE,
+      CREATE_CONTRIBUTORS_TABLE,
+      CREATE_CONTRIBUTOR_ISSUES_PRS_TABLE,
+      //CREATE_REPO_CONTRIBUTORS_TABLE,
+      //CREATE_INFRASTRUCTURE_TABLE,
+      //CREATE_INFRASTRUCTURE_FOLDERS_TABLE,
+      //CREATE_SECURITY_TABLE,
+      //CREATE_WORKFLOWS_TABLE,
+      //CREATE_WORKFLOW_RUNS_TABLE,
+      //CREATE_USER_REPOSITORY_RELATIONSHIPS_TABLE,
+    ];
+    let idx = 0;
+    function next() {
+      if (idx >= tableStatements.length) {
+        resolve();
+        return; // All tables created
+      }
+      db.run(tableStatements[idx], err => {
         if (err) {
-          console.error(`Error creating repositories table: ${err.message}`);
+          console.error(`Error creating table: ${err.message}`);
           reject(err);
           return;
+        } else {
+          console.log(`Table created successfully: ${tableStatements[idx]}`);
         }
-
-        // Create contributors table
-        db.run(
-          `CREATE TABLE IF NOT EXISTS contributors (
-        login TEXT PRIMARY KEY,
-        name TEXT,
-        company TEXT,
-        blog TEXT,
-        location TEXT,
-        email TEXT,
-        bio TEXT,
-        twitter TEXT,
-        followers INTEGER DEFAULT 0,
-        following INTEGER DEFAULT 0,
-        public_repos INTEGER DEFAULT 0,
-        public_gists INTEGER DEFAULT 0,
-        avatar_url TEXT,
-        last_updated DATETIME DEFAULT CURRENT_TIMESTAMP
-      )`,
-          err => {
-            if (err) {
-              console.error(
-                `Error creating contributors table: ${err.message}`
-              );
-              reject(err);
-              return;
-            }
-
-            // Create repo_contributors junction table
-            db.run(
-              `CREATE TABLE IF NOT EXISTS repo_contributors (
-          repo_id TEXT,
-          contributor_login TEXT,
-          contribution_count INTEGER DEFAULT 0,
-          is_maintainer INTEGER DEFAULT 0,
-          last_contributed_at TEXT,
-          PRIMARY KEY (repo_id, contributor_login),
-          FOREIGN KEY (repo_id) REFERENCES repositories(id),
-          FOREIGN KEY (contributor_login) REFERENCES contributors(login)
-        )`,
-              async err => {
-                if (err) {
-                  console.error(
-                    `Error creating repo_contributors table: ${err.message}`
-                  );
-                  reject(err);
-                  return;
-                }
-
-                try {
-                  // Import the extendDatabaseSchema function
-                  const { extendDatabaseSchema } = await import(
-                    './schema-extensions.js'
-                  );
-
-                  // Extend the schema with infrastructure, workflow, and security tables
-                  await extendDatabaseSchema(db);
-                  console.log('Database tables created or already exist');
-                  resolve();
-                } catch (extendError) {
-                  console.error(
-                    `Error extending database schema: ${extendError}`
-                  );
-                  reject(extendError);
-                }
-              }
-            );
-          }
-        );
-      }
-    );
+        idx++;
+        next();
+      });
+    }
+    next();
   });
 }
 

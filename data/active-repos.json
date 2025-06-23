@@ -1,0 +1,382 @@
+[
+  {
+    "org": "Azure-Samples",
+    "repo": "active-directory-b2c-javascript-hellojs-singlepageapp"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "active-directory-b2c-javascript-nodejs-webapi"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "active-directory-b2c-javascript-singlepageapp-nodejs-webapi"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "AI-Gateway"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "ally-legal-assistant"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "azure-ai-agents-javascript"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "azure-ai-travel-agents"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "azure-container-apps-durable-functions"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "azure-docs-sdk-node-examples"
+  },
+  {
+    "org": "azure-samples",
+    "repo": "azure-functions-ai-services-agent-javascript"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "azure-search-javascript-samples"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "azure-search-openai-javascript"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "azure-typescript-e2e-apps"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "azure-typescript-langchainjs"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "cosmos-db-mongodb-javascript-samples"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "cosmos-db-mongodb-vcore-nodejs-quickstart"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "cosmos-db-nosql-javascript-samples"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "cosmos-db-table-javascript-samples"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "durablefunctions-apiscraping-nodejs"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "key-vault-node-authentication"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "langchainjs-quickstart-demo"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "llama-index-javascript"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "mcp-container-ts"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "microblog-ai-remix"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "remote-mcp-functions-typescript"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "serverless-recipes-javascript"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "todo-nodejs-mongo-aca"
+  },
+  {
+    "org": "Azure-Samples",
+    "repo": "todo-nodejs-mongo"
+  },
+  {
+    "org": "Azure",
+    "repo": "azure-functions-nodejs-samples"
+  },
+  {
+    "org": "microsoft",
+    "repo": "Foundry-Local"
+  },
+  {
+    "org": "microsoft",
+    "repo": "build-your-first-agent-with-azure-ai-agent-service-workshop"
+  },
+  {
+    "org": "microsoft",
+    "repo": "Mastering-GitHub-Copilot-for-Paired-Programming"
+  },
+  {
+    "org": "microsoft",
+    "repo": "flashcards-workshop"
+  },
+  {
+    "org": "microsoft",
+    "repo": "ai-agents-for-beginners"
+  },
+  {
+    "org": "microsoft",
+    "repo": "aitour-repo-principal-list"
+  },
+  {
+    "org": "microsoft",
+    "repo": "generative-ai-for-beginners"
+  },
+  {
+    "org": "microsoft",
+    "repo": "aitour-llmops-with-gen-ai-tools"
+  },
+  {
+    "org": "microsoft",
+    "repo": "community-content"
+  },
+  {
+    "org": "microsoft",
+    "repo": "mcp-for-beginners"
+  },
+  {
+    "org": "microsoft",
+    "repo": "aitour-getting-started-with-ai-agents"
+  },
+  {
+    "org": "microsoft",
+    "repo": "AI-For-Beginners"
+  },
+  {
+    "org": "microsoft",
+    "repo": "ML-For-Beginners"
+  },
+  {
+    "org": "microsoft",
+    "repo": "Generative-AI-for-beginners-dotnet"
+  },
+  {
+    "org": "microsoft",
+    "repo": "DirectML"
+  },
+  {
+    "org": "microsoft",
+    "repo": "template-validation-action"
+  },
+  {
+    "org": "microsoft",
+    "repo": "aitour-building-copilots-with-copilot-studio"
+  },
+  {
+    "org": "microsoft",
+    "repo": "AI_Agents_Hackathon"
+  },
+  {
+    "org": "microsoft",
+    "repo": "copilot-camp"
+  },
+  {
+    "org": "microsoft",
+    "repo": "msbuild-lab328-cea-agentssdk"
+  },
+  {
+    "org": "microsoft",
+    "repo": "msbuild-lab335-agentic-rag"
+  },
+  {
+    "org": "microsoft",
+    "repo": "Build25-LAB324"
+  },
+  {
+    "org": "microsoft",
+    "repo": "Data-AI-Kenya-Hack"
+  },
+  {
+    "org": "microsoft",
+    "repo": "prompty"
+  },
+  {
+    "org": "microsoft",
+    "repo": "markitdown"
+  },
+  {
+    "org": "microsoft",
+    "repo": "vscode-docs"
+  },
+  {
+    "org": "microsoft",
+    "repo": "Build25-LAB329"
+  },
+  {
+    "org": "microsoft",
+    "repo": "generative-ai-with-javascript"
+  },
+  {
+    "org": "microsoft",
+    "repo": "NubesGen"
+  },
+  {
+    "org": "microsoft",
+    "repo": "GitHub-Copilot-Global-Bootcamp"
+  },
+  {
+    "org": "microsoft",
+    "repo": "mcsmcp"
+  },
+  {
+    "org": "microsoft",
+    "repo": "PowerPlatformConnectors"
+  },
+  {
+    "org": "microsoft",
+    "repo": "mcp"
+  },
+  {
+    "org": "microsoft",
+    "repo": "aitour-models-as-a-service-15-minute-theatre-talk"
+  },
+  {
+    "org": "microsoft",
+    "repo": "aitour-build-your-first-agent-with-azure-ai-agent-service"
+  },
+  {
+    "org": "microsoft",
+    "repo": "BUILD25-LAB333"
+  },
+  {
+    "org": "microsoft",
+    "repo": "AzUrlShortener"
+  },
+  {
+    "org": "microsoft",
+    "repo": "winget-pkgs"
+  },
+  {
+    "org": "microsoft",
+    "repo": "learn-declarative-agent-api-plugin-typescript"
+  },
+  {
+    "org": "microsoft",
+    "repo": "aitour-interact-with-llms"
+  },
+  {
+    "org": "microsoft",
+    "repo": "moaw"
+  },
+  {
+    "org": "microsoft",
+    "repo": "github-copilot-vibe-coding-workshop"
+  },
+  {
+    "org": "microsoft",
+    "repo": "build25-LAB309"
+  },
+  {
+    "org": "microsoft",
+    "repo": "aitour-concept-to-creation-ai-studio"
+  },
+  {
+    "org": "microsoft",
+    "repo": "mcp-dotnet-samples"
+  },
+  {
+    "org": "microsoft",
+    "repo": "BUILD25-LAB334"
+  },
+  {
+    "org": "microsoft",
+    "repo": "model-mondays"
+  },
+  {
+    "org": "microsoft",
+    "repo": "Build25-BRK234"
+  },
+  {
+    "org": "microsoft",
+    "repo": "aitour-whats-new-with-fabric"
+  },
+  {
+    "org": "microsoft",
+    "repo": "msbuild-lab323-declarative-agent"
+  },
+  {
+    "org": "microsoft",
+    "repo": "aitour-Essential-Prompting-for-GitHub-Copilot-in-VS-Code"
+  },
+  {
+    "org": "microsoft",
+    "repo": "AI-Red-Teaming-Playground-Labs"
+  },
+  {
+    "org": "microsoft",
+    "repo": "aitour-data-security-for-ai"
+  },
+  {
+    "org": "microsoft",
+    "repo": "PowerAppsCodeApps"
+  },
+  {
+    "org": "microsoft",
+    "repo": "Digital-Twin-Builder-in-Real-Time-Intelligence"
+  },
+  {
+    "org": "microsoft",
+    "repo": "aitour-get-started-with-fabric"
+  },
+  {
+    "org": "microsoft",
+    "repo": "genaiscript"
+  },
+  {
+    "org": "MicrosoftDocs",
+    "repo": "cloud-developer-advocates"
+  },
+  {
+    "org": "MicrosoftDocs",
+    "repo": "fabric-docs"
+  },
+  {
+    "org": "MicrosoftDocs",
+    "repo": "microsoft-cloud"
+  },
+  {
+    "org": "MicrosoftDocs",
+    "repo": "azure-databases-docs"
+  },
+  {
+    "org": "MicrosoftDocs",
+    "repo": "azure-ai-docs"
+  },
+  {
+    "org": "MicrosoftDocs",
+    "repo": "azure-dev-docs"
+  },
+  {
+    "org": "MicrosoftDocs",
+    "repo": "mslearn-challenge-project-create-mini-game-with-copilot-dotnet"
+  },
+  {
+    "org": "MicrosoftDocs",
+    "repo": "azure-docs-sdk-python"
+  },
+  {
+    "org": "MicrosoftDocs",
+    "repo": "azure-docs"
+  }
+]

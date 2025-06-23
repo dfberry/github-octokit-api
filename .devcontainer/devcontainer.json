@@ -8,7 +8,7 @@
 		"ghcr.io/devcontainers-extra/features/act:1": {},
 		"ghcr.io/devcontainers-extra/features/actionlint:1": {},
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
-		"ghcr.io/jsburckhardt/devcontainer-features/gitleaks:1": {}
+		"ghcr.io/devcontainers/features/python:1": {}
 	},
 	"customizations": {
 		"vscode": {
@@ -22,11 +22,10 @@
 	// "features": {},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
+	"forwardPorts": [8000,8080, 11434],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// 
-	// "postCreateCommand": ""
+	"postCreateCommand": ""
 
 	// Configure tool-specific properties.
 	// "customizations": {},

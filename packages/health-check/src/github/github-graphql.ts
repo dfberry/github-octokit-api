@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { cat } from 'chromadb-default-embed';
 import { Octokit } from 'octokit';
 /**
  * GitHubGraphQL class for making optimized batch requests to GitHub GraphQL API
@@ -25,72 +26,32 @@ export default class GitHubGraphQL {
         repository(owner: $owner, name: $name) {
           id
           name
+          nameWithOwner
+          owner { login url avatarUrl }
           description
           url
-          homepageUrl
-          isPrivate
-          isArchived
-          isDisabled
-          isTemplate
-          stargazerCount
-          forkCount
-          watchers { totalCount }
-          openIssues: issues(states: OPEN) { totalCount }
-          pullRequests(states: OPEN) { totalCount }
+          createdAt
           updatedAt
           pushedAt
-          topics: repositoryTopics(first: 100) {
-            nodes {
-              topic { name }
-            }
-          }
-          defaultBranchRef {
-            name
-            target {
-              ... on Commit {
-                history(first: 1) {
-                  nodes {
-                    message
-                    committedDate
-                    author {
-                      name
-                      email
-                      user {
-                        login
-                        avatarUrl
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-          vulnerabilityAlerts(first: 10, states: OPEN) {
-            totalCount
-            nodes {
-              securityVulnerability {
-                package { name }
-                severity
-                vulnerableVersionRange
-                advisory {
-                  summary
-                  description
-                }
-              }
-              createdAt
-            }
-          }
-          workflows: object(expression: "HEAD:.github/workflows") {
-            ... on Tree {
-              entries {
-                name
-                type
-                object {
-                  ... on Blob {
-                    text
-                  }
-                }
-              }
+          stargazerCount
+          forkCount
+          isPrivate
+          isFork
+          isArchived
+          isDisabled
+          primaryLanguage { name color }
+          licenseInfo { key name spdxId url }
+          diskUsage
+          openIssues: issues(states: OPEN) { totalCount }
+          openPRs: pullRequests(states: OPEN) { totalCount }
+          watchers { totalCount }
+          topics: repositoryTopics(first: 20) { nodes { topic { name } } }
+          defaultBranchRef { name }
+          homepageUrl
+          visibility
+          readme: object(expression: "HEAD:README.md") {
+            ... on Blob {
+              text
             }
           }
         }
@@ -106,6 +67,38 @@ export default class GitHubGraphQL {
     }
   }
 
+  /**
+   * Fetch comprehensive repository data in a single GraphQL query
+   * This replaces multiple REST API calls (repo info, topics, issues, PRs, workflows, etc.)
+   *
+   * @param owner Repository owner/organization name
+   * @param name Repository name
+   */
+  async getRepositoryDataExtra(owner: string, name: string) {
+    const query = `
+      query($owner: String!, $name: String!) {
+        repository(owner: $owner, name: $name) {
+          id
+          name
+          nameWithOwner
+          topics: repositoryTopics(first: 20) { nodes { topic { name } } }
+          readme: object(expression: "HEAD:README.md") {
+            ... on Blob {
+              text
+            }
+          }
+        }
+      }
+    `;
+
+    try {
+      const response = await this.octokit.graphql(query, { owner, name });
+      return response;
+    } catch (error) {
+      console.error(`Error fetching repository data via GraphQL: ${error}`);
+      return { error: error instanceof Error ? error.message : String(error) };
+    }
+  }
   /**
    * Batch fetch basic data for multiple repositories in a single request
    *
@@ -204,6 +197,171 @@ export default class GitHubGraphQL {
       console.error(`Error searching repositories via GraphQL: ${error}`);
       return { error: error instanceof Error ? error.message : String(error) };
     }
+  }
+
+  async getUserData(
+    username: string,
+    additionalDataSize: number = 30
+  ): Promise<any | GitHubRequestorError> {
+    // Use GraphQL to fetch user data more efficiently
+    const query = `
+        fragment RepoFields on Repository {
+          id
+          name
+          nameWithOwner
+          url
+          description
+          stargazerCount
+          forkCount
+          isPrivate
+          isFork
+          isArchived
+          isDisabled
+          primaryLanguage { name color }
+          licenseInfo { key name spdxId url }
+          diskUsage
+          createdAt
+          updatedAt
+          pushedAt
+          owner { login url avatarUrl }
+          watchers { totalCount }
+          issues(states: [OPEN] ){ totalCount }
+          pullRequests(states: [OPEN]){ totalCount }
+          topics: repositoryTopics(first: ${additionalDataSize}) { nodes { topic { name } } }
+          readme: object(expression: "HEAD:README.md") {
+            ... on Blob {
+              text
+            }
+          }
+        }
+        fragment IssueFields on Issue {
+          id
+          number
+          title
+          url
+          state
+          createdAt
+          updatedAt
+          closedAt
+          author { login url avatarUrl }
+        }
+        fragment PRFields on PullRequest {
+          id
+          number
+          title
+          url
+          state
+          createdAt
+          updatedAt
+          closedAt
+          author { login url avatarUrl }
+          merged
+          mergedAt
+        }
+        query($username: String!) {
+          user(login: $username) {
+            login
+            id
+            name
+            company
+            bio
+            location
+            email
+            websiteUrl
+            avatarUrl
+            url
+            twitterUsername
+            followers { totalCount }
+            following { totalCount }
+            createdAt
+            updatedAt
+            isHireable
+            isDeveloperProgramMember
+            isCampusExpert
+            isSiteAdmin
+            repositoriesContributedTo(first: ${additionalDataSize}, contributionTypes: [COMMIT, ISSUE, PULL_REQUEST]) {
+              totalCount
+              nodes { ...RepoFields }
+            }
+            repositories(first: ${additionalDataSize}, orderBy: {field: UPDATED_AT, direction: DESC}) {
+              totalCount
+              nodes { ...RepoFields }
+            }
+            starredRepositories(first:  ${additionalDataSize}, orderBy: {field: STARRED_AT, direction: DESC}) {
+              totalCount
+              nodes { ...RepoFields }
+            }
+            issues(first:  ${additionalDataSize}, orderBy: {field: CREATED_AT, direction: DESC}) {
+              totalCount
+              nodes { ...IssueFields }
+            }
+            pullRequests(first:  ${additionalDataSize}, orderBy: {field: CREATED_AT, direction: DESC}) {
+              totalCount
+              nodes { ...PRFields }
+            }
+            organizations(first:  ${additionalDataSize}) {
+              totalCount
+              nodes { login name }
+            }
+          }
+        }
+      `;
+    try {
+      // Attempt GraphQL request
+      const graphqlResult = (await this.octokit.graphql(query, {
+        username,
+      })) as any;
+      return graphqlResult;
+    } catch (error) {
+      console.error(`Error fetching user data via GraphQL: ${error}`);
+      return {
+        errorMessage: error instanceof Error ? error.message : String(error),
+        errorCode: 'graphql-error',
+      };
+    }
+  }
+
+  async getCommits(
+    owner: string,
+    name: string,
+    branch: string = 'main',
+    limit: number = 100
+  ): Promise<any> {
+    const query = `
+        query($owner: String!, $name: String!, $first: Int!) {
+          repository(owner: $owner, name: $name) {
+            defaultBranchRef {
+              target {
+                ... on Commit {
+                  history(first: $first) {
+                    nodes {
+                      oid
+                      message
+                      committedDate
+                      authoredDate
+                      pushedDate
+                      url
+                      author {
+                        name
+                        email
+                        user { login avatarUrl url }
+                      }
+                      committer {
+                        name
+                        email
+                        user { login avatarUrl url }
+                      }
+                      parents(first: 10) { nodes { oid } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      `;
+
+    return this.octokit.graphql(query, { owner, name, branch, limit });
   }
 
   /**
@@ -415,5 +573,229 @@ export default class GitHubGraphQL {
       method: 'all-graphql-failed',
       error: `Could not find user ${username} using GraphQL methods`,
     };
+  }
+
+  async getPullResult(
+    owner: string,
+    name: string,
+    limit: number = 30
+  ): Promise<any> {
+    const query = `
+      query($owner: String!, $name: String!, $first: Int!) {
+          repository(owner: $owner, name: $name) {
+            pullRequests(states: OPEN, first: $first, orderBy: {field: CREATED_AT, direction: DESC}) {
+              nodes {
+                id
+                number
+                title
+                body
+                url
+                state
+                createdAt
+                updatedAt
+                closedAt
+                author { login url avatarUrl }
+                labels(first: 10) { nodes { name } }
+                assignees(first: 10) { nodes { login url avatarUrl } }
+                comments { totalCount }
+                merged
+                mergedAt
+                mergedBy { login url avatarUrl }
+              }
+            }
+          }
+        }
+      `;
+    return this.octokit.graphql(query, {
+      owner: org,
+      name: repo,
+      first: limit,
+    });
+  }
+
+  async getIssues(
+    owner: string,
+    name: string,
+    state: IssueType = 'open',
+    limit: number = 30
+  ): Promise<any> {
+    const query = `
+        query($owner: String!, $name: String!, $states: [IssueState!], $first: Int!) {
+          repository(owner: $owner, name: $name) {
+            issues(states: $states, first: $first, orderBy: {field: CREATED_AT, direction: DESC}) {
+              nodes {
+                id
+                number
+                title
+                body
+                url
+                state
+                createdAt
+                updatedAt
+                closedAt
+                author { login url avatarUrl }
+                labels(first: 10) { nodes { name } }
+                assignees(first: 10) { nodes { login url avatarUrl } }
+                comments { totalCount }
+              }
+            }
+          }
+        }
+      // `;
+    const result = this.octokit.graphql(query, {
+      owner: org,
+      name: repo,
+      states: [state.toUpperCase()],
+      first: limit,
+    });
+  }
+
+  async getRepoTopics(owner: string, name: string): Promise<any> {
+    const query = `
+        query($owner: String!, $name: String!) {
+          repository(owner: $owner, name: $name) {
+            repositoryTopics(first: 100) {
+              nodes {
+                topic {
+                  name
+                }
+              }
+            }
+          }
+        }
+      `;
+
+    return this.octokit.graphql(query, { owner, name });
+  }
+
+  async searchIssuesAndPrs(
+    query: string,
+    page: number = 1,
+    perPage: number = 30,
+    sort: string = 'created',
+    order: string = 'desc'
+  ): Promise<any> {
+    const graphqlQuery = `
+        query($q: String!, $first: Int!, $after: String) {
+          search(query: $q, type: ISSUE, first: $first, after: $after) {
+            issueCount
+            pageInfo {
+              endCursor
+              hasNextPage
+            }
+            nodes {
+              ... on Issue {
+                id
+                number
+                title
+                body
+                url
+                state
+                createdAt
+                updatedAt
+                closedAt
+                author { login url avatarUrl }
+                repository { name owner { login } }
+                labels(first: 10) { nodes { name } }
+                assignees(first: 10) { nodes { login url avatarUrl } }
+                comments { totalCount }
+                __typename
+              }
+              ... on PullRequest {
+                id
+                number
+                title
+                body
+                url
+                state
+                createdAt
+                updatedAt
+                closedAt
+                author { login url avatarUrl }
+                repository { name owner { login } }
+                labels(first: 10) { nodes { name } }
+                assignees(first: 10) { nodes { login url avatarUrl } }
+                comments { totalCount }
+                merged
+                mergedAt
+                mergedBy { login url avatarUrl }
+                __typename
+              }
+            }
+          }
+        }
+      `;
+    // Calculate the GraphQL pagination cursor
+    let after: string | null = null;
+    let fetched = 0;
+    let items: any[] = [];
+    let hasNextPage = true;
+    let currentPage = 1;
+
+    while (fetched < per_page && hasNextPage && currentPage <= page) {
+      // Wait before each request to avoid hitting rate limits
+      if (currentPage > 1) await this.wait(this.requestDelayMs);
+      const variables = {
+        q,
+        first: Math.min(per_page, 100),
+        after,
+      };
+      const result = (await this.octokit.graphql(
+        graphqlQuery,
+        variables
+      )) as any;
+      const search = result.search;
+      hasNextPage = search.pageInfo.hasNextPage;
+      after = search.pageInfo.endCursor;
+      if (currentPage === page) {
+        items = search.nodes;
+        break;
+      }
+      currentPage++;
+    }
+    return items;
+  }
+  async searchRepositories(
+    q: string = 'org:azure-samples',
+    per_page: number = 5,
+    sort: RepoSearchSort = 'updated',
+    order: RepoSearchOrder = 'desc'
+  ): Promise<any> {
+    const graphqlQuery = `
+        query($q: String!, $first: Int!) {
+          search(query: $q, type: REPOSITORY, first: $first) {
+            repositoryCount
+            nodes {
+              ... on Repository {
+                id
+                name
+                nameWithOwner
+                owner { login url avatarUrl }
+                description
+                url
+                createdAt
+                updatedAt
+                pushedAt
+                stargazerCount
+                forkCount
+                isPrivate
+                isFork
+                isArchived
+                isDisabled
+                primaryLanguage { name color }
+                licenseInfo { key name spdxId url }
+                diskUsage
+                openIssues: issues(states: OPEN) { totalCount }
+                openPRs: pullRequests(states: OPEN) { totalCount }
+                watchers { totalCount }
+                topics: repositoryTopics(first: 10) { nodes { topic { name } } }
+              }
+            }
+          }
+        }
+      `;
+    const variables = { q, first: per_page };
+    console.log(`GraphQL search params: ${JSON.stringify(variables)}`);
+    return this.octokit.graphql(graphqlQuery, variables);
   }
 }

@@ -17,7 +17,7 @@ import {
   SQL_GET_REPOS_WITH_FAILED_WORKFLOW_RUNS,
   CREATE_WORKFLOWS_TABLE,
   CREATE_WORKFLOW_RUNS_TABLE,
-} from '../db/sql-workflow-report.js';
+} from '../db/sql-all.js';
 
 /**
  * Interface for repository workflow data

@@ -15,7 +15,7 @@ import {
 import {
   SQL_GET_REPOS_WITH_VULNERABILITIES,
   SQL_GET_REPOS_WITHOUT_DEPENDABOT,
-} from '../db/sql-graphql-health-check.js';
+} from '../db/sql-all.js';
 
 /**
  * Run health check using GraphQL and generate report

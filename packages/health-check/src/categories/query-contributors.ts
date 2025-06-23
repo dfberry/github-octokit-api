@@ -8,7 +8,7 @@ import {
   SQL_GET_TOP_CONTRIBUTORS,
   SQL_GET_COMPANY_CONTRIBUTORS,
   SQL_GET_ACTIVE_CONTRIBUTORS,
-} from '../db/sql-query-contributors.js';
+} from '../db/sql-all.js';
 
 /**
  * CLI utility for querying contributor data from the database
