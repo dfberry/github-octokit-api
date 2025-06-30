@@ -1,0 +1,17 @@
+{
+    "login": "aaronpowell",
+    "name": "Aaron Powell",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/434140?u=b195e03de2628cc26fccf5526045b6ecea96f2e3&v=4",
+    "bio": "I work @microsoft in the .NET on Azure Advocacy team, trying to make building .NET apps for Azure better than ever before.",
+    "company": "@microsoft",
+    "blog": "https://www.aaron-powell.com",
+    "location": "Sydney, Australia",
+    "twitter": "slace",
+    "followers": 819,
+    "following": 0,
+    "publicRepos": 323,
+    "publicGists": 0
+
+}
+
+constributorData.avatarUrl

@@ -81,6 +81,7 @@ export interface RepoData {
   dependabotAlerts: number;
   codeScanning: boolean;
   topics: string[];
+  readme?: string;
 }
 
 // Infrastructure types
@@ -133,6 +134,8 @@ export type Commit =
   Endpoints['GET /repos/{owner}/{repo}/commits']['response']['data'][0];
 export type DependabotAlert =
   Endpoints['GET /repos/{owner}/{repo}/dependabot/alerts']['response']['data'][0];
+export type WorkflowListResponse =
+  Endpoints['GET /repos/{owner}/{repo}/actions/workflows']['response']['data'];
 export type Workflow =
   Endpoints['GET /repos/{owner}/{repo}/actions/workflows']['response']['data']['workflows'][0];
 
@@ -149,25 +152,30 @@ export type SelfHostedRunner =
 /**
  * Interface representing a simplified workflow run with essential status information
  */
-export interface WorkflowRunStatus {
-  id: number;
-  status: string | null;
-  conclusion: string | null;
-  createdAt: string;
-  updatedAt: string;
-  htmlUrl: string;
-}
+// export interface WorkflowRunStatus {
+//   id: number;
+//   status: string | null;
+//   conclusion: string | null;
+//   createdAt: string;
+//   updatedAt: string;
+//   htmlUrl: string;
+// }
 
-/**
- * Interface representing a workflow with its latest run status
- */
-export interface WorkflowWithStatus {
-  id: number;
-  name: string;
-  path: string;
-  state: string;
-  latestRun: WorkflowRunStatus | null;
-}
+// /**
+//  * Interface representing a workflow with its latest run status
+//  */
+// export interface WorkflowWithStatus {
+//   id: number;
+//   name: string;
+//   path: string;
+//   state: string;
+//   latestRun: WorkflowRunStatus | null;
+// }
+
+// Workflow with run status
+// export interface WorkflowWithRunStatus extends WorkflowWithStatus {
+//   runs: WorkflowRunStatus[];
+// }
 
 /**
  * Standard error type for GitHub API requests
@@ -199,9 +207,32 @@ export interface GitHubApiError {
 
 // New Contributor Types
 export interface ContributorRepo {
-  fullName: string;
+  id?: string;
+  name?: string;
+  nameWithOwner?: string;
   url: string;
-  description: string;
+  description?: string;
+  stargazerCount?: number;
+  forkCount?: number;
+  isPrivate?: boolean;
+  isFork?: boolean;
+  isArchived?: boolean;
+  isDisabled?: boolean;
+  primaryLanguage?: { name: string | null };
+  licenseInfo?: { name: string | null };
+  diskUsage?: number;
+  createdAt?: string;
+  updatedAt?: string;
+  pushedAt?: string;
+  owner?: {
+    login: string;
+  };
+  watchers?: { totalCount: number };
+  issues?: { totalCount: number };
+  pullRequests?: { totalCount: number };
+  topics?: { nodes: { name: string }[] };
+  readme?: { text: string | null };
+  fullName: string;
   stars: number;
   forks: number;
   language: string;
@@ -224,3 +255,19 @@ export interface ContributorData {
   repos: ContributorRepo[];
   recentPRs: PrSearchItem[];
 }
+
+// Extend PrSearchItem to include createdAt and updatedAt for local use
+export type PrSearchItemWithDates = PrSearchItem & {
+  createdAt?: string;
+  updatedAt?: string;
+  closedAt?: string;
+  mergedAt?: string;
+  merged?: boolean;
+};
+
+// export type ExtraRepoData = {
+//   org: string;
+//   repo: string;
+//   full_name: string;
+//   workflows: WorkflowWithStatus[];
+// };

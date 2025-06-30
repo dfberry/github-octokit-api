@@ -1,0 +1,17 @@
+{
+    "id": "PR_kwDOMSFJXs6cW3u5",
+    "number": 743,
+    "title": "Removing SWA integration",
+    "url": "https://github.com/CommunityToolkit/Aspire/pull/743",
+    "state": "OPEN",
+    "createdAt": "2025-06-27T06:06:42Z",
+    "updatedAt": "2025-06-27T06:16:17Z",
+    "closedAt": null,
+    "author": {
+        "login": "aaronpowell",
+        "url": "https://github.com/aaronpowell",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/434140?u=b195e03de2628cc26fccf5526045b6ecea96f2e3&v=4"
+    },
+    "merged": false,
+    "mergedAt": null
+}
