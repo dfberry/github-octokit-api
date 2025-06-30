@@ -1,0 +1,49 @@
+{
+    "url": "https://api.github.com/repos/Azure-Samples/YouTubeGPT/actions/workflows",
+    "status": 200,
+    "headers": {
+        "access-control-allow-origin": "*",
+        "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+        "cache-control": "private, max-age=60, s-maxage=60",
+        "content-encoding": "gzip",
+        "content-security-policy": "default-src 'none'",
+        "content-type": "application/json; charset=utf-8",
+        "date": "Wed, 25 Jun 2025 14:13:10 GMT",
+        "etag": "W/\\"c9c01db3db674da2a1fe5e3c2721d1344f01e8def16b5174a26d3552c74f68e8\\"",
+        "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+        "server": "github.com",
+        "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+        "transfer-encoding": "chunked",
+        "vary": "Accept, Authorization, Cookie, X-GitHub-OTP,Accept-Encoding, Accept, X-Requested-With",
+        "x-accepted-oauth-scopes": "",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "deny",
+        "x-github-api-version-selected": "2022-11-28",
+        "x-github-media-type": "github.v3; format=json",
+        "x-github-request-id": "C498:464D6:151EA3:2A1A3A:685C03F6",
+        "x-oauth-scopes": "read:audit_log, read:discussion, read:enterprise, read:gpg_key, read:network_configurations, read:org, read:packages, read:project, read:public_key, read:repo_hook, read:ssh_signing_key, read:user, repo, user:email, workflow",
+        "x-ratelimit-limit": "5000",
+        "x-ratelimit-remaining": "4995",
+        "x-ratelimit-reset": "1750863558",
+        "x-ratelimit-resource": "core",
+        "x-ratelimit-used": "5",
+        "x-xss-protection": "0"
+    },
+    "data": {
+        "total_count": 1,
+        "workflows": [
+            {
+                "id": 109653195,
+                "node_id": "W_kwDOLecwfc4GiSzL",
+                "name": ".NET CI",
+                "path": ".github/workflows/dotnet.yml",
+                "state": "active",
+                "created_at": "2024-07-28T21:21:22.000-07:00",
+                "updated_at": "2024-07-28T21:21:22.000-07:00",
+                "url": "https://api.github.com/repos/Azure-Samples/YouTubeGPT/actions/workflows/109653195",
+                "html_url": "https://github.com/Azure-Samples/YouTubeGPT/blob/main/.github/workflows/dotnet.yml",
+                "badge_url": "https://github.com/Azure-Samples/YouTubeGPT/workflows/.NET%20CI/badge.svg"
+            }
+        ]
+    }
+}

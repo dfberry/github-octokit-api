@@ -81,3 +81,21 @@ export function extractOrgAndRepo(githubUrls: string[]): SimpleRepository[] {
     };
   });
 }
+//"https://github.com/CommunityToolkit/Aspire/pull/743"
+export function extractOrgAndRepoFromFullName(url: string): SimpleRepository {
+  const match = url.match(/github\.com\/([^\/]+)\/([^\/]+)/);
+  if (match) {
+    const owner = match[1];
+    const repo = match[2];
+    console.log(owner, repo); // CommunityToolkit Aspire
+    return {
+      name: `${owner}/${repo}`,
+      org: owner,
+      repo: repo,
+    };
+  } else {
+    throw new Error(
+      `Invalid GitHub URL format: ${url}. Expected format: https://github.com/CommunityToolkit/Aspire/pull/743`
+    );
+  }
+}

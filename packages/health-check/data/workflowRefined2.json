@@ -1,0 +1,14 @@
+{
+    "id": 164324455,
+    "orgRepo": "microsoft/Generative-AI-for-beginners-dotnet",
+    "name": "Copilot Setup Steps",
+    "path": ".github/workflows/copilot-setup-steps.yml",
+    "state": "active",
+    "created_at": "2025-05-26T06:48:12.000-07:00",
+    "updated_at": "2025-05-26T06:48:12.000-07:00",
+    "url": "https://github.com/microsoft/Generative-AI-for-beginners-dotnet/blob/main/.github/workflows/copilot-setup-steps.yml",
+    "latestRunId": null,
+    "lastRunStatus": null,
+    "lastRunDate": null,
+    "lastRunUrl": null
+}
