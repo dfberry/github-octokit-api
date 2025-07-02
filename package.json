@@ -3,7 +3,23 @@
     "packages/*"
   ],
   "scripts": {
+    "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "eslint \"src/**/*.ts\" ",
     "build": "npm run build --workspaces",
     "clean": "find . -type d -name 'dist' -prune -exec rm -rf {} + && find . -type d -name 'generated' -prune -exec rm -rf {} + && find . -name '*.db' -delete && find . -type d -name 'node_modules' -prune -exec rm -rf {} +"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.30.0",
+    "@eslint/json": "^0.12.0",
+    "@tsconfig/recommended": "^1.0.8",
+    "@types/node": "^22.15.3",
+    "@vitest/coverage-v8": "^3.2.2",
+    "eslint": "^9.30.0",
+    "globals": "^16.2.0",
+    "prettier": "^3.5.3",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.35.0",
+    "vitest": "^3.2.2"
   }
 }
