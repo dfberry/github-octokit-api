@@ -13,7 +13,9 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"SanjulaGanepola.github-local-actions"
+				"SanjulaGanepola.github-local-actions",
+				"alexcvzz.vscode-sqlite",
+				"qwtel.sqlite-viewer"
 			]
 		}
 	},
