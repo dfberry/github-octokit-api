@@ -45,7 +45,7 @@ export class ContributorService {
   ): Promise<ContributorRepo[]> {
     const octokit = this.api.getRest();
     const repos: ContributorRepo[] = [];
-    for await(const org of orgs) {
+    for await (const org of orgs) {
       try {
         // Search for repos in org where user is a contributor
         const { data } = await octokit.rest.search.repos({
@@ -84,7 +84,7 @@ export class ContributorService {
             }
           }
         }
-        for await(const [repoFullName, repoUrl] of uniquePrRepos.entries()) {
+        for await (const [repoFullName, repoUrl] of uniquePrRepos.entries()) {
           const [org, repoName] = repoFullName.split('/');
           try {
             const { data: repoDetails } = await octokit.rest.repos.get({
@@ -127,7 +127,7 @@ export class ContributorService {
   ): Promise<PrSearchItem[]> {
     const octokit = this.api.getRest();
     const allPRs: PrSearchItem[] = [];
-    for await(const org of orgs) {
+    for await (const org of orgs) {
       try {
         const query = `org:${org} author:${username} is:pr created:>=${sinceDate}`;
         const { data } = await octokit.rest.search.issuesAndPullRequests({
@@ -243,7 +243,7 @@ export class ContributorService {
   ): Promise<ContributorRepo[]> {
     const graphql = this.api.getGraphql();
     const repos: ContributorRepo[] = [];
-    for await(const org of orgs) {
+    for await (const org of orgs) {
       const query = `
         query($org: String!, $login: String!) {
           organization(login: $org) {
@@ -324,7 +324,7 @@ export class ContributorService {
   ): Promise<PrSearchItem[]> {
     const graphql = this.api.getGraphql();
     const allPRs: PrSearchItem[] = [];
-    for await(const org of orgs) {
+    for await (const org of orgs) {
       const query = `
         query($org: String!, $login: String!, $since: DateTime!) {
           search(query: "org:$org author:$login is:pr created:>=$since", type: ISSUE, first: 50) {
