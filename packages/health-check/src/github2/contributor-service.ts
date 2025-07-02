@@ -10,23 +10,33 @@ export class ContributorService {
 
   async getContributor(username: string): Promise<ContributorData> {
     const octokit = this.api.getRest();
-    const { data: user } = await octokit.rest.users.getByUsername({ username });
-    return {
-      login: user.login,
-      name: user.name || user.login,
-      avatarUrl: user.avatar_url,
-      bio: user.bio || '',
-      company: user.company || '',
-      blog: user.blog || '',
-      location: user.location || '',
-      twitter: user.twitter_username || '',
-      followers: user.followers || 0,
-      following: user.following || 0,
-      publicRepos: user.public_repos || 0,
-      publicGists: user.public_gists || 0,
-      repos: [], // Use getContributorRepositories for this
-      recentPRs: [], // Use getContributorPRs for this
-    };
+    try {
+      const { data: user } = await octokit.rest.users.getByUsername({
+        username,
+      });
+      return {
+        login: user.login,
+        name: user.name || user.login,
+        avatarUrl: user.avatar_url,
+        bio: user.bio || '',
+        company: user.company || '',
+        blog: user.blog || '',
+        location: user.location || '',
+        twitter: user.twitter_username || '',
+        followers: user.followers || 0,
+        following: user.following || 0,
+        publicRepos: user.public_repos || 0,
+        publicGists: user.public_gists || 0,
+        repos: [], // Use getContributorRepositories for this
+        recentPRs: [], // Use getContributorPRs for this
+      };
+    } catch (error) {
+      console.error(
+        `Failed to fetch contributor data for username: ${username}`,
+        error
+      );
+      throw error;
+    }
   }
 
   async getContributorRepositories(
@@ -35,63 +45,75 @@ export class ContributorService {
   ): Promise<ContributorRepo[]> {
     const octokit = this.api.getRest();
     const repos: ContributorRepo[] = [];
-    for (const org of orgs) {
-      // Search for repos in org where user is a contributor
-      const { data } = await octokit.rest.search.repos({
-        q: `org:${org} user:${username} fork:true`,
-        per_page: 50,
-      });
-      for (const repo of data.items) {
-        repos.push({
-          fullName: repo.full_name,
-          url: repo.html_url,
-          description: repo.description || '',
-          stars: repo.stargazers_count || 0,
-          forks: repo.forks_count || 0,
-          language: repo.language || '',
-          lastUpdated: repo.updated_at || '',
+    for await(const org of orgs) {
+      try {
+        // Search for repos in org where user is a contributor
+        const { data } = await octokit.rest.search.repos({
+          q: `org:${org} user:${username} fork:true`,
+          per_page: 50,
         });
-      }
-      // Also add repos from PRs
-      const prQuery = `org:${org} author:${username} is:pr`;
-      const prRes = await octokit.rest.search.issuesAndPullRequests({
-        q: prQuery,
-        per_page: 100,
-      });
-      const uniquePrRepos = new Map<string, string>();
-      for (const pr of prRes.data.items) {
-        if (pr.repository_url) {
-          const repoFullName = pr.repository_url.replace(
-            'https://api.github.com/repos/',
-            ''
-          );
-          if (
-            !uniquePrRepos.has(repoFullName) &&
-            !repos.some(r => r.fullName === repoFullName)
-          ) {
-            uniquePrRepos.set(repoFullName, pr.html_url.split('/pull/')[0]);
+        for (const repo of data.items) {
+          repos.push({
+            fullName: repo.full_name,
+            url: repo.html_url,
+            description: repo.description || '',
+            stars: repo.stargazers_count || 0,
+            forks: repo.forks_count || 0,
+            language: repo.language || '',
+            lastUpdated: repo.updated_at || '',
+          });
+        }
+        // Also add repos from PRs
+        const prQuery = `org:${org} author:${username} is:pr`;
+        const prRes = await octokit.rest.search.issuesAndPullRequests({
+          q: prQuery,
+          per_page: 100,
+        });
+        const uniquePrRepos = new Map<string, string>();
+        for (const pr of prRes.data.items) {
+          if (pr.repository_url) {
+            const repoFullName = pr.repository_url.replace(
+              'https://api.github.com/repos/',
+              ''
+            );
+            if (
+              !uniquePrRepos.has(repoFullName) &&
+              !repos.some(r => r.fullName === repoFullName)
+            ) {
+              uniquePrRepos.set(repoFullName, pr.html_url.split('/pull/')[0]);
+            }
           }
         }
-      }
-      for (const [repoFullName, repoUrl] of uniquePrRepos.entries()) {
-        const [org, repoName] = repoFullName.split('/');
-        try {
-          const { data: repoDetails } = await octokit.rest.repos.get({
-            owner: org,
-            repo: repoName,
-          });
-          repos.push({
-            fullName: repoFullName,
-            url: repoUrl,
-            description: repoDetails.description || '',
-            stars: repoDetails.stargazers_count || 0,
-            forks: repoDetails.forks_count || 0,
-            language: repoDetails.language || '',
-            lastUpdated: repoDetails.updated_at || '',
-          });
-        } catch (err) {
-          // Ignore errors for missing repos
+        for await(const [repoFullName, repoUrl] of uniquePrRepos.entries()) {
+          const [org, repoName] = repoFullName.split('/');
+          try {
+            const { data: repoDetails } = await octokit.rest.repos.get({
+              owner: org,
+              repo: repoName,
+            });
+            repos.push({
+              fullName: repoFullName,
+              url: repoUrl,
+              description: repoDetails.description || '',
+              stars: repoDetails.stargazers_count || 0,
+              forks: repoDetails.forks_count || 0,
+              language: repoDetails.language || '',
+              lastUpdated: repoDetails.updated_at || '',
+            });
+          } catch (err) {
+            console.error(
+              `Failed to fetch repo details for ${repoFullName}:`,
+              err
+            );
+            // Ignore errors for missing repos
+          }
         }
+      } catch (error) {
+        console.error(
+          `Failed to fetch contributor repositories for org: ${org}, username: ${username}`,
+          error
+        );
+        throw error;
       }
     }
     repos.sort((a, b) => b.stars - a.stars);
@@ -105,13 +127,21 @@ export class ContributorService {
   ): Promise<PrSearchItem[]> {
     const octokit = this.api.getRest();
     const allPRs: PrSearchItem[] = [];
-    for (const org of orgs) {
-      const query = `org:${org} author:${username} is:pr created:>=${sinceDate}`;
-      const { data } = await octokit.rest.search.issuesAndPullRequests({
-        q: query,
-        per_page: 50,
-      });
-      allPRs.push(...data.items);
+    for await(const org of orgs) {
+      try {
+        const query = `org:${org} author:${username} is:pr created:>=${sinceDate}`;
+        const { data } = await octokit.rest.search.issuesAndPullRequests({
+          q: query,
+          per_page: 50,
+        });
+        allPRs.push(...data.items);
+      } catch (error) {
+        console.error(
+          `Failed to fetch PRs for org: ${org}, username: ${username}, since: ${sinceDate}`,
+          error
+        );
+        throw error;
+      }
     }
     allPRs.sort(
       (a, b) =>
@@ -127,31 +157,6 @@ export class ContributorService {
   ): Promise<ContributorData> {
     const graphql = this.api.getGraphql();
     const query = `
-      fragment RepoFields on Repository {
-        id
-        name
-        nameWithOwner
-        url
-        description
-        stargazerCount
-        forkCount
-        isPrivate
-        isFork
-        isArchived
-        isDisabled
-        primaryLanguage { name color }
-        licenseInfo { key name spdxId url }
-        diskUsage
-        createdAt
-        updatedAt
-        pushedAt
-        owner { login url avatarUrl }
-        watchers { totalCount }
-        issues(states: [OPEN]){ totalCount }
-        pullRequests(states: [OPEN]){ totalCount }
-        topics: repositoryTopics(first: ${additionalDataSize}) { nodes { topic { name } } }
-        readme: object(expression: "HEAD:README.md") { ... on Blob { text } }
-      }
       fragment IssueFields on Issue {
         id
         number
@@ -197,18 +202,6 @@ export class ContributorService {
           isDeveloperProgramMember
           isCampusExpert
           isSiteAdmin
-          repositoriesContributedTo(first: ${additionalDataSize}, contributionTypes: [COMMIT, ISSUE, PULL_REQUEST]) {
-            totalCount
-            nodes { ...RepoFields }
-          }
-          repositories(first: ${additionalDataSize}, orderBy: {field: UPDATED_AT, direction: DESC}) {
-            totalCount
-            nodes { ...RepoFields }
-          }
-          starredRepositories(first:  ${additionalDataSize}, orderBy: {field: STARRED_AT, direction: DESC}) {
-            totalCount
-            nodes { ...RepoFields }
-          }
           issues(first:  ${additionalDataSize}, orderBy: {field: CREATED_AT, direction: DESC}) {
             totalCount
             nodes { ...IssueFields }
@@ -237,9 +230,9 @@ export class ContributorService {
       twitter: user.twitterUsername || '',
       followers: user.followers.totalCount || 0,
       following: user.following.totalCount || 0,
-      publicRepos: user.repositories.totalCount || 0,
+      publicRepos: 0,
       publicGists: 0, // Not available in this query
-      repos: user.repositories.nodes || [],
+      repos: [],
       recentPRs: user.pullRequests.nodes || [],
     };
   }
@@ -250,7 +243,7 @@ export class ContributorService {
   ): Promise<ContributorRepo[]> {
     const graphql = this.api.getGraphql();
     const repos: ContributorRepo[] = [];
-    for (const org of orgs) {
+    for await(const org of orgs) {
       const query = `
         query($org: String!, $login: String!) {
           organization(login: $org) {
@@ -331,7 +324,7 @@ export class ContributorService {
   ): Promise<PrSearchItem[]> {
     const graphql = this.api.getGraphql();
     const allPRs: PrSearchItem[] = [];
-    for (const org of orgs) {
+    for await(const org of orgs) {
       const query = `
         query($org: String!, $login: String!, $since: DateTime!) {
           search(query: "org:$org author:$login is:pr created:>=$since", type: ISSUE, first: 50) {
@@ -364,6 +357,52 @@ export class ContributorService {
       }
     }
     return allPRs;
+  }
+
+  async getActiveUserRepositories(
+    username: string
+  ): Promise<{ id: number; owner: string; name: string }[]> {
+    const octokit = this.api.getRest();
+    const repos: { id: number; owner: string; name: string }[] = [];
+    let page = 1;
+    let hasMore = true;
+
+    // eslint-disable-next-line no-await-in-loop 
+    while (hasMore) {
+      const { data } = await octokit.rest.repos.listForUser({
+        username,
+        per_page: 100,
+        page,
+      });
+
+      const filtered = data
+        .filter(repo => !repo.archived && !repo.disabled)
+        .map(repo => ({
+          id: repo.id,
+          owner: repo.owner.login,
+          name: repo.name,
+        }));
+
+      repos.push(...filtered);
+
+      hasMore = data.length === 100;
+      page += 1;
+    }
+
+    return repos;
+  }
+  async isActiveRepository(org: string, repo: string): Promise<boolean> {
+    const octokit = this.api.getRest();
+    try {
+      const { data } = await octokit.rest.repos.get({
+        owner: org,
+        repo,
+      });
+      return !data.archived && !data.disabled;
+    } catch (error) {
+      // Optionally handle not found or permission errors
+      return false;
+    }
   }
 }
 

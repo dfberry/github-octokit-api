@@ -74,7 +74,7 @@ export const readTablesWithData = async (db: any): Promise<{tables: any[], data:
         const tables = await getAllTables(db);
         const tablesWithData: string[] = [];
 
-        for (const table of tables) {
+        for await(const table of tables) {
             const hasDataFlag = await hasData(db, table);
             if (hasDataFlag) {
                 console.log(`Table ${table} has data.`);
@@ -96,7 +96,7 @@ export const readTablesWithData = async (db: any): Promise<{tables: any[], data:
 export const getAllDataFromTables = async (db: any, tables: string[]): Promise<{ [key: string]: any }[]> => {
     const allData: { [key: string]: any }[] = [];
 
-    for (const table of tables) {
+    for await (const table of tables) {
         console.log(`Reading data from table: ${table}`);
 
         if (table === 'sqlite_sequence') {

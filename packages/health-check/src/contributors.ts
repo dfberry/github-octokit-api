@@ -16,6 +16,7 @@ import DependabotAlertService, {
 } from './github2/dependabot-alert-service.js';
 import type { OctokitDependabotAlert } from './github2/models.js';
 import type { DependabotAlert as DbDependabotAlert } from './typeorm/DependabotAlert.js';
+import RepositoryService from './github2/repository-service.js';
 /**
  * Generate a contributor index report
  * @param token GitHub API token
@@ -37,7 +38,7 @@ async function fetchContributors(
     `🔍 Collecting data for ${configData.microsoftContributors.length} contributors...`
   );
   const contributorDataList: ContributorData[] = [];
-  for (const contributor of configData.microsoftContributors) {
+  for await(const contributor of configData.microsoftContributors) { // tbd for await
     console.log(`Processing contributor: ${contributor}`);
     try {
       // Use the GraphQL method for full data
@@ -46,11 +47,13 @@ async function fetchContributors(
         30
       );
       contributorDataList.push(contributorData as unknown as ContributorData);
+      break; //TBD
     } catch (error) {
       console.log(
         `Error processing contributor ${contributor}: ${error instanceof Error ? error.message : String(error)}`
       );
       // Continue with next contributor
+      break; //TBD
     }
   }
   return contributorDataList;
@@ -77,7 +80,7 @@ async function insertContributor(contributorData: ContributorData) {
 
 async function insertContributorIssuesAndPRs(contributorData: ContributorData) {
   if (Array.isArray(contributorData.recentPRs)) {
-    for (const item of contributorData.recentPRs) {
+    for await(const item of contributorData.recentPRs) {
       const type = item.pull_request ? 'pr' : 'issue';
       const { org, repo } = extractOrgAndRepoFromFullName(item.url);
       await DbService.insertContributorIssuePr({
@@ -309,72 +312,130 @@ function normalizeRepo(
 }
 
 async function insertContributorRepos(contributorData: ContributorData) {
-  const contributedRepos: ContributorRepo[] = Array.isArray(
-    contributorData.repos
-  )
-    ? contributorData.repos
-    : [];
-  for (const repoObjRaw of contributedRepos) {
-    const repoObj = normalizeRepo(repoObjRaw);
-    if (!repoObj) {
-      console.warn(
-        '[insertContributorRepos] Skipping repo: could not normalize',
-        repoObjRaw
-      );
-      continue;
+  // 1. Collect all repos from issues and PRs
+  const repoSet = new Set<string>();
+  const repoRefs: { org: string; repo: string }[] = [];
+
+  const items = [
+    ...(Array.isArray(contributorData.recentPRs)
+      ? contributorData.recentPRs
+      : []),
+    ...(Array.isArray((contributorData as any).issues)
+      ? (contributorData as any).issues
+      : []),
+  ];
+
+  for (const item of items) {
+    if (item && item.url) {
+      const { org, repo } = extractOrgAndRepoFromFullName(item.url);
+      const key = `${org}/${repo}`;
+      if (org && repo && !repoSet.has(key)) {
+        repoSet.add(key);
+        repoRefs.push({ org, repo });
+      }
     }
-    const { org, repo } = extractOrgAndRepoFromFullName(repoObj.url);
-    if (!repoObj.id) {
+  }
+
+  // 2. Filter to only active repos using REST
+  const apiClient = new GitHubApiClient();
+  const contributorService = new ContributorService(apiClient);
+  const repositoryService = new RepositoryService(apiClient);
+  const activeRepoRefs: { org: string; repo: string }[] = [];
+  for await (const { org, repo } of repoRefs) {
+    try {
+      const isActive = await contributorService.isActiveRepository(org, repo);
+      if (isActive) {
+        activeRepoRefs.push({ org, repo });
+      }
+    } catch (err) {
       console.warn(
-        '[insertContributorRepos] Skipping repo: missing id',
-        repoObj
-      );
-      throw new Error(
-        `Repository ID is required for ${org}/${repo}. Please check the data source.`
+        `[insertContributorRepos] Could not check active status for ${org}/${repo}:`,
+        err
       );
     }
+  }
 
-    await DbService.insertRepository({
-      id: repoObj.id,
-      name: repoObj.name,
-      nameWithOwner: repoObj.nameWithOwner,
-      url: repoObj.url,
-      description: repoObj.description,
-      stargazerCount: repoObj.stargazerCount,
-      forkCount: repoObj.forkCount,
-      isPrivate: repoObj.isPrivate,
-      isFork: repoObj.isFork,
-      isArchived: repoObj.isArchived,
-      isDisabled: repoObj.isDisabled,
-      primaryLanguage: repoObj.primaryLanguage,
-      licenseInfo: repoObj.licenseInfo,
-      owner: repoObj.owner,
-      diskUsage: repoObj.diskUsage,
-      createdAt: repoObj.createdAt,
-      updatedAt: repoObj.updatedAt,
-      pushedAt: repoObj.pushedAt,
-      watchersCount: repoObj.watchersCount,
-      issuesCount: repoObj.issuesCount,
-      pullRequestsCount: repoObj.pullRequestsCount,
-      topics: repoObj.topics,
-      readme: repoObj.readme,
-    });
+  // 3. For only active repos, get details using RepositoryService GraphQL
+  for await (const { org, repo } of activeRepoRefs) {
+    try {
+      const repoObjRaw = await repositoryService.getRepositoryGraphql(
+        org,
+        repo,
+        30
+      );
+      if (!repoObjRaw) {
+        console.warn(
+          `[insertContributorRepos] No repository found for ${org}/${repo}`
+        );
+        continue;
+      }
+      const repoObj = normalizeRepo(repoObjRaw);
+      if (!repoObj) {
+        console.warn(
+          '[insertContributorRepos] Skipping repo: could not normalize',
+          repoObjRaw
+        );
+        continue;
+      }
+      if (!repoObj.id) {
+        console.warn(
+          '[insertContributorRepos] Skipping repo: missing id',
+          repoObj
+        );
+        throw new Error(
+          `Repository ID is required for ${org}/${repo}. Please check the data source.`
+        );
+      }
 
-    await fetchAndLogWorkflows(
-      contributorData.login,
-      org,
-      repo,
-      repoObj.nameWithOwner
-    );
+      await DbService.insertRepository({
+        id: repoObj.id,
+        name: repoObj.name,
+        nameWithOwner: repoObj.nameWithOwner,
+        url: repoObj.url,
+        description: repoObj.description,
+        stargazerCount: repoObj.stargazerCount,
+        forkCount: repoObj.forkCount,
+        isPrivate: repoObj.isPrivate,
+        isFork: repoObj.isFork,
+        isArchived: repoObj.isArchived,
+        isDisabled: repoObj.isDisabled,
+        primaryLanguage: repoObj.primaryLanguage,
+        licenseInfo: repoObj.licenseInfo,
+        owner: repoObj.owner,
+        diskUsage: repoObj.diskUsage,
+        createdAt: repoObj.createdAt,
+        updatedAt: repoObj.updatedAt,
+        pushedAt: repoObj.pushedAt,
+        watchersCount: repoObj.watchersCount,
+        issuesCount: repoObj.issuesCount,
+        pullRequestsCount: repoObj.pullRequestsCount,
+        topics: repoObj.topics,
+        readme: repoObj.readme,
+      });
 
-    await fetchAndLogDependabotAlert(
-      contributorData.login,
-      org,
-      repo,
-      repoObj.nameWithOwner
-    );
+      // await fetchAndLogWorkflows(
+      //   contributorData.login,
+      //   org,
+      //   repo,
+      //   repoObj.nameWithOwner
+      // );
+
+      // await fetchAndLogDependabotAlert(
+      //   contributorData.login,
+      //   org,
+      //   repo,
+      //   repoObj.nameWithOwner
+      // );
+    } catch (error) {
+      console.error(
+        `[insertContributorRepos] Error processing ${org}/${repo}:`,
+        error
+      );
+    }
   }
 }
+
+// Place these helpers above insertContributorRepos so they are in scope and use the correct method names/signatures
 
 async function fetchAndLogDependabotAlert(
   contributorLogin: string,
@@ -384,13 +445,10 @@ async function fetchAndLogDependabotAlert(
 ): Promise<void> {
   try {
     const apiClient = new GitHubApiClient();
-
     console.log(
       `[insertContributorRepos] Fetching dependabot alerts for ${contributorLogin}/${org}/${repo}`
     );
-
     const dependabotService = new DependabotAlertService(apiClient);
-
     // Get Alerts
     const result: DependabotAlertResult =
       await dependabotService.getAlertsForRepo(org, repo);
@@ -402,7 +460,6 @@ async function fetchAndLogDependabotAlert(
         ? `${result.status}: ${result.alerts.length} alerts found`
         : `${result.status}`
     );
-
     if (result.status !== 'ok') {
       console.warn(
         `[insertContributorRepos] Failed to fetch dependabot alerts for ${org}/${repo}: ${result.message || 'Unknown error'}`
@@ -419,7 +476,6 @@ async function fetchAndLogDependabotAlert(
       );
     }
     await DbService.init();
-
     for await (const alert of result.alerts) {
       console.log(
         `[insertContributorRepos] Dependabot Alert: ${alert.number} - ${alert.state}`
@@ -436,7 +492,6 @@ async function fetchAndLogDependabotAlert(
   }
 }
 
-// Extract workflow fetch/log logic into its own function for clarity and reuse
 async function fetchAndLogWorkflows(
   contributorLogin: string,
   org: string,
@@ -446,11 +501,9 @@ async function fetchAndLogWorkflows(
   try {
     const apiClient = new GitHubApiClient();
     await apiClient.getAndTestGitHubToken();
-
     console.log(
       `[insertContributorRepos] Fetching workflows for ${contributorLogin}/${org}/${repo}`
     );
-
     const workflowService = new WorkflowService(apiClient);
     const workflows: WorkflowWithStatus[] =
       await workflowService.getWorkflowsWithStatus(org, repo);
@@ -503,9 +556,9 @@ export default async function run(
       '[TypeORM] Unique contributors to insert:',
       uniqueContributors.map(c => c.login)
     );
-    let savedCount = 0;
+    const savedCount = 0;
     await DbService.init();
-    for (const contributorData of uniqueContributors) {
+    for await(const contributorData of uniqueContributors) {
       console.log(
         `\nProcessing contributor: ${contributorData.login} (${contributorData.name})`
       );
@@ -513,7 +566,7 @@ export default async function run(
       await insertContributorIssuesAndPRs(contributorData);
       await insertContributorRepos(contributorData);
 
-      savedCount++;
+      break; //savedCount++; TBD
     }
 
     console.log(

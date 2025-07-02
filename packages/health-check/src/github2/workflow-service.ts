@@ -26,7 +26,7 @@ export default class WorkflowService {
       return [];
     }
     const workflows: any[] = [];
-    for (const wf of repoWorkflowsData.workflows) {
+    for await (const wf of repoWorkflowsData.workflows) {
       let runsData;
       try {
         const { data } = await octokit.rest.actions.listWorkflowRuns({

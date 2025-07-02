@@ -37,8 +37,6 @@ export class RepositoryService {
         pushedAt
         owner { login url avatarUrl }
         watchers { totalCount }
-        issues(states: [OPEN]){ totalCount }
-        pullRequests(states: [OPEN]){ totalCount }
         topics: repositoryTopics(first: ${additionalDataSize}) { nodes { topic { name } } }
         readme: object(expression: "HEAD:README.md") { ... on Blob { text } }
       }
@@ -69,10 +67,10 @@ export class RepositoryService {
       query($owner: String!, $repo: String!) {
         repository(owner: $owner, name: $repo) {
           ...RepoFields
-          issues(first: ${additionalDataSize}, orderBy: {field: CREATED_AT, direction: DESC}) {
+          issues(first: ${additionalDataSize}) {
             nodes { ...IssueFields }
           }
-          pullRequests(first: ${additionalDataSize}, orderBy: {field: CREATED_AT, direction: DESC}) {
+          pullRequests(first: ${additionalDataSize}) {
             nodes { ...PRFields }
           }
         }
