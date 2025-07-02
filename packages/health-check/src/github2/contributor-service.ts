@@ -367,8 +367,8 @@ export class ContributorService {
     let page = 1;
     let hasMore = true;
 
-    // eslint-disable-next-line no-await-in-loop 
     while (hasMore) {
+      // eslint-disable-next-line no-await-in-loop
       const { data } = await octokit.rest.repos.listForUser({
         username,
         per_page: 100,
