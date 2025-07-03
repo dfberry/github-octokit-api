@@ -73,4 +73,7 @@ export class Repository {
 
   @Column({ nullable: true })
   dependabot_alerts_status?: string;
+
+  @Column({ nullable: true })
+  workflow_status?: string;
 }

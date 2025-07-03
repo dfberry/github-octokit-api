@@ -39,7 +39,6 @@ async function fetchContributors(
   );
   const contributorDataList: ContributorData[] = [];
   for await (const contributor of configData.microsoftContributors) {
-    // tbd for await
     console.log(`Processing contributor: ${contributor}`);
     try {
       // Use the GraphQL method for full data
@@ -48,13 +47,10 @@ async function fetchContributors(
         30
       );
       contributorDataList.push(contributorData as unknown as ContributorData);
-      break; //TBD
     } catch (error) {
       console.log(
         `Error processing contributor ${contributor}: ${error instanceof Error ? error.message : String(error)}`
       );
-      // Continue with next contributor
-      break; //TBD
     }
   }
   return contributorDataList;
@@ -302,19 +298,19 @@ async function insertContributorRepos(contributorData: ContributorData) {
         readme: repoObj.readme,
       });
 
-      // await fetchAndLogWorkflows(
-      //   contributorData.login,
-      //   org,
-      //   repo,
-      //   repoObj.nameWithOwner
-      // );
+      await fetchAndLogDependabotAlert(
+        contributorData.login,
+        org,
+        repo,
+        repoObj.nameWithOwner
+      );
 
-      // await fetchAndLogDependabotAlert(
-      //   contributorData.login,
-      //   org,
-      //   repo,
-      //   repoObj.nameWithOwner
-      // );
+      await fetchAndLogWorkflows(
+        contributorData.login,
+        org,
+        repo,
+        repoObj.nameWithOwner
+      );
     } catch (error) {
       console.error(
         `[insertContributorRepos] Error processing ${org}/${repo}:`,
@@ -400,6 +396,24 @@ async function fetchAndLogWorkflows(
       `[insertContributorRepos] Found ${workflows.length} workflows for ${org}/${repo}`
     );
     await DbService.init();
+
+    // Summarize workflow states
+    const stateCounts: Record<string, number> = {};
+    for (const workflow of workflows) {
+      const state = workflow.state || 'unknown';
+      stateCounts[state] = (stateCounts[state] || 0) + 1;
+    }
+    const stateSummary = Object.entries(stateCounts)
+      .map(([state, count]) => `${count} ${state}`)
+      .join(', ');
+    // Example: "Workflows: 5 (3 active, 2 disabled)"
+    const workflowStatus =
+      `Workflows: ${workflows.length}` +
+      (stateSummary ? ` (${stateSummary})` : '');
+
+    // Update repo workflow status in DB
+    await DbService.updateRepositoryWorkflowStatus(org, repo, workflowStatus);
+
     for await (const workflow of workflows) {
       console.log(
         `[insertContributorRepos] Workflow: ${workflow.name} (${workflow.id}) - ${workflow.state}`
@@ -445,7 +459,7 @@ export default async function run(
       '[TypeORM] Unique contributors to insert:',
       uniqueContributors.map(c => c.login)
     );
-    const savedCount = 0;
+    let savedCount = 0;
     await DbService.init();
     for await (const contributorData of uniqueContributors) {
       console.log(
@@ -455,7 +469,7 @@ export default async function run(
       await insertContributorIssuesAndPRs(contributorData);
       await insertContributorRepos(contributorData);
 
-      break; //savedCount++; TBD
+      savedCount++;
     }
 
     console.log(

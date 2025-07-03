@@ -71,6 +71,22 @@ export class DbService {
     );
   }
 
+  static async updateRepositoryWorkflowStatus(
+    org: string,
+    repo: string,
+    status: string
+  ): Promise<void> {
+    await this.init();
+    const nameWithOwner = `${org}/${repo}`;
+    const repoRepo = AppDataSource.getRepository(Repository);
+    await repoRepo.update(
+      { nameWithOwner },
+      {
+        workflow_status: status,
+      }
+    );
+  }
+
   // Contributor methods
   static async insertContributor(
     contribData: Partial<Contributor>
