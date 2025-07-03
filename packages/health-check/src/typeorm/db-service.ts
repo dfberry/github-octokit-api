@@ -19,16 +19,13 @@ export class DbService {
     repoData: Partial<Repository>
   ): Promise<Repository> {
     await this.init();
-    console.log('[TypeORM] Inserting repository:', repoData.id);
+
     if (!repoData.id) throw new Error('Repository id (org/repo) is required');
     const repoRepo = AppDataSource.getRepository(Repository);
     let repo = await repoRepo.findOneBy({ id: repoData.id });
     if (!repo) {
       repo = repoRepo.create(repoData);
       await repoRepo.save(repo);
-      console.log('[TypeORM] Repository inserted:', repoData.id);
-    } else {
-      console.log('[TypeORM] Repository already exists:', repoData.id);
     }
     return repo;
   }
@@ -125,12 +122,6 @@ export class DbService {
     data: Partial<ContributorIssuePr>
   ): Promise<ContributorIssuePr> {
     await this.init();
-    console.log(
-      '[TypeORM] Inserting contributor issue/pr:',
-      data.username,
-      data.type,
-      data.id
-    );
     if (!data.username || !data.type || !data.id) {
       throw new Error(
         'username, type, and id are required for ContributorIssuePr'
@@ -139,12 +130,6 @@ export class DbService {
     const repo = AppDataSource.getRepository(ContributorIssuePr);
     const record = repo.create(data);
     await repo.save(record);
-    console.log(
-      '[TypeORM] Contributor issue/pr inserted:',
-      data.username,
-      data.type,
-      data.id
-    );
     return record;
   }
   static async getContributorIssuePrById(
@@ -177,7 +162,6 @@ export class DbService {
       if (!data.id) throw new Error('Workflow id is required');
 
       await this.init();
-      console.log('[TypeORM] Inserting workflow:', data.id);
 
       const repo = AppDataSource.getRepository(Workflow);
 

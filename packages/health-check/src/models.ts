@@ -122,7 +122,7 @@ export interface InfrastructureData {
 export type GetRepoParams = OctokitGetRepoParams;
 
 // Export useful Octokit types to be used throughout the application
-export type Repository = OctokitRepo;
+export type GitHubRepository = OctokitRepo;
 //export type SearchRepositoryItem = OctokitSearchRepo;
 export type SearchRepositoryItem =
   Endpoints['GET /search/repositories']['response']['data']['items'][0];

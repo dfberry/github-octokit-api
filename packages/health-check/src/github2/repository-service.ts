@@ -1,10 +1,10 @@
 import GitHubApiClient from './api-client.js';
-import type { Repository } from '../models.js';
+import type { GitHubRepository } from '../models.js';
 
 export class RepositoryService {
   constructor(private api: GitHubApiClient) {}
 
-  async getRepository(owner: string, repo: string): Promise<Repository> {
+  async getRepository(owner: string, repo: string): Promise<GitHubRepository> {
     const octokit = this.api.getRest();
     const { data } = await octokit.rest.repos.get({ owner, repo });
     return data;
@@ -14,9 +14,10 @@ export class RepositoryService {
     owner: string,
     repo: string,
     additionalDataSize: number = 30
-  ): Promise<Repository> {
-    const graphql = this.api.getGraphql();
-    const query = `
+  ): Promise<GitHubRepoModified | null> {
+    try {
+      const graphql = this.api.getGraphql();
+      const query = `
       fragment RepoFields on Repository {
         id
         name
@@ -29,57 +30,65 @@ export class RepositoryService {
         isFork
         isArchived
         isDisabled
-        primaryLanguage { name color }
-        licenseInfo { key name spdxId url }
+        primaryLanguage { name }
+        licenseInfo { name }
         diskUsage
         createdAt
         updatedAt
         pushedAt
-        owner { login url avatarUrl }
+        owner { login }
         watchers { totalCount }
         topics: repositoryTopics(first: ${additionalDataSize}) { nodes { topic { name } } }
         readme: object(expression: "HEAD:README.md") { ... on Blob { text } }
       }
-      fragment IssueFields on Issue {
-        id
-        number
-        title
-        url
-        state
-        createdAt
-        updatedAt
-        closedAt
-        author { login url avatarUrl }
-      }
-      fragment PRFields on PullRequest {
-        id
-        number
-        title
-        url
-        state
-        createdAt
-        updatedAt
-        closedAt
-        author { login url avatarUrl }
-        merged
-        mergedAt
-      }
       query($owner: String!, $repo: String!) {
         repository(owner: $owner, name: $repo) {
           ...RepoFields
-          issues(first: ${additionalDataSize}) {
-            nodes { ...IssueFields }
+          issues(states: OPEN) {
+            totalCount
           }
-          pullRequests(first: ${additionalDataSize}) {
-            nodes { ...PRFields }
+          pullRequests(states: OPEN) {
+            totalCount
           }
         }
       }
     `;
-    const result = await graphql.graphql(query, { owner, repo });
-    const repository = (result as Record<string, unknown>).repository;
-    return repository as Repository;
+      const result = await graphql.graphql(query, { owner, repo });
+      const repository = (result as Record<string, unknown>).repository;
+      return repository as GitHubRepoModified;
+    } catch (error) {
+      console.error('Error fetching repository data:', error);
+      //throw error; // Re-throw the error for further handling
+      return null;
+    }
   }
 }
+
+// Type representing the result of the GraphQL query in getRepositoryGraphql
+export type GitHubRepoModified = {
+  id: string;
+  name: string;
+  nameWithOwner: string;
+  url: string;
+  description: string | null;
+  stargazerCount: number;
+  forkCount: number;
+  isPrivate: boolean;
+  isFork: boolean;
+  isArchived: boolean;
+  isDisabled: boolean;
+  primaryLanguage: { name: string } | null;
+  licenseInfo: { name: string } | null;
+  diskUsage: number | null;
+  createdAt: string;
+  updatedAt: string;
+  pushedAt: string;
+  owner: { login: string };
+  watchers: { totalCount: number };
+  topics: { nodes: { topic: { name: string } }[] };
+  readme: { text: string } | null;
+  issues: { totalCount: number };
+  pullRequests: { totalCount: number };
+};
 
 export default RepositoryService;

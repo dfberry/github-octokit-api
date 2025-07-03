@@ -1,11 +1,15 @@
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import path from 'path';
-import GetContributorData from './contributors.js';
+import 'reflect-metadata';
 import { createTimestampedDirectory } from './utils/file.js';
 import DataConfig from './initialize-with-data.js';
-import 'reflect-metadata';
 import GitHubApiClient from './github2/api-client.js';
+import { ContributorData, OctokitSearchIssue } from './github2/models.js';
+import { insertContributorIssuesAndPRs } from './issuesAndPrs.js';
+import { getUniqueActiveSimpleRepositories } from './utils/convert.js';
+import { processActiveRepos } from './repositories.js';
+import GetContributorData from './contributors.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -70,14 +74,48 @@ async function main(): Promise<void> {
   console.log('***    Authenticated*** as:', authenticatedUser.login);
 
   // Get data from GraphQL API
-  await GetContributorData(generatedDirectory, configData);
+  const contributorData = await GetContributorData(
+    generatedDirectory,
+    configData
+  );
 
-  // Get Repo data from REST API
-  //await GetExtraRepoData(token, generatedDirectory, configData, db);
+  if (!contributorData || contributorData.length === 0) {
+    console.error('No contributor data found. Exiting...');
+    await shutDown(db);
+    return;
+  } else {
+    for await (const contributor of contributorData) {
+      await insertContributorIssuesAndPRs(contributor);
+    }
+    await postProcessing(contributorData);
+  }
 
   await shutDown(db);
   console.log('Generated directory:', generatedDirectory);
   console.log('Health check completed successfully.');
+}
+async function postProcessing(
+  contributorData: ContributorData[]
+): Promise<void> {
+  if (!contributorData || contributorData.length === 0) {
+    console.error('No contributor data found for post-processing.');
+    return;
+  }
+
+  const totalPrs: OctokitSearchIssue[] = contributorData.flatMap(
+    contrib => contrib.recentPRs
+  );
+
+  const uniqueActiveRepos = await getUniqueActiveSimpleRepositories(totalPrs);
+  if (!uniqueActiveRepos || uniqueActiveRepos.length === 0) {
+    console.error('No unique repositories found in recent PRs.');
+    return;
+  }
+
+  await processActiveRepos(uniqueActiveRepos);
+
+  //const uniqueActiveRepos = await processAndInsertActiveRepos(totalPrs);
+  // handle workflows and dependabot alerts for uniqueActiveRepos
 }
 
 main().catch((error: unknown) => {

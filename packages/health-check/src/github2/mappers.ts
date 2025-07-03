@@ -80,8 +80,8 @@ export function mapOctokitRepoToEntity(repo: OctokitRepo): RepositoryEntity {
     pushedAt: repo.pushed_at ?? undefined,
     owner: repo.owner?.login ?? undefined,
     watchersCount: repo.watchers_count ?? undefined,
-    issuesCount: repo.open_issues_count ?? undefined,
-    pullRequestsCount: undefined, // Not available directly
+    //issuesCount: repo.open_issues_count ?? undefined,
+    //pullRequestsCount: undefined, // Not available directly
     topics: Array.isArray(repo.topics) ? repo.topics.join(',') : undefined,
     readme: undefined, // Not available directly
   };

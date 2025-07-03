@@ -1,7 +1,8 @@
 import GitHubApiClient from './api-client.js';
 import type { WorkflowWithStatus } from './models.js';
+export type { WorkflowWithStatus };
 
-export default class WorkflowService {
+export default class GithubWorkflowService {
   constructor(private api: GitHubApiClient) {}
 
   async getWorkflowsWithStatus(
@@ -11,8 +12,6 @@ export default class WorkflowService {
     const octokit = this.api.getRest();
     let repoWorkflowsData;
     try {
-      console.log(`[WorkflowService] Fetching workflows for ${owner}/${repo}`);
-
       const { data } = await octokit.rest.actions.listRepoWorkflows({
         owner,
         repo,
@@ -60,6 +59,7 @@ export default class WorkflowService {
         lastRunUrl: runsData.workflow_runs[0]?.url || null,
       });
     }
+
     return workflows;
   }
 }

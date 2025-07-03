@@ -16,7 +16,8 @@
     "format:check": "prettier --check \"src/**/*.ts\"",
     "lint": "eslint \"src/**/*.ts\" ",
     "lint:check": "eslint \"src/**/*.ts\"",
-    "start": "npm run build && node -r dotenv/config ./dist/index.js",
+    "start": "npm run start:index",
+    "start:index": "node -r dotenv/config ./dist/index.js",
     "test": "vitest run --coverage"
   },
   "author": "",

@@ -11,11 +11,6 @@ export default class GitHubApiClient {
   constructor() {
     const token = process.env.GITHUB_TOKEN || '';
 
-    console.log(
-      'Initializing GitHub API client with token:',
-      token ? '[REDACTED]' : 'not provided'
-    );
-
     this.rest = new MyOctokit({
       auth: token,
       request: {
@@ -49,7 +44,6 @@ export default class GitHubApiClient {
   async getAndTestGitHubToken(): Promise<OctokitAuthenticatedUser> {
     try {
       const { data } = await this.rest.rest.users.getAuthenticated();
-      console.log('Authenticated as:', data.login);
       return data;
     } catch (error) {
       console.error('Failed to authenticate with GitHub:', error);

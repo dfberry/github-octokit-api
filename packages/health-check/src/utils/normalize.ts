@@ -1,5 +1,45 @@
+import type { GitHubRepository } from '../models.js';
+import type { Repository as DatabaseRepository } from '../typeorm/Repository.js';
+import { GitHubRepoModified } from '../github2/repository-service.js';
+import type {
+  ContributorRepo,
+  OctokitRepo,
+  OctokitSearchRepo,
+} from '../github2/models.js';
+
+/**
+ * Normalize a GitHubRepository (GraphQL) to a TypeORM Repository entity shape.
+ */
+export function normalizeGitHubRepositoryToDatabaseRepository(
+  repo: GitHubRepoModified
+): Partial<DatabaseRepository> {
+  return {
+    id: repo.id?.toString() ?? '',
+    name: repo.name || '',
+    nameWithOwner: repo.nameWithOwner || '',
+    url: repo.url || '',
+    description: repo.description || '',
+    stargazerCount: repo.stargazerCount ?? 0,
+    forkCount: repo.forkCount ?? 0,
+    isPrivate: repo.isPrivate ?? false,
+    isFork: repo.isFork ?? false,
+    isArchived: repo.isArchived ?? false,
+    isDisabled: repo.isDisabled ?? false,
+    primaryLanguage: repo.primaryLanguage?.name ?? undefined,
+    licenseInfo: repo.licenseInfo?.name ?? undefined,
+    owner: repo.owner?.login ?? '',
+    diskUsage: repo.diskUsage ?? undefined,
+    createdAt: repo.createdAt ?? undefined,
+    updatedAt: repo.updatedAt ?? undefined,
+    pushedAt: repo.pushedAt ?? undefined,
+    watchersCount: repo.watchers?.totalCount ?? undefined,
+    issuesCount: repo.issues.totalCount ?? 0,
+    pullRequestsCount: repo.pullRequests.totalCount ?? 0,
+    topics: repo.topics.nodes.map(t => t.topic?.name).join(',') || undefined,
+    readme: normalizeReadme(repo?.readme?.text),
+  };
+}
 // Utility functions for normalizing GitHub API data structures
-import type { ContributorRepo } from '../github2/models.js';
 
 // Helper types for topic nodes
 interface TopicNode {
@@ -79,7 +119,6 @@ export type NormalizedRepo = {
 };
 
 // Type guards for GraphQL and REST repo shapes
-import type { OctokitRepo, OctokitSearchRepo } from '../github2/models.js';
 
 // Accepts both GraphQL-like and REST repo objects
 function isGraphQLRepo(obj: unknown): obj is {
