@@ -30,7 +30,7 @@ export async function processActiveRepos(
             normalizeGitHubRepositoryToDatabaseRepository(repoData)
           );
         }
-        console.log(`Repository inserted for ${repo.org}/${repo.repo}`);
+        console.log(`Repository ${repo.org}/${repo.repo}`);
       } catch (err) {
         console.error(
           `Failed to fetch/insert repo for ${repo.org}/${repo.repo}:`,
@@ -85,7 +85,7 @@ export async function processWorkflow(
 
     for await (const workflow of workflows) {
       console.log(
-        `Workflow name:${workflow.name} id:${workflow.id} state:${workflow.state}`
+        `Workflow ${repo.org}/${repo.repo} - name:${workflow.name} id:${workflow.id} state:${workflow.state}`
       );
       if (workflow.id) {
         const entity = mapOctokitWorkflowToEntity(

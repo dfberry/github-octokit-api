@@ -29,7 +29,7 @@ export async function insertContributorIssuesAndPRs(
       const type = item.pull_request ? 'pr' : 'issue';
       const { org, repo } = extractOrgAndRepoFromFullName(item.url);
 
-      console.log(`Issue/PR: ${item.id} - in ${org}/${repo}`);
+      console.log(`Issue/PR: ${org}/${repo} - ${item.id}`);
 
       await DbService.insertContributorIssuePr({
         id: item.id.toString(),
