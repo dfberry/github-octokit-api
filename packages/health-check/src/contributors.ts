@@ -39,21 +39,21 @@ async function fetchContributors(
     `🔍 Collecting data for ${configData.microsoftContributors.length} contributors...`
   );
   const contributorDataList: ContributorData[] = [];
-  for await (const contributor of configData.microsoftContributors) {
-    console.log(`Processing contributor: ${contributor}`);
-    try {
-      // Use the GraphQL method for full data
-      const contributorData = await contributorCollector.getContributorGraphql(
-        contributor,
-        30
-      );
-      contributorDataList.push(contributorData as unknown as ContributorData);
-    } catch (error) {
-      console.log(
-        `Error processing contributor ${contributor}: ${error instanceof Error ? error.message : String(error)}`
-      );
-    }
-  }
+  await Promise.all(
+    configData.microsoftContributors.map(async contributor => {
+      console.log(`Processing contributor: ${contributor}`);
+      try {
+        // Use the GraphQL method for full data
+        const contributorData =
+          await contributorCollector.getContributorGraphql(contributor, 30);
+        contributorDataList.push(contributorData as unknown as ContributorData);
+      } catch (error) {
+        console.log(
+          `Error processing contributor ${contributor}: ${error instanceof Error ? error.message : String(error)}`
+        );
+      }
+    })
+  );
   return contributorDataList;
 }
 
@@ -100,14 +100,15 @@ export default async function GetContributorData(
     );
     let savedCount = 0;
     await DbService.init();
-    for await (const contributorData of uniqueContributors) {
-      console.log(
-        `\nProcessing contributor: ${contributorData.login} (${contributorData.name})`
-      );
-      await insertContributor(contributorData);
-
-      savedCount++;
-    }
+    await Promise.all(
+      uniqueContributors.map(async contributorData => {
+        console.log(
+          `\nProcessing contributor: ${contributorData.login} (${contributorData.name})`
+        );
+        await insertContributor(contributorData);
+        savedCount++;
+      })
+    );
 
     console.log(
       `\n📊 Contributor data collected for ${contributorDataList.length} contributors and saved ${savedCount} to database\n\n`

@@ -25,13 +25,17 @@ export async function insertContributorIssuesAndPRs(
       `Issues/PR - reduced from ${contributorData.recentPRs.length} to ${uniqueItems.size} unique items`
     );
 
-    for await (const item of uniqueItems.values()) {
+    // Prepare entities for batch insert
+    const issuePrEntities: Parameters<
+      typeof DbService.insertContributorIssuePr
+    >[0][] = [];
+    for (const item of uniqueItems.values()) {
       const type = item.pull_request ? 'pr' : 'issue';
       const { org, repo } = extractOrgAndRepoFromFullName(item.url);
 
       console.log(`Issue/PR: ${org}/${repo} - ${item.id}`);
 
-      await DbService.insertContributorIssuePr({
+      issuePrEntities.push({
         id: item.id.toString(),
         username: contributorData.login,
         org,
@@ -48,6 +52,10 @@ export async function insertContributorIssuesAndPRs(
         merged: 'merged' in item ? (item.merged as boolean) : false,
       });
       count++;
+    }
+    // Batch insert if any
+    if (issuePrEntities.length > 0) {
+      await DbService.insertContributorIssuePrBatch(issuePrEntities);
     }
     console.log(
       `\n\n📊 IssuesAndPRs data collected for ${count} issues and prs and saved to database\n\n`

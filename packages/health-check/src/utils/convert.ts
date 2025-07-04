@@ -15,18 +15,17 @@ export async function getUniqueActiveSimpleRepositories(
   }
   const apiClient = new GitHubApiClient();
   const contributorService = new ContributorService(apiClient);
-  const activeRepos: SimpleRepository[] = [];
-  await Promise.all(
-    simpleRepositories.map(async repo => {
-      const isActive = await contributorService.isActiveRepository(
-        repo.org,
-        repo.repo
-      );
-      if (isActive) {
-        activeRepos.push(repo);
-      }
-    })
-  );
+  const activeRepos = (
+    await Promise.all(
+      simpleRepositories.map(async repo => {
+        const isActive = await contributorService.isActiveRepository(
+          repo.org,
+          repo.repo
+        );
+        return isActive ? repo : null;
+      })
+    )
+  ).filter(Boolean) as SimpleRepository[];
   return activeRepos;
 }
 import { SimpleRepository, extractOrgAndRepo } from './regex.js';

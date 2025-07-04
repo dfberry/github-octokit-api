@@ -6,6 +6,38 @@ import { ContributorIssuePr } from './ContributorIssuePr.js';
 import { Workflow } from './Workflow.js';
 
 export class DbService {
+  // Batch insert for Contributor
+  static async insertContributorBatch(
+    data: Partial<Contributor>[]
+  ): Promise<Contributor[]> {
+    await this.init();
+    const repo = AppDataSource.getRepository(Contributor);
+    const records = repo.create(data);
+    await repo.save(records);
+    return records;
+  }
+
+  // Batch insert for Workflow
+  static async insertWorkflowBatch(data: Workflow[]): Promise<Workflow[]> {
+    await this.init();
+    const repo = AppDataSource.getRepository(Workflow);
+    const records = repo.create(data);
+    await repo.save(records);
+    return records;
+  }
+
+  // Batch insert for DependabotAlert
+  static async insertDependabotAlertBatch(
+    data: Partial<DependabotAlert>[]
+  ): Promise<DependabotAlert[]> {
+    await this.init();
+    const repo = AppDataSource.getRepository(DependabotAlert);
+    const records = repo.create(data);
+    await repo.save(records);
+    return records;
+  }
+
+  // ...existing methods for single inserts, queries, etc...
   static async init() {
     if (!AppDataSource.isInitialized) {
       console.log('[TypeORM] Initializing data source...');
@@ -131,6 +163,17 @@ export class DbService {
     const record = repo.create(data);
     await repo.save(record);
     return record;
+  }
+
+  // Batch insert for ContributorIssuePr
+  static async insertContributorIssuePrBatch(
+    data: Partial<ContributorIssuePr>[]
+  ): Promise<ContributorIssuePr[]> {
+    await this.init();
+    const repo = AppDataSource.getRepository(ContributorIssuePr);
+    const records = repo.create(data);
+    await repo.save(records);
+    return records;
   }
   static async getContributorIssuePrById(
     username: string,

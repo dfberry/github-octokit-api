@@ -84,9 +84,11 @@ async function main(): Promise<void> {
     await shutDown(db);
     return;
   } else {
-    for await (const contributor of contributorData) {
-      await insertContributorIssuesAndPRs(contributor);
-    }
+    await Promise.all(
+      contributorData.map(contributor =>
+        insertContributorIssuesAndPRs(contributor)
+      )
+    );
     await postProcessing(contributorData);
   }
 
