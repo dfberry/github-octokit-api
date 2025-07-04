@@ -2,6 +2,7 @@ import { DbService } from './typeorm/db-service.js';
 import { extractOrgAndRepoFromFullName } from './utils/regex.js';
 import type { ContributorData } from './github2/models.js';
 import { PrSearchItem } from './github2/models.js';
+import logger from './logger.js';
 
 /**
  * Insert unique issues and PRs for a contributor into the database.
@@ -21,7 +22,7 @@ export async function insertContributorIssuesAndPRs(
       }
     }
 
-    console.log(
+    logger.info(
       `Issues/PR - reduced from ${contributorData.recentPRs.length} to ${uniqueItems.size} unique items`
     );
 
@@ -33,7 +34,7 @@ export async function insertContributorIssuesAndPRs(
       const type = item.pull_request ? 'pr' : 'issue';
       const { org, repo } = extractOrgAndRepoFromFullName(item.url);
 
-      console.log(`Issue/PR: ${org}/${repo} - ${item.id}`);
+      logger.info(`Issue/PR: ${org}/${repo} - ${item.id}`);
 
       issuePrEntities.push({
         id: item.id.toString(),
@@ -57,7 +58,7 @@ export async function insertContributorIssuesAndPRs(
     if (issuePrEntities.length > 0) {
       await DbService.insertContributorIssuePrBatch(issuePrEntities);
     }
-    console.log(
+    logger.info(
       `\n\n📊 IssuesAndPRs data collected for ${count} issues and prs and saved to database\n\n`
     );
   }

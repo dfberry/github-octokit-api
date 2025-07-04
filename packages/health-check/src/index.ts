@@ -10,6 +10,7 @@ import { insertContributorIssuesAndPRs } from './issuesAndPrs.js';
 import { getUniqueActiveSimpleRepositories } from './utils/convert.js';
 import { processActiveRepos } from './repositories.js';
 import GetContributorData from './contributors.js';
+import logger from './logger.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -24,7 +25,7 @@ export function getConfigData(
   generatedDirectory: string
 ): DataConfig | null {
   if (!dataDirectory || !generatedDirectory) {
-    console.error('Missing required directory configuration');
+    logger.error('Missing required directory configuration');
     return null;
   }
 
@@ -41,7 +42,7 @@ async function init() {
 
   const configData = new DataConfig(dataDirectory, generatedDirectory);
   if (!configData) {
-    console.error('No configuration data found. Exiting...');
+    logger.error('No configuration data found. Exiting...');
     return;
   }
 
@@ -51,27 +52,27 @@ async function init() {
 }
 async function shutDown(db: any): Promise<void> {
   if (db) {
-    console.log('Closing database connection...');
+    logger.info('Closing database connection...');
     await db.close();
   }
-  console.log('Shutdown complete.');
+  logger.info('Shutdown complete.');
 }
 
 async function main(): Promise<void> {
   const result = await init();
   if (!result) {
-    console.error('Initialization failed. Exiting...');
+    logger.error('Initialization failed. Exiting...');
     process.exit(1);
   }
   const { dataDirectory, generatedDirectory, configData, db } = result;
 
-  console.log('Starting health check ...');
-  console.log('Data directory:', dataDirectory);
-  console.log('Generated directory:', generatedDirectory);
+  logger.info('Starting health check ...');
+  logger.info('Data directory: %s', dataDirectory);
+  logger.info('Generated directory: %s', generatedDirectory);
 
   const apiClient = new GitHubApiClient();
   const authenticatedUser = await apiClient.getAndTestGitHubToken();
-  console.log('***    Authenticated*** as:', authenticatedUser.login);
+  logger.info('***    Authenticated*** as: %s', authenticatedUser.login);
 
   // Get data from GraphQL API
   const contributorData = await GetContributorData(
@@ -80,7 +81,7 @@ async function main(): Promise<void> {
   );
 
   if (!contributorData || contributorData.length === 0) {
-    console.error('No contributor data found. Exiting...');
+    logger.error('No contributor data found. Exiting...');
     await shutDown(db);
     return;
   } else {
@@ -93,14 +94,14 @@ async function main(): Promise<void> {
   }
 
   await shutDown(db);
-  console.log('Generated directory:', generatedDirectory);
-  console.log('Health check completed successfully.');
+  logger.info('Generated directory: %s', generatedDirectory);
+  logger.info('Health check completed successfully.');
 }
 async function postProcessing(
   contributorData: ContributorData[]
 ): Promise<void> {
   if (!contributorData || contributorData.length === 0) {
-    console.error('No contributor data found for post-processing.');
+    logger.error('No contributor data found for post-processing.');
     return;
   }
 
@@ -110,7 +111,7 @@ async function postProcessing(
 
   const uniqueActiveRepos = await getUniqueActiveSimpleRepositories(totalPrs);
   if (!uniqueActiveRepos || uniqueActiveRepos.length === 0) {
-    console.error('No unique repositories found in recent PRs.');
+    logger.error('No unique repositories found in recent PRs.');
     return;
   }
 
@@ -121,6 +122,6 @@ async function postProcessing(
 }
 
 main().catch((error: unknown) => {
-  console.log(error);
+  logger.error(error);
   process.exit(1);
 });

@@ -8,6 +8,7 @@ import type { WorkflowWithStatus as GithubWorkflowWithStatus } from './github2/w
 import { mapOctokitWorkflowToEntity } from './github2/mappers.js';
 import type { Workflow as DbWorkflow } from './typeorm/Workflow.js';
 import pLimit from 'p-limit';
+import logger from './logger.js';
 
 /**
  * Process PRs, filter to unique active repos, insert repo data, and return unique active SimpleRepositories.
@@ -36,17 +37,16 @@ export async function processActiveRepos(
               normalizeGitHubRepositoryToDatabaseRepository(repoData)
             );
           }
-          console.log(`Repository ${repo.org}/${repo.repo}`);
+          logger.info(`Repository ${repo.org}/${repo.repo}`);
         } catch (err) {
-          console.error(
-            `Failed to fetch/insert repo for ${repo.org}/${repo.repo}:`,
-            err
+          logger.error(
+            `Failed to fetch/insert repo for ${repo.org}/${repo.repo}: ${err instanceof Error ? err.message : String(err)}`
           );
         }
       })
     )
   );
-  console.log(
+  logger.info(
     `\n\n📊 Repositories data for ${uniqueActiveRepos.length} saved to database\n`
   );
 
@@ -68,7 +68,7 @@ export async function processActiveRepos(
       })
     )
   );
-  console.log(
+  logger.info(
     `\n\n📊 Workflows data for ${workFlows.length} workflows saved to database\n`
   );
 }
@@ -88,7 +88,7 @@ export async function processWorkflow(
     );
 
     if (!workflows || workflows.length === 0) {
-      console.log(`Workflows NOT found for ${repo.org}/${repo.repo}`);
+      logger.warn(`Workflows NOT found for ${repo.org}/${repo.repo}`);
       return [];
     }
 
@@ -97,7 +97,7 @@ export async function processWorkflow(
     // Prepare entities for batch insert
     const workflowEntities: DbWorkflow[] = [];
     for (const workflow of workflows) {
-      console.log(
+      logger.info(
         `Workflow ${repo.org}/${repo.repo} - name:${workflow.name} id:${workflow.id} state:${workflow.state}`
       );
       if (workflow.id) {
@@ -124,7 +124,7 @@ export async function processWorkflow(
     }
     return workflows;
   } catch (error) {
-    console.error(
+    logger.error(
       `Error fetching workflows for ${repo.org}/${repo.repo}: ${error instanceof Error ? error.message : String(error)}`
     );
     return [];
@@ -263,7 +263,7 @@ export async function fetchAndLogDependabotAlert(
 ): Promise<void> {
   try {
     const apiClient = new GitHubApiClient();
-    console.log(
+    logger.info(
       `[insertContributorRepos] Fetching dependabot alerts for ${contributorLogin}/${org}/${repo}`
     );
     const dependabotService = new DependabotAlertService(apiClient);
@@ -279,23 +279,23 @@ export async function fetchAndLogDependabotAlert(
         : `${result.status}`
     );
     if (result.status !== 'ok') {
-      console.warn(
+      logger.warn(
         `[insertContributorRepos] Failed to fetch dependabot alerts for ${org}/${repo}: ${result.message || 'Unknown error'}`
       );
       return;
     }
     if (result.alerts.length === 0) {
-      console.log(
+      logger.info(
         `[insertContributorRepos] No dependabot alerts found for ${org}/${repo}`
       );
     } else {
-      console.log(
+      logger.info(
         `[insertContributorRepos] Found ${result.alerts.length} dependabot alerts for ${org}/${repo}`
       );
     }
     await DbService.init();
     for await (const alert of result.alerts) {
-      console.log(
+      logger.info(
         `[insertContributorRepos] Dependabot Alert: ${alert.number} - ${alert.state}`
       );
       const entity = mapOctokitDependabotAlertToEntity(alert, `${org}/${repo}`);
@@ -304,7 +304,7 @@ export async function fetchAndLogDependabotAlert(
       }
     }
   } catch (error) {
-    console.error(
+    logger.error(
       `Error fetching dependabot alerts for ${contributorLogin}/${repoNameWithOwner}: ${error instanceof Error ? error.message : String(error)}`
     );
   }

@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import logger from './logger.js';
 
 /**
  * Configuration data class that provides access to repository and contributor information
@@ -26,11 +27,11 @@ export default class DataConfig {
       try {
         this._activeRepos =
           this.readJsonFile<Array<{ org: string; repo: string }>>(filePath);
-        console.log(
+        logger.info(
           `Loaded ${this._activeRepos.length} repositories from active repos list`
         );
       } catch (error) {
-        console.error(
+        logger.error(
           `Error reading active-repos.json: ${error instanceof Error ? error.message : String(error)}`
         );
         // Fallback to an empty array
@@ -45,11 +46,11 @@ export default class DataConfig {
       const filePath = path.join(this.dataDirectory, 'microsoft-repos.json');
       try {
         this._microsoftRepos = this.readJsonFile<string[]>(filePath);
-        console.log(
+        logger.info(
           `Loaded ${this._microsoftRepos.length} repositories from complete list`
         );
       } catch (error) {
-        console.error(
+        logger.error(
           `Error reading microsoft-repos.json: ${error instanceof Error ? error.message : String(error)}`
         );
         throw error;
@@ -86,16 +87,16 @@ export default class DataConfig {
   }
 
   public get microsoftContributors(): string[] {
-    console.log(`Getting Microsoft contributors`);
+    logger.info(`Getting Microsoft contributors`);
     if (!this._microsoftContributors) {
-      console.log(`Loading Microsoft contributors from file`);
+      logger.info(`Loading Microsoft contributors from file`);
       const filePath = path.join(
         this.dataDirectory,
         process.env.CONTRIBUTOR_LIST_FILE || 'advocates.json'
       );
-      console.log(`Loading Microsoft contributors from ${filePath}`);
+      logger.info(`Loading Microsoft contributors from ${filePath}`);
       const peopleInfo: [] = this.readJsonFile(filePath);
-      console.log(`Found ${peopleInfo.length} total contributors in the list`);
+      logger.info(`Found ${peopleInfo.length} total contributors in the list`);
 
       // remove all nulls from the array
       this._microsoftContributors = peopleInfo
@@ -119,26 +120,26 @@ export default class DataConfig {
       if (fs.existsSync(activeReposPath)) {
         const data =
           this.readJsonFile<{ org: string; repo: string }[]>(activeReposPath);
-        console.log(
+        logger.info(
           `Using filtered list of ${data.length} active repositories`
         );
         return data.map(r => `${r.org}/${r.repo}`);
       }
     } catch (error) {
-      console.warn(
+      logger.warn(
         `⚠️ Error reading active-repos.json: ${error instanceof Error ? error.message : String(error)}`
       );
-      console.log('Falling back to full repository list...');
+      logger.info('Falling back to full repository list...');
     }
 
     // Fall back to microsoft-repos.json if no active repos list
     const filePath = path.join(this.dataDirectory, 'microsoft-repos.json');
     try {
       const data = this.readJsonFile<string[]>(filePath);
-      console.log(`Loaded ${data.length} repositories from full list`);
+      logger.info(`Loaded ${data.length} repositories from full list`);
       return data;
     } catch (error) {
-      console.error(
+      logger.error(
         `❌ Error reading microsoft-repos.json: ${error instanceof Error ? error.message : String(error)}`
       );
       throw error;

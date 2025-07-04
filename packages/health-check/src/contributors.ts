@@ -1,4 +1,5 @@
 import { ContributorService } from './github2/contributor-service.js';
+import logger from './logger.js';
 import type DataConfig from './initialize-with-data.js';
 import type { ContributorData } from './github2/models.js';
 import { DbService } from './typeorm/db-service.js';
@@ -32,22 +33,22 @@ async function fetchContributors(
   const apiClient = new GitHubApiClient();
   const contributorCollector = new ContributorService(apiClient);
   if (configData.microsoftContributors.length === 0) {
-    console.log('No contributors found in configuration.');
+    logger.warn('No contributors found in configuration.');
     return [];
   }
-  console.log(
+  logger.info(
     `🔍 Collecting data for ${configData.microsoftContributors.length} contributors...`
   );
   const contributorDataList: ContributorData[] = await Promise.all(
     configData.microsoftContributors.map(async contributor => {
-      console.log(`Processing contributor: ${contributor}`);
+      logger.info(`Processing contributor: ${contributor}`);
       try {
         // Use the GraphQL method for full data
         const contributorData =
           await contributorCollector.getContributorGraphql(contributor, 30);
         return contributorData as unknown as ContributorData;
       } catch (error) {
-        console.log(
+        logger.error(
           `Error processing contributor ${contributor}: ${error instanceof Error ? error.message : String(error)}`
         );
         const emptyContributorData: ContributorData = {
@@ -103,7 +104,7 @@ export default async function GetContributorData(
   configData: DataConfig
 ): Promise<ContributorData[]> {
   try {
-    console.log(
+    logger.info(
       `\n\n🔍 ---------------------------------------\nContributor index `
     );
     const contributorDataList = await fetchContributors(configData);
@@ -115,18 +116,18 @@ export default async function GetContributorData(
       seenLogins.add(c.login);
       return true;
     });
-    console.log(
+    logger.info(
       '[TypeORM] Unique contributors to insert:',
       uniqueContributors.map(c => c.login)
     );
     await DbService.init();
     await insertContributors(uniqueContributors);
-    console.log(
+    logger.info(
       `\n📊 Contributor data collected for ${contributorDataList.length} contributors and saved ${uniqueContributors.length} to database\n\n`
     );
     return contributorDataList;
   } catch (error) {
-    console.error(
+    logger.error(
       `Error generating contributor index: ${error instanceof Error ? error.message : String(error)}`
     );
     process.exit(1);
