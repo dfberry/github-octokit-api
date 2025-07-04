@@ -56,7 +56,7 @@ export async function insertContributorIssuesAndPRs(
     }
     // Batch insert if any
     if (issuePrEntities.length > 0) {
-      await DbService.ContributorIssuePr.insertBatch(issuePrEntities);
+      await DbService.ContributorIssuePr.upsertBatch(issuePrEntities);
     }
     logger.info(
       `\n\n📊 IssuesAndPRs data collected for ${count} issues and prs and saved to database\n\n`

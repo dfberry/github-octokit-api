@@ -34,7 +34,7 @@ export async function processActiveRepos(
             repo.repo
           );
           if (repoData) {
-            await DbService.Repository.insertBatch([
+            await DbService.Repository.upsertBatch([
               normalizeGitHubRepositoryToDatabaseRepository(repoData),
             ]);
           }
@@ -119,7 +119,7 @@ export async function processWorkflow(
     }
     // Batch insert if any
     if (workflowEntities.length > 0) {
-      await DbService.Workflow.insertBatch(workflowEntities);
+      await DbService.Workflow.upsertBatch(workflowEntities);
     }
     return workflows;
   } catch (error) {
@@ -304,7 +304,7 @@ export async function fetchAndLogDependabotAlert(
       }
     }
     if (dependabotEntities.length > 0) {
-      await DbService.DependabotAlert.insertBatch(dependabotEntities);
+      await DbService.DependabotAlert.upsertBatch(dependabotEntities);
     }
   } catch (error) {
     logger.error(
