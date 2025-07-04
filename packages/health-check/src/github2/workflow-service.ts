@@ -1,7 +1,6 @@
+import logger from '../logger.js';
 import GitHubApiClient from './api-client.js';
 import type { WorkflowWithStatus } from './models.js';
-export type { WorkflowWithStatus };
-
 export default class GithubWorkflowService {
   constructor(private api: GitHubApiClient) {}
 
@@ -18,8 +17,8 @@ export default class GithubWorkflowService {
       });
       repoWorkflowsData = data;
     } catch (err) {
-      console.warn(
-        `[WorkflowService] Failed to fetch workflows for ${owner}/${repo}:`,
+      logger.warn(
+        `[WorkflowService] Failed to fetch workflows for ${owner}/${repo}: %O`,
         err
       );
       return [];
@@ -37,8 +36,8 @@ export default class GithubWorkflowService {
           });
           runsData = data;
         } catch (err) {
-          console.warn(
-            `[WorkflowService] Failed to fetch runs for workflow ${wf.id} in ${owner}/${repo}:`,
+          logger.warn(
+            `[WorkflowService] Failed to fetch runs for workflow ${wf.id} in ${owner}/${repo}: %O`,
             err
           );
           runsData = { workflow_runs: [] };

@@ -5,60 +5,325 @@ import { Contributor } from './Contributor.js';
 import { DependabotAlert } from './DependabotAlert.js';
 import { ContributorIssuePr } from './ContributorIssuePr.js';
 import { Workflow } from './Workflow.js';
+import logger from '../logger.js';
+
+// Ensure all batch insert methods are present and correct for all tables
+// - Contributor: insertContributorBatch
+// - Repository: insertRepositoryBatch
+// - Workflow: insertWorkflowBatch
+// - DependabotAlert: insertDependabotAlertBatch
+// - ContributorIssuePr: insertContributorIssuePrBatch
 
 export class DbService {
-  // Batch insert for Contributor
-  static async insertContributorBatch(
-    data: Partial<Contributor>[]
-  ): Promise<Contributor[]> {
-    await this.init();
-    if (!data.length) return [];
-    const repo = AppDataSource.getRepository(Contributor);
-    // Filter out contributors with no id (login)
-    const filtered = data.filter(d => d.id);
-    if (!filtered.length) return [];
-    // Only insert contributors that do not already exist
-    const filteredWithId = filtered.filter(
-      (d): d is Partial<Contributor> & { id: string } =>
-        typeof d.id === 'string'
-    );
-    const existing = await repo.findBy({
-      id: In(filteredWithId.map(d => d.id)),
-    });
-    const existingIds = new Set(existing.map(e => e.id));
-    const toInsert = filteredWithId.filter(d => !existingIds.has(d.id));
-    if (!toInsert.length) return [];
-    const records = repo.create(toInsert);
-    await repo.save(records);
-    return records;
-  }
+  static Contributor = class {
+    static async insertBatch(
+      data: Partial<Contributor>[]
+    ): Promise<Contributor[]> {
+      await DbService.init();
+      if (!data.length) return [];
+      const repo = AppDataSource.getRepository(Contributor);
+      const filtered = data.filter(
+        (d): d is Partial<Contributor> & { id: string } =>
+          typeof d.id === 'string'
+      );
+      const existing = await repo.findBy({ id: In(filtered.map(d => d.id)) });
+      const existingIds = new Set(existing.map(e => e.id));
+      const toInsert = filtered.filter(d => !existingIds.has(d.id));
+      if (!toInsert.length) return [];
+      const records = repo.create(toInsert);
+      await repo.save(records);
+      return records;
+    }
+    static async upsertBatch(
+      data: Partial<Contributor>[]
+    ): Promise<Contributor[]> {
+      await DbService.init();
+      if (!data.length) return [];
+      const repo = AppDataSource.getRepository(Contributor);
+      const filtered = data.filter(
+        (d): d is Partial<Contributor> & { id: string } =>
+          typeof d.id === 'string'
+      );
+      const upserted: Contributor[] = [];
+      for (const d of filtered) {
+        let record = await repo.findOneBy({ id: d.id });
+        if (record) {
+          await repo.update({ id: d.id }, d);
+          record = await repo.findOneBy({ id: d.id });
+        } else {
+          record = repo.create(d);
+          await repo.save(record);
+        }
+        if (record) upserted.push(record);
+      }
+      return upserted;
+    }
+    static async getById(id: string): Promise<Contributor | null> {
+      await DbService.init();
+      return AppDataSource.getRepository(Contributor).findOneBy({ id });
+    }
+    static async getAll(): Promise<Contributor[]> {
+      await DbService.init();
+      return AppDataSource.getRepository(Contributor).find();
+    }
+  };
 
-  // Batch insert for Workflow
-  static async insertWorkflowBatch(data: Workflow[]): Promise<Workflow[]> {
-    await this.init();
-    const repo = AppDataSource.getRepository(Workflow);
-    const records = repo.create(data);
-    await repo.save(records);
-    return records;
-  }
+  static Repository = class {
+    static async insertBatch(
+      data: Partial<Repository>[]
+    ): Promise<Repository[]> {
+      await DbService.init();
+      if (!data.length) return [];
+      const repo = AppDataSource.getRepository(Repository);
+      const filtered = data.filter(
+        (d): d is Partial<Repository> & { id: string } =>
+          typeof d.id === 'string'
+      );
+      const existing = await repo.findBy({ id: In(filtered.map(d => d.id)) });
+      const existingIds = new Set(existing.map(e => e.id));
+      const toInsert = filtered.filter(d => !existingIds.has(d.id));
+      if (!toInsert.length) return [];
+      const records = repo.create(toInsert);
+      await repo.save(records);
+      return records;
+    }
+    static async upsertBatch(
+      data: Partial<Repository>[]
+    ): Promise<Repository[]> {
+      await DbService.init();
+      if (!data.length) return [];
+      const repo = AppDataSource.getRepository(Repository);
+      const filtered = data.filter(
+        (d): d is Partial<Repository> & { id: string } =>
+          typeof d.id === 'string'
+      );
+      const upserted: Repository[] = [];
+      for (const d of filtered) {
+        let record = await repo.findOneBy({ id: d.id });
+        if (record) {
+          await repo.update({ id: d.id }, d);
+          record = await repo.findOneBy({ id: d.id });
+        } else {
+          record = repo.create(d);
+          await repo.save(record);
+        }
+        if (record) upserted.push(record);
+      }
+      return upserted;
+    }
+    static async getById(id: string): Promise<Repository | null> {
+      await DbService.init();
+      return AppDataSource.getRepository(Repository).findOneBy({ id });
+    }
+    static async getAll(): Promise<Repository[]> {
+      await DbService.init();
+      return AppDataSource.getRepository(Repository).find();
+    }
+  };
 
-  // Batch insert for DependabotAlert
-  static async insertDependabotAlertBatch(
-    data: Partial<DependabotAlert>[]
-  ): Promise<DependabotAlert[]> {
-    await this.init();
-    const repo = AppDataSource.getRepository(DependabotAlert);
-    const records = repo.create(data);
-    await repo.save(records);
-    return records;
-  }
+  static Workflow = class {
+    static async insertBatch(data: Partial<Workflow>[]): Promise<Workflow[]> {
+      await DbService.init();
+      if (!data.length) return [];
+      const repo = AppDataSource.getRepository(Workflow);
+      const filtered = data.filter(
+        (d): d is Partial<Workflow> & { id: number } => typeof d.id === 'number'
+      );
+      const existing = await repo.findBy({ id: In(filtered.map(d => d.id)) });
+      const existingIds = new Set(existing.map(e => e.id));
+      const toInsert = filtered.filter(d => !existingIds.has(d.id));
+      if (!toInsert.length) return [];
+      const records = repo.create(toInsert);
+      await repo.save(records);
+      return records;
+    }
+    static async upsertBatch(data: Partial<Workflow>[]): Promise<Workflow[]> {
+      await DbService.init();
+      if (!data.length) return [];
+      const repo = AppDataSource.getRepository(Workflow);
+      const filtered = data.filter(
+        (d): d is Partial<Workflow> & { id: number } => typeof d.id === 'number'
+      );
+      const upserted: Workflow[] = [];
+      for (const d of filtered) {
+        let record = await repo.findOneBy({ id: d.id });
+        if (record) {
+          await repo.update({ id: d.id }, d);
+          record = await repo.findOneBy({ id: d.id });
+        } else {
+          record = repo.create(d);
+          await repo.save(record);
+        }
+        if (record) upserted.push(record);
+      }
+      return upserted;
+    }
+    static async getById(id: number): Promise<Workflow | null> {
+      await DbService.init();
+      return AppDataSource.getRepository(Workflow).findOneBy({ id });
+    }
+    static async getAll(): Promise<Workflow[]> {
+      await DbService.init();
+      return AppDataSource.getRepository(Workflow).find();
+    }
+  };
+
+  static DependabotAlert = class {
+    static async insertBatch(
+      data: Partial<DependabotAlert>[]
+    ): Promise<DependabotAlert[]> {
+      await DbService.init();
+      if (!data.length) return [];
+      const repo = AppDataSource.getRepository(DependabotAlert);
+      const filtered = data.filter(
+        (d): d is Partial<DependabotAlert> & { id: number } =>
+          typeof d.id === 'number'
+      );
+      const existing = await repo.findBy({ id: In(filtered.map(d => d.id)) });
+      const existingIds = new Set(existing.map(e => e.id));
+      const toInsert = filtered.filter(d => !existingIds.has(d.id));
+      if (!toInsert.length) return [];
+      const records = repo.create(toInsert);
+      await repo.save(records);
+      return records;
+    }
+    static async upsertBatch(
+      data: Partial<DependabotAlert>[]
+    ): Promise<DependabotAlert[]> {
+      await DbService.init();
+      if (!data.length) return [];
+      const repo = AppDataSource.getRepository(DependabotAlert);
+      const filtered = data.filter(
+        (d): d is Partial<DependabotAlert> & { id: number } =>
+          typeof d.id === 'number'
+      );
+      const upserted: DependabotAlert[] = [];
+      for (const d of filtered) {
+        let record = await repo.findOneBy({ id: d.id });
+        if (record) {
+          await repo.update({ id: d.id }, d);
+          record = await repo.findOneBy({ id: d.id });
+        } else {
+          record = repo.create(d);
+          await repo.save(record);
+        }
+        if (record) upserted.push(record);
+      }
+      return upserted;
+    }
+    static async getById(id: number): Promise<DependabotAlert | null> {
+      await DbService.init();
+      return AppDataSource.getRepository(DependabotAlert).findOneBy({ id });
+    }
+    static async getAll(): Promise<DependabotAlert[]> {
+      await DbService.init();
+      return AppDataSource.getRepository(DependabotAlert).find();
+    }
+  };
+
+  static ContributorIssuePr = class {
+    static async insertBatch(
+      data: Partial<ContributorIssuePr>[]
+    ): Promise<ContributorIssuePr[]> {
+      await DbService.init();
+      if (!data.length) return [];
+      const repo = AppDataSource.getRepository(ContributorIssuePr);
+      const filtered = data.filter(
+        (
+          d
+        ): d is Partial<ContributorIssuePr> & {
+          username: string;
+          type: string;
+          id: string;
+        } =>
+          typeof d.username === 'string' &&
+          typeof d.type === 'string' &&
+          typeof d.id === 'string'
+      );
+      // Find existing by composite PK
+      const existing = await repo.findBy({
+        username: In(filtered.map(d => d.username)),
+        type: In(filtered.map(d => d.type)),
+        id: In(filtered.map(d => d.id)),
+      });
+      const existingSet = new Set(
+        existing.map(e => `${e.username}|${e.type}|${e.id}`)
+      );
+      const toInsert = filtered.filter(
+        d => !existingSet.has(`${d.username}|${d.type}|${d.id}`)
+      );
+      if (!toInsert.length) return [];
+      const records = repo.create(toInsert);
+      await repo.save(records);
+      return records;
+    }
+    static async upsertBatch(
+      data: Partial<ContributorIssuePr>[]
+    ): Promise<ContributorIssuePr[]> {
+      await DbService.init();
+      if (!data.length) return [];
+      const repo = AppDataSource.getRepository(ContributorIssuePr);
+      const filtered = data.filter(
+        (
+          d
+        ): d is Partial<ContributorIssuePr> & {
+          username: string;
+          type: string;
+          id: string;
+        } =>
+          typeof d.username === 'string' &&
+          typeof d.type === 'string' &&
+          typeof d.id === 'string'
+      );
+      const upserted: ContributorIssuePr[] = [];
+      for (const d of filtered) {
+        let record = await repo.findOneBy({
+          username: d.username,
+          type: d.type,
+          id: d.id,
+        });
+        if (record) {
+          await repo.update(
+            { username: d.username, type: d.type, id: d.id },
+            d
+          );
+          record = await repo.findOneBy({
+            username: d.username,
+            type: d.type,
+            id: d.id,
+          });
+        } else {
+          record = repo.create(d);
+          await repo.save(record);
+        }
+        if (record) upserted.push(record);
+      }
+      return upserted;
+    }
+    static async getById(
+      username: string,
+      type: string,
+      id: string
+    ): Promise<ContributorIssuePr | null> {
+      await DbService.init();
+      return AppDataSource.getRepository(ContributorIssuePr).findOneBy({
+        username,
+        type,
+        id,
+      });
+    }
+    static async getAll(): Promise<ContributorIssuePr[]> {
+      await DbService.init();
+      return AppDataSource.getRepository(ContributorIssuePr).find();
+    }
+  };
 
   // ...existing methods for single inserts, queries, etc...
   static async init() {
     if (!AppDataSource.isInitialized) {
-      console.log('[TypeORM] Initializing data source...');
+      logger.info('[TypeORM] Initializing data source...');
       await AppDataSource.initialize();
-      console.log('[TypeORM] Data source initialized.');
+      logger.info('[TypeORM] Data source initialized.');
     }
   }
 
@@ -79,7 +344,7 @@ export class DbService {
   }
   static async getRepositoryById(id: string): Promise<Repository | null> {
     await this.init();
-    console.log('[TypeORM] Fetching repository by id:', id);
+    logger.info('[TypeORM] Fetching repository by id: %s', id);
     return AppDataSource.getRepository(Repository).findOneBy({ id });
   }
   static async getRepositoryByOrgAndRepo(
@@ -87,14 +352,14 @@ export class DbService {
     repo: string
   ): Promise<Repository | null> {
     await this.init();
-    console.log('[TypeORM] Fetching repository by org/repo:', org, repo);
+    logger.info('[TypeORM] Fetching repository by org/repo: %s/%s', org, repo);
     return AppDataSource.getRepository(Repository).findOneBy({
       nameWithOwner: `${org}/${repo}`,
     });
   }
   static async getAllRepositories(): Promise<Repository[]> {
     await this.init();
-    console.log('[TypeORM] Fetching all repositories');
+    logger.info('[TypeORM] Fetching all repositories');
     return AppDataSource.getRepository(Repository).find();
   }
   static async updateRepositoryDependabotStatus(
@@ -104,8 +369,8 @@ export class DbService {
   ): Promise<void> {
     await this.init();
     const nameWithOwner = `${org}/${repo}`;
-    console.log(
-      '[TypeORM] Updating dependabot_alerts_status for repo:',
+    logger.info(
+      '[TypeORM] Updating dependabot_alerts_status for repo: %s, status: %s',
       nameWithOwner,
       status
     );
@@ -136,12 +401,12 @@ export class DbService {
   // Removed unused single insertContributor method (use batch insert instead)
   static async getContributorById(id: string): Promise<Contributor | null> {
     await this.init();
-    console.log('[TypeORM] Fetching contributor by id:', id);
+    logger.info('[TypeORM] Fetching contributor by id: %s', id);
     return AppDataSource.getRepository(Contributor).findOneBy({ id });
   }
   static async getAllContributors(): Promise<Contributor[]> {
     await this.init();
-    console.log('[TypeORM] Fetching all contributors');
+    logger.info('[TypeORM] Fetching all contributors');
     return AppDataSource.getRepository(Contributor).find();
   }
 
@@ -166,8 +431,35 @@ export class DbService {
     data: Partial<ContributorIssuePr>[]
   ): Promise<ContributorIssuePr[]> {
     await this.init();
+    if (!data.length) return [];
     const repo = AppDataSource.getRepository(ContributorIssuePr);
-    const records = repo.create(data);
+    // Only insert records that do not already exist
+    const filteredWithId = data.filter(
+      (
+        d
+      ): d is Partial<ContributorIssuePr> & {
+        username: string;
+        type: string;
+        id: string;
+      } =>
+        typeof d.username === 'string' &&
+        typeof d.type === 'string' &&
+        typeof d.id === 'string'
+    );
+    // Find existing by composite PK
+    const existing = await repo.findBy({
+      username: In(filteredWithId.map(d => d.username)),
+      type: In(filteredWithId.map(d => d.type)),
+      id: In(filteredWithId.map(d => d.id)),
+    });
+    const existingSet = new Set(
+      existing.map(e => `${e.username}|${e.type}|${e.id}`)
+    );
+    const toInsert = filteredWithId.filter(
+      d => !existingSet.has(`${d.username}|${d.type}|${d.id}`)
+    );
+    if (!toInsert.length) return [];
+    const records = repo.create(toInsert);
     await repo.save(records);
     return records;
   }
@@ -177,8 +469,8 @@ export class DbService {
     id: string
   ): Promise<ContributorIssuePr | null> {
     await this.init();
-    console.log(
-      '[TypeORM] Fetching contributor issue/pr by PK:',
+    logger.info(
+      '[TypeORM] Fetching contributor issue/pr by PK: %s, %s, %s',
       username,
       type,
       id
@@ -191,7 +483,7 @@ export class DbService {
   }
   static async getAllContributorIssuesPrs(): Promise<ContributorIssuePr[]> {
     await this.init();
-    console.log('[TypeORM] Fetching all contributor issues/prs');
+    logger.info('[TypeORM] Fetching all contributor issues/prs');
     return AppDataSource.getRepository(ContributorIssuePr).find();
   }
 
@@ -209,23 +501,23 @@ export class DbService {
 
       return record;
     } catch (error) {
-      console.error('Error in insertWorkflow:', error);
+      logger.error('Error in insertWorkflow: %O', error);
       throw error;
     }
   }
   static async getWorkflowById(id: number): Promise<Workflow | null> {
     await this.init();
-    console.log('[TypeORM] Fetching workflow by id:', id);
+    logger.info('[TypeORM] Fetching workflow by id: %d', id);
     return AppDataSource.getRepository(Workflow).findOneBy({ id });
   }
   static async getWorkflowByName(name: string): Promise<Workflow | null> {
     await this.init();
-    console.log('[TypeORM] Fetching workflow by name:', name);
+    logger.info('[TypeORM] Fetching workflow by name: %s', name);
     return AppDataSource.getRepository(Workflow).findOneBy({ name });
   }
   static async getAllWorkflows(): Promise<Workflow[]> {
     await this.init();
-    console.log('[TypeORM] Fetching all workflows');
+    logger.info('[TypeORM] Fetching all workflows');
     return AppDataSource.getRepository(Workflow).find();
   }
 
@@ -234,7 +526,7 @@ export class DbService {
     dependabot: DependabotAlert
   ): Promise<DependabotAlert> {
     await this.init();
-    console.log('[TypeORM] Inserting dependabot alert:', dependabot.id);
+    logger.info('[TypeORM] Inserting dependabot alert: %d', dependabot.id);
     const repo = AppDataSource.getRepository(DependabotAlert);
     const record = repo.create(dependabot);
     await repo.save(record);
@@ -243,12 +535,12 @@ export class DbService {
 
   static async getDependabotById(id: number): Promise<DependabotAlert | null> {
     await this.init();
-    console.log('[TypeORM] Fetching dependabot alert by id:', id);
+    logger.info('[TypeORM] Fetching dependabot alert by id: %d', id);
     return AppDataSource.getRepository(DependabotAlert).findOneBy({ id });
   }
   static async getAllDependabots(): Promise<DependabotAlert[]> {
     await this.init();
-    console.log('[TypeORM] Fetching all dependabot alerts');
+    logger.info('[TypeORM] Fetching all dependabot alerts');
     return AppDataSource.getRepository(DependabotAlert).find();
   }
   static async insertDependabotAlert(
@@ -261,12 +553,12 @@ export class DbService {
     if (!alert) {
       alert = alertRepo.create(alertData);
       await alertRepo.save(alert);
-      console.log('[TypeORM] Dependabot alert inserted:', alertData.id);
+      logger.info('[TypeORM] Dependabot alert inserted: %d', alertData.id);
     } else {
       // Optionally update existing alert
       await alertRepo.update({ id: alertData.id }, alertData);
       alert = await alertRepo.findOneBy({ id: alertData.id });
-      console.log('[TypeORM] Dependabot alert updated:', alertData.id);
+      logger.info('[TypeORM] Dependabot alert updated: %d', alertData.id);
     }
     return alert;
   }

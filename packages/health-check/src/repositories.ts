@@ -4,7 +4,8 @@ import { DbService } from './typeorm/db-service.js';
 import { normalizeGitHubRepositoryToDatabaseRepository } from './utils/normalize.js';
 import type { SimpleRepository } from './utils/regex.js';
 import GithubWorkflowService from './github2/workflow-service.js';
-import type { WorkflowWithStatus as GithubWorkflowWithStatus } from './github2/workflow-service.js';
+// import type { WorkflowWithStatus as GithubWorkflowWithStatus } from './github2/workflow-service.js';
+type GithubWorkflowWithStatus = any; // TODO: Replace 'any' with the correct type if/when available
 import { mapOctokitWorkflowToEntity } from './github2/mappers.js';
 import type { Workflow as DbWorkflow } from './typeorm/Workflow.js';
 import pLimit from 'p-limit';
@@ -33,9 +34,9 @@ export async function processActiveRepos(
             repo.repo
           );
           if (repoData) {
-            await DbService.insertRepository(
-              normalizeGitHubRepositoryToDatabaseRepository(repoData)
-            );
+            await DbService.Repository.insertBatch([
+              normalizeGitHubRepositoryToDatabaseRepository(repoData),
+            ]);
           }
           logger.info(`Repository ${repo.org}/${repo.repo}`);
         } catch (err) {
@@ -118,9 +119,7 @@ export async function processWorkflow(
     }
     // Batch insert if any
     if (workflowEntities.length > 0) {
-      for (const entity of workflowEntities) {
-        await DbService.insertWorkflow(entity);
-      }
+      await DbService.Workflow.insertBatch(workflowEntities);
     }
     return workflows;
   } catch (error) {
@@ -294,14 +293,18 @@ export async function fetchAndLogDependabotAlert(
       );
     }
     await DbService.init();
-    for await (const alert of result.alerts) {
+    const dependabotEntities = [];
+    for (const alert of result.alerts) {
       logger.info(
         `[insertContributorRepos] Dependabot Alert: ${alert.number} - ${alert.state}`
       );
       const entity = mapOctokitDependabotAlertToEntity(alert, `${org}/${repo}`);
       if (entity.id !== undefined) {
-        await DbService.insertDependabot(entity as DbDependabotAlert);
+        dependabotEntities.push(entity as DbDependabotAlert);
       }
+    }
+    if (dependabotEntities.length > 0) {
+      await DbService.DependabotAlert.insertBatch(dependabotEntities);
     }
   } catch (error) {
     logger.error(

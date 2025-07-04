@@ -3,21 +3,7 @@ import logger from './logger.js';
 import type DataConfig from './initialize-with-data.js';
 import type { ContributorData } from './github2/models.js';
 import { DbService } from './typeorm/db-service.js';
-import { extractOrgAndRepoFromFullName } from './utils/regex.js';
 import GitHubApiClient from './github2/api-client.js';
-import WorkflowService from './github2/workflow-service.js';
-import type { WorkflowWithStatus } from './github2/models.js';
-import type { Workflow as DbWorkflow } from './typeorm/Workflow.js';
-import {
-  mapOctokitWorkflowToEntity,
-  mapOctokitDependabotAlertToEntity,
-} from './github2/mappers.js';
-import DependabotAlertService, {
-  DependabotAlertResult,
-} from './github2/dependabot-alert-service.js';
-import type { DependabotAlert as DbDependabotAlert } from './typeorm/DependabotAlert.js';
-import RepositoryService from './github2/repository-service.js';
-import { normalizeRepo } from './utils/normalize.js';
 // ...existing code...
 /**
  * Generate a contributor index report
@@ -79,7 +65,7 @@ async function fetchContributors(
 // Batch insert contributors
 async function insertContributors(contributorDataList: ContributorData[]) {
   if (!contributorDataList.length) return;
-  await DbService.insertContributorBatch(
+  await DbService.Contributor.upsertBatch(
     contributorDataList.map(contributorData => ({
       id: contributorData.login,
       avatar_url: contributorData.avatarUrl || '',
