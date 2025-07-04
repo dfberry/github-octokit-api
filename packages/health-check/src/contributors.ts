@@ -38,42 +38,63 @@ async function fetchContributors(
   console.log(
     `🔍 Collecting data for ${configData.microsoftContributors.length} contributors...`
   );
-  const contributorDataList: ContributorData[] = [];
-  await Promise.all(
+  const contributorDataList: ContributorData[] = await Promise.all(
     configData.microsoftContributors.map(async contributor => {
       console.log(`Processing contributor: ${contributor}`);
       try {
         // Use the GraphQL method for full data
         const contributorData =
           await contributorCollector.getContributorGraphql(contributor, 30);
-        contributorDataList.push(contributorData as unknown as ContributorData);
+        return contributorData as unknown as ContributorData;
       } catch (error) {
         console.log(
           `Error processing contributor ${contributor}: ${error instanceof Error ? error.message : String(error)}`
         );
+        const emptyContributorData: ContributorData = {
+          login: contributor,
+          name: '',
+          avatarUrl: '',
+          company: '',
+          blog: '',
+          location: '',
+          bio: '',
+          twitter: '',
+          followers: 0,
+          following: 0,
+          publicRepos: 0,
+          publicGists: 0,
+          repos: [],
+          recentPRs: [],
+        };
+        return emptyContributorData as unknown as ContributorData;
       }
     })
   );
-  return contributorDataList;
+  // Filter out any nulls (failed fetches)
+  return contributorDataList.filter(Boolean) as ContributorData[];
 }
 
 // --- Insert helpers ---
-async function insertContributor(contributorData: ContributorData) {
-  await DbService.insertContributor({
-    id: contributorData.login,
-    avatar_url: contributorData.avatarUrl || '',
-    name: contributorData.name,
-    company: contributorData.company,
-    blog: contributorData.blog,
-    location: contributorData.location,
-    bio: contributorData.bio,
-    twitter: contributorData.twitter,
-    followers: contributorData.followers,
-    following: contributorData.following,
-    public_repos: contributorData.publicRepos,
-    public_gists: contributorData.publicGists,
-    // add more fields as needed
-  });
+// Batch insert contributors
+async function insertContributors(contributorDataList: ContributorData[]) {
+  if (!contributorDataList.length) return;
+  await DbService.insertContributorBatch(
+    contributorDataList.map(contributorData => ({
+      id: contributorData.login,
+      avatar_url: contributorData.avatarUrl || '',
+      name: contributorData.name,
+      company: contributorData.company,
+      blog: contributorData.blog,
+      location: contributorData.location,
+      bio: contributorData.bio,
+      twitter: contributorData.twitter,
+      followers: contributorData.followers,
+      following: contributorData.following,
+      public_repos: contributorData.publicRepos,
+      public_gists: contributorData.publicGists,
+      // add more fields as needed
+    }))
+  );
 }
 
 // --- Main workflow ---
@@ -98,20 +119,10 @@ export default async function GetContributorData(
       '[TypeORM] Unique contributors to insert:',
       uniqueContributors.map(c => c.login)
     );
-    let savedCount = 0;
     await DbService.init();
-    await Promise.all(
-      uniqueContributors.map(async contributorData => {
-        console.log(
-          `\nProcessing contributor: ${contributorData.login} (${contributorData.name})`
-        );
-        await insertContributor(contributorData);
-        savedCount++;
-      })
-    );
-
+    await insertContributors(uniqueContributors);
     console.log(
-      `\n📊 Contributor data collected for ${contributorDataList.length} contributors and saved ${savedCount} to database\n\n`
+      `\n📊 Contributor data collected for ${contributorDataList.length} contributors and saved ${uniqueContributors.length} to database\n\n`
     );
     return contributorDataList;
   } catch (error) {

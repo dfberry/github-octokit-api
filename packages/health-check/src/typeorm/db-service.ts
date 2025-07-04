@@ -1,4 +1,5 @@
 import { AppDataSource } from './data-source.js';
+import { In } from 'typeorm';
 import { Repository } from './Repository.js';
 import { Contributor } from './Contributor.js';
 import { DependabotAlert } from './DependabotAlert.js';
@@ -11,8 +12,23 @@ export class DbService {
     data: Partial<Contributor>[]
   ): Promise<Contributor[]> {
     await this.init();
+    if (!data.length) return [];
     const repo = AppDataSource.getRepository(Contributor);
-    const records = repo.create(data);
+    // Filter out contributors with no id (login)
+    const filtered = data.filter(d => d.id);
+    if (!filtered.length) return [];
+    // Only insert contributors that do not already exist
+    const filteredWithId = filtered.filter(
+      (d): d is Partial<Contributor> & { id: string } =>
+        typeof d.id === 'string'
+    );
+    const existing = await repo.findBy({
+      id: In(filteredWithId.map(d => d.id)),
+    });
+    const existingIds = new Set(existing.map(e => e.id));
+    const toInsert = filteredWithId.filter(d => !existingIds.has(d.id));
+    if (!toInsert.length) return [];
+    const records = repo.create(toInsert);
     await repo.save(records);
     return records;
   }
@@ -117,27 +133,7 @@ export class DbService {
   }
 
   // Contributor methods
-  static async insertContributor(
-    contribData: Partial<Contributor>
-  ): Promise<Contributor> {
-    await this.init();
-    console.log(
-      '[TypeORM] Inserting contributor:',
-      contribData.id,
-      contribData.name
-    );
-    if (!contribData.id) throw new Error('Contributor id (login) is required');
-    const contribRepo = AppDataSource.getRepository(Contributor);
-    let contrib = await contribRepo.findOneBy({ id: contribData.id });
-    if (!contrib) {
-      contrib = contribRepo.create(contribData);
-      await contribRepo.save(contrib);
-      console.log('[TypeORM] Contributor inserted:', contribData.id);
-    } else {
-      console.log('[TypeORM] Contributor already exists:', contribData.id);
-    }
-    return contrib;
-  }
+  // Removed unused single insertContributor method (use batch insert instead)
   static async getContributorById(id: string): Promise<Contributor | null> {
     await this.init();
     console.log('[TypeORM] Fetching contributor by id:', id);

@@ -45,7 +45,7 @@ export class ContributorService {
   ): Promise<ContributorRepo[]> {
     const octokit = this.api.getRest();
     const repos: ContributorRepo[] = [];
-    for await (const org of orgs) {
+    for (const org of orgs) {
       try {
         // Search for repos in org where user is a contributor
         const { data } = await octokit.rest.search.repos({
@@ -84,7 +84,7 @@ export class ContributorService {
             }
           }
         }
-        for await (const [repoFullName, repoUrl] of uniquePrRepos.entries()) {
+        for (const [repoFullName, repoUrl] of uniquePrRepos.entries()) {
           const [org, repoName] = repoFullName.split('/');
           try {
             const { data: repoDetails } = await octokit.rest.repos.get({
@@ -127,7 +127,7 @@ export class ContributorService {
   ): Promise<PrSearchItem[]> {
     const octokit = this.api.getRest();
     const allPRs: PrSearchItem[] = [];
-    for await (const org of orgs) {
+    for (const org of orgs) {
       try {
         const query = `org:${org} author:${username} is:pr created:>=${sinceDate}`;
         const { data } = await octokit.rest.search.issuesAndPullRequests({
@@ -243,8 +243,9 @@ export class ContributorService {
   ): Promise<ContributorRepo[]> {
     const graphql = this.api.getGraphql();
     const repos: ContributorRepo[] = [];
-    for await (const org of orgs) {
-      const query = `
+    await Promise.all(
+      orgs.map(async org => {
+        const query = `
         query($org: String!, $login: String!) {
           organization(login: $org) {
             repositories(first: 50, orderBy: {field: UPDATED_AT, direction: DESC}) {
@@ -275,45 +276,77 @@ export class ContributorService {
           }
         }
       `;
-      const result = await graphql.graphql(query, { org, login: username });
-      const organization = (result as any).organization;
-      if (
-        organization &&
-        organization.repositories &&
-        organization.repositories.nodes
-      ) {
-        for (const repo of organization.repositories.nodes) {
-          repos.push({
-            nameWithOwner: repo.nameWithOwner,
-            url: repo.url,
-            description: repo.description || '',
-            stargazerCount: repo.stargazerCount || 0,
-            forkCount: repo.forkCount || 0,
-            isPrivate: repo.isPrivate,
-            isFork: repo.isFork,
-            isArchived: repo.isArchived,
-            isDisabled: repo.isDisabled,
-            primaryLanguage: repo.primaryLanguage,
-            licenseInfo: repo.licenseInfo,
-            diskUsage: repo.diskUsage,
-            createdAt: repo.createdAt,
-            updatedAt: repo.updatedAt,
-            pushedAt: repo.pushedAt,
-            owner: repo.owner,
-            watchers: repo.watchers,
-            issues: repo.issues,
-            pullRequests: repo.pullRequests,
-            topics: repo.topics,
-            readme: repo.readme,
-            fullName: repo.nameWithOwner,
-            stars: repo.stargazerCount,
-            forks: repo.forkCount,
-            language: repo.primaryLanguage?.name || '',
-            lastUpdated: repo.updatedAt,
-          });
+        const result = await graphql.graphql(query, { org, login: username });
+        type RepoNode = {
+          nameWithOwner: string;
+          url: string;
+          description?: string;
+          stargazerCount?: number;
+          forkCount?: number;
+          isPrivate?: boolean;
+          isFork?: boolean;
+          isArchived?: boolean;
+          isDisabled?: boolean;
+          primaryLanguage?: { name?: string };
+          licenseInfo?: { name?: string };
+          diskUsage?: number;
+          createdAt?: string;
+          updatedAt?: string;
+          pushedAt?: string;
+          owner?: { login?: string };
+          watchers?: { totalCount?: number };
+          issues?: { totalCount?: number };
+          pullRequests?: { totalCount?: number };
+          topics?: { nodes?: { topic?: { name?: string } }[] };
+          readme?: { text?: string };
+        };
+        type GraphqlOrgResult = {
+          organization?: { repositories?: { nodes?: RepoNode[] } };
+        };
+        const organization = (result as GraphqlOrgResult).organization;
+        if (
+          organization &&
+          organization.repositories &&
+          organization.repositories.nodes
+        ) {
+          for (const repo of organization.repositories.nodes) {
+            repos.push({
+              nameWithOwner: repo.nameWithOwner,
+              url: repo.url,
+              description: repo.description || '',
+              stargazerCount: repo.stargazerCount ?? 0,
+              forkCount: repo.forkCount ?? 0,
+              isPrivate: repo.isPrivate ?? false,
+              isFork: repo.isFork ?? false,
+              isArchived: repo.isArchived ?? false,
+              isDisabled: repo.isDisabled ?? false,
+              primaryLanguage: { name: repo.primaryLanguage?.name ?? null },
+              licenseInfo: { name: repo.licenseInfo?.name ?? null },
+              diskUsage: repo.diskUsage ?? 0,
+              createdAt: repo.createdAt ?? '',
+              updatedAt: repo.updatedAt ?? '',
+              pushedAt: repo.pushedAt ?? '',
+              owner: { login: repo.owner?.login ?? '' },
+              watchers: { totalCount: repo.watchers?.totalCount ?? 0 },
+              issues: { totalCount: repo.issues?.totalCount ?? 0 },
+              pullRequests: { totalCount: repo.pullRequests?.totalCount ?? 0 },
+              topics: {
+                nodes:
+                  repo.topics?.nodes?.map(t => ({
+                    name: t.topic?.name ?? '',
+                  })) ?? [],
+              },
+              readme: { text: repo.readme?.text ?? null },
+              fullName: repo.nameWithOwner,
+              stars: repo.stargazerCount ?? 0,
+              forks: repo.forkCount ?? 0,
+              language: repo.primaryLanguage?.name || '',
+              lastUpdated: repo.updatedAt ?? '',
+            });
+          }
         }
-      }
-    }
+      })
+    );
     return repos;
   }
 
@@ -324,8 +357,9 @@ export class ContributorService {
   ): Promise<PrSearchItem[]> {
     const graphql = this.api.getGraphql();
     const allPRs: PrSearchItem[] = [];
-    for await (const org of orgs) {
-      const query = `
+    await Promise.all(
+      orgs.map(async org => {
+        const query = `
         query($org: String!, $login: String!, $since: DateTime!) {
           search(query: "org:$org author:$login is:pr created:>=$since", type: ISSUE, first: 50) {
             nodes {
@@ -346,16 +380,18 @@ export class ContributorService {
           }
         }
       `;
-      const result = await graphql.graphql(query, {
-        org,
-        login: username,
-        since: sinceDate,
-      });
-      const search = (result as any).search;
-      if (search && search.nodes) {
-        allPRs.push(...search.nodes);
-      }
-    }
+        const result = await graphql.graphql(query, {
+          org,
+          login: username,
+          since: sinceDate,
+        });
+        type SearchResult = { search?: { nodes?: PrSearchItem[] } };
+        const search = (result as SearchResult).search;
+        if (search && search.nodes) {
+          allPRs.push(...search.nodes);
+        }
+      })
+    );
     return allPRs;
   }
 
@@ -399,7 +435,7 @@ export class ContributorService {
         repo,
       });
       return !data.archived && !data.disabled;
-    } catch (error) {
+    } catch {
       // Optionally handle not found or permission errors
       return false;
     }

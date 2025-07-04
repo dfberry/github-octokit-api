@@ -24,41 +24,36 @@ export default class GithubWorkflowService {
       );
       return [];
     }
-    const workflows: any[] = [];
-    for await (const wf of repoWorkflowsData.workflows) {
-      let runsData;
-      try {
-        const { data } = await octokit.rest.actions.listWorkflowRuns({
-          owner,
-          repo,
-          workflow_id: wf.id,
-          per_page: 1,
+    const workflows: WorkflowWithStatus[] = [];
+    await Promise.all(
+      repoWorkflowsData.workflows.map(async (wf: WorkflowWithStatus) => {
+        let runsData;
+        try {
+          const { data } = await octokit.rest.actions.listWorkflowRuns({
+            owner,
+            repo,
+            workflow_id: wf.id,
+            per_page: 1,
+          });
+          runsData = data;
+        } catch (err) {
+          console.warn(
+            `[WorkflowService] Failed to fetch runs for workflow ${wf.id} in ${owner}/${repo}:`,
+            err
+          );
+          runsData = { workflow_runs: [] };
+        }
+        workflows.push({
+          ...wf,
+          lastRunId: runsData.workflow_runs[0]?.id
+            ? `${runsData.workflow_runs[0].id}`
+            : null,
+          lastRunStatus: runsData.workflow_runs[0]?.status || null,
+          lastRunDate: runsData.workflow_runs[0]?.created_at || null,
+          lastRunUrl: runsData.workflow_runs[0]?.url || null,
         });
-        runsData = data;
-      } catch (err) {
-        console.warn(
-          `[WorkflowService] Failed to fetch runs for workflow ${wf.id} in ${owner}/${repo}:`,
-          err
-        );
-        runsData = { workflow_runs: [] };
-      }
-      workflows.push({
-        id: wf.id,
-        orgRepo: `${owner}/${repo}`,
-        name: wf.name,
-        path: wf.path,
-        state: wf.state,
-        created_at: wf.created_at,
-        updated_at: wf.updated_at,
-        url: wf.html_url,
-        latestRunId: runsData.workflow_runs[0]?.id
-          ? `${runsData.workflow_runs[0].id}`
-          : null,
-        lastRunStatus: runsData.workflow_runs[0]?.status || null,
-        lastRunDate: runsData.workflow_runs[0]?.created_at || null,
-        lastRunUrl: runsData.workflow_runs[0]?.url || null,
-      });
-    }
+      })
+    );
 
     return workflows;
   }
