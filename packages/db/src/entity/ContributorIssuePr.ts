@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryColumn } from 'typeorm';
 
 @Entity('contributor_issues_prs')
-export class ContributorIssuePr {
+export default class ContributorIssuePr {
   @PrimaryColumn()
   username!: string;
 

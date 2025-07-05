@@ -1,7 +1,7 @@
 import { Entity, PrimaryColumn, Column } from 'typeorm';
 
 @Entity('repositories')
-export class Repository {
+export default class Repository {
   @PrimaryColumn()
   id!: string; // GitHub node id
 

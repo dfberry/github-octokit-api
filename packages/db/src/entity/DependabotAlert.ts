@@ -1,7 +1,7 @@
 import { Entity, PrimaryColumn, Column } from 'typeorm';
 
 @Entity('dependabot_alerts')
-export class DependabotAlert {
+export default class DependabotAlert {
   @PrimaryColumn()
   id!: number; // alert number
 
