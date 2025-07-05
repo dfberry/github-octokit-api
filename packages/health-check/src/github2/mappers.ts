@@ -7,11 +7,11 @@ import {
   OctokitPR,
   OctokitDependabotAlert,
 } from './models.js';
-import { Workflow as WorkflowEntity } from '../typeorm/Workflow.js';
-import { Contributor } from '../typeorm/Contributor.js';
-import { Repository as RepositoryEntity } from '../typeorm/Repository.js';
-import { ContributorIssuePr } from '../typeorm/ContributorIssuePr.js';
-import { DependabotAlert as DependabotAlertEntity } from '../typeorm/DependabotAlert.js';
+import { Workflow as WorkflowEntity } from '@dfb/db';
+import { Contributor } from '@dfb/db';
+import { Repository as RepositoryEntity } from '@dfb/db';
+import { ContributorIssuePr } from '@dfb/db';
+import { DependabotAlert as DependabotAlertEntity } from '@dfb/db';
 
 export function mapOctokitWorkflowToEntity(
   wf: OctokitWorkflow,

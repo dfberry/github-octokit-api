@@ -1,5 +1,5 @@
 import type { GitHubRepository } from '../models.js';
-import type { Repository as DatabaseRepository } from '../typeorm/Repository.js';
+import type { Repository as DatabaseRepository } from '@dfb/db';
 import { GitHubRepoModified } from '../github2/repository-service.js';
 import type {
   ContributorRepo,

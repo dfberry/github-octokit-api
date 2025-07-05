@@ -1,13 +1,13 @@
 import { DataSource } from 'typeorm';
-import { Repository } from './Repository.js';
-import { Contributor } from './Contributor.js';
-import { ContributorIssuePr } from './ContributorIssuePr.js';
-import { Workflow } from './Workflow.js';
+import { Repository } from '@dfb/db';
+import { Contributor } from '@dfb/db';
+import { ContributorIssuePr } from '@dfb/db';
+import { Workflow } from '@dfb/db';
+import { DependabotAlert } from '@dfb/db';
 
 import * as path from 'path';
 import * as fs from 'fs';
 import { fileURLToPath } from 'url';
-import { DependabotAlert } from './DependabotAlert.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

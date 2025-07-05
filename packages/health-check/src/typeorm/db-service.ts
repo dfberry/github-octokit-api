@@ -1,10 +1,10 @@
 import { AppDataSource } from './data-source.js';
 import { In } from 'typeorm';
-import { Repository } from './Repository.js';
-import { Contributor } from './Contributor.js';
-import { DependabotAlert } from './DependabotAlert.js';
-import { ContributorIssuePr } from './ContributorIssuePr.js';
-import { Workflow } from './Workflow.js';
+import { Repository } from '@dfb/db';
+import { Contributor } from '@dfb/db';
+import { DependabotAlert } from '@dfb/db';
+import { ContributorIssuePr } from '@dfb/db';
+import { Workflow } from '@dfb/db';
 import logger from '../logger.js';
 
 // Ensure all batch insert methods are present and correct for all tables

@@ -7,7 +7,7 @@ import GithubWorkflowService from './github2/workflow-service.js';
 // import type { WorkflowWithStatus as GithubWorkflowWithStatus } from './github2/workflow-service.js';
 type GithubWorkflowWithStatus = any; // TODO: Replace 'any' with the correct type if/when available
 import { mapOctokitWorkflowToEntity } from './github2/mappers.js';
-import type { Workflow as DbWorkflow } from './typeorm/Workflow.js';
+import type { Workflow as DbWorkflow } from '@dfb/db';
 import pLimit from 'p-limit';
 import logger from './logger.js';
 
