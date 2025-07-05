@@ -15,7 +15,8 @@
 			"extensions": [
 				"SanjulaGanepola.github-local-actions",
 				"alexcvzz.vscode-sqlite",
-				"qwtel.sqlite-viewer"
+				"qwtel.sqlite-viewer",
+				"AlexShen.classdiagram-ts"
 			]
 		}
 	},
