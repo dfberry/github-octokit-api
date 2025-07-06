@@ -1,6 +1,7 @@
 // This script orchestrates the advocate scraping and parsing pipeline in TypeScript
 import { fetchAdvocatesPage, Advocate } from './fetch_advocates_page';
-import { writeFile } from 'fs/promises'; // Import writeFile for saving JSON
+import { writeFile, mkdir } from 'fs/promises'; // Import writeFile and mkdir for saving JSON
+import { dirname } from 'path';
 
 async function main() {
   // Step 1: Fetch the advocates HTML page and save to advocates_page.txt
@@ -14,7 +15,10 @@ async function main() {
 
   // Add a timestamp to the file name
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  const filePath = `../../data/advocates-${timestamp}.json`;
+  const filePath = `./generated/advocates-${timestamp}.json`;
+
+  // Ensure the generated folder exists
+  await mkdir(dirname(filePath), { recursive: true });
 
   // Save advocates to a JSON file
   await writeFile(filePath, JSON.stringify(advocates, null, 2));
