@@ -2,9 +2,8 @@ import { ContributorService } from './github2/contributor-service.js';
 import logger from './logger.js';
 import type DataConfig from './initialize-with-data.js';
 import type { ContributorData } from './github2/models.js';
-import { DbService } from './typeorm/db-service.js';
 import GitHubApiClient from './github2/api-client.js';
-// ...existing code...
+
 /**
  * Generate a contributor index report
  * @param token GitHub API token
@@ -13,7 +12,7 @@ import GitHubApiClient from './github2/api-client.js';
  * @param configData Configuration data for contributors
  */
 // --- Fetch helpers ---
-async function fetchContributors(
+async function fetchContributorsFromGitHub(
   configData: DataConfig
 ): Promise<ContributorData[]> {
   const apiClient = new GitHubApiClient();
@@ -63,9 +62,13 @@ async function fetchContributors(
 
 // --- Insert helpers ---
 // Batch insert contributors
-async function insertContributors(contributorDataList: ContributorData[]) {
+async function insertContributorsIntoDb(
+  configData: DataConfig,
+  contributorDataList: ContributorData[]
+) {
   if (!contributorDataList.length) return;
-  await DbService.Contributor.upsertBatch(
+
+  await configData.db.databaseServices.contributorService.insertBatch(
     contributorDataList.map(contributorData => ({
       id: contributorData.login,
       avatar_url: contributorData.avatarUrl || '',
@@ -85,15 +88,14 @@ async function insertContributors(contributorDataList: ContributorData[]) {
 }
 
 // --- Main workflow ---
-export default async function GetContributorData(
-  generatedDirectory: string,
+export default async function processContributors(
   configData: DataConfig
 ): Promise<ContributorData[]> {
   try {
     logger.info(
       `\n\n🔍 ---------------------------------------\nContributor index `
     );
-    const contributorDataList = await fetchContributors(configData);
+    const contributorDataList = await fetchContributorsFromGitHub(configData);
     // Deduplicate contributors by login
     const seenLogins = new Set<string>();
     const uniqueContributors = contributorDataList.filter(c => {
@@ -106,8 +108,7 @@ export default async function GetContributorData(
       '[TypeORM] Unique contributors to insert:',
       uniqueContributors.map(c => c.login)
     );
-    await DbService.init();
-    await insertContributors(uniqueContributors);
+    await insertContributorsIntoDb(configData, uniqueContributors);
     logger.info(
       `\n📊 Contributor data collected for ${contributorDataList.length} contributors and saved ${uniqueContributors.length} to database\n\n`
     );

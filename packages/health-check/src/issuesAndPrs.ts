@@ -1,13 +1,14 @@
-import { DbService } from './typeorm/db-service.js';
 import { extractOrgAndRepoFromFullName } from './utils/regex.js';
 import type { ContributorData } from './github2/models.js';
 import { PrSearchItem } from './github2/models.js';
 import logger from './logger.js';
-
+import type DataConfig from './initialize-with-data.js';
+import { GitHubContributorIssuePrEntity } from '@dfb/db';
 /**
  * Insert unique issues and PRs for a contributor into the database.
  */
-export async function insertContributorIssuesAndPRs(
+export async function processContributorIssuesAndPRs(
+  configData: DataConfig,
   contributorData: ContributorData
 ) {
   if (Array.isArray(contributorData.recentPRs)) {
@@ -27,9 +28,7 @@ export async function insertContributorIssuesAndPRs(
     );
 
     // Prepare entities for batch insert
-    const issuePrEntities: Parameters<
-      typeof DbService.insertContributorIssuePr
-    >[0][] = [];
+    const issuePrEntities: GitHubContributorIssuePrEntity[] = [];
     for (const item of uniqueItems.values()) {
       const type = item.pull_request ? 'pr' : 'issue';
       const { org, repo } = extractOrgAndRepoFromFullName(item.url);
@@ -56,7 +55,9 @@ export async function insertContributorIssuesAndPRs(
     }
     // Batch insert if any
     if (issuePrEntities.length > 0) {
-      await DbService.ContributorIssuePr.upsertBatch(issuePrEntities);
+      await configData.db.databaseServices.contributorIssuePrService.insertBatch(
+        issuePrEntities
+      );
     }
     logger.info(
       `\n\n📊 IssuesAndPRs data collected for ${count} issues and prs and saved to database\n\n`

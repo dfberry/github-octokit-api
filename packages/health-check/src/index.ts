@@ -6,11 +6,11 @@ import { createTimestampedDirectory } from './utils/file.js';
 import DataConfig from './initialize-with-data.js';
 import GitHubApiClient from './github2/api-client.js';
 import { ContributorData, OctokitSearchIssue } from './github2/models.js';
-import { insertContributorIssuesAndPRs } from './issuesAndPrs.js';
-import { getUniqueActiveSimpleRepositories } from './utils/convert.js';
-import { processActiveRepos } from './repositories.js';
-import GetContributorData from './contributors.js';
+import { processContributorIssuesAndPRs } from './issuesAndPrs.js';
+import { processActiveRepos } from './repoAndWorkflow.js';
 import logger from './logger.js';
+import processContributors from './contributors.js';
+import { getUniqueActiveSimpleRepositories } from './repoAndWorkflow.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -46,58 +46,52 @@ async function init() {
     return;
   }
 
-  const db = null;
-
-  return { dataDirectory, generatedDirectory, configData, db };
-}
-async function shutDown(db: any): Promise<void> {
-  if (db) {
-    logger.info('Closing database connection...');
-    await db.close();
+  await configData.init();
+  if (!configData.db) {
+    logger.error('Failed to initialize database connection. Exiting...');
+    return;
   }
-  logger.info('Shutdown complete.');
-}
 
+  return configData;
+}
 async function main(): Promise<void> {
-  const result = await init();
-  if (!result) {
+  const configResult = await init();
+  if (!configResult) {
     logger.error('Initialization failed. Exiting...');
     process.exit(1);
   }
-  const { dataDirectory, generatedDirectory, configData, db } = result;
 
   logger.info('Starting health check ...');
-  logger.info('Data directory: %s', dataDirectory);
-  logger.info('Generated directory: %s', generatedDirectory);
+  logger.info('Data directory: %s', configResult.dataDirectory);
+  logger.info('Generated directory: %s', configResult.generatedDirectory);
 
   const apiClient = new GitHubApiClient();
   const authenticatedUser = await apiClient.getAndTestGitHubToken();
   logger.info('***    Authenticated*** as: %s', authenticatedUser.login);
 
-  // Get data from GraphQL API
-  const contributorData = await GetContributorData(
-    generatedDirectory,
-    configData
-  );
+  // Get data from GraphQL API, insert into db
+  const contributorData = await processContributors(configResult);
 
   if (!contributorData || contributorData.length === 0) {
     logger.error('No contributor data found. Exiting...');
-    await shutDown(db);
+    await configResult.db.database.destroy();
     return;
   } else {
     await Promise.all(
+      // process issues and prs for each contributor
       contributorData.map(contributor =>
-        insertContributorIssuesAndPRs(contributor)
+        processContributorIssuesAndPRs(configResult, contributor)
       )
     );
-    await postProcessing(contributorData);
+    await postProcessing(configResult, contributorData);
   }
 
-  await shutDown(db);
-  logger.info('Generated directory: %s', generatedDirectory);
+  await configResult.db.database.destroy();
+  logger.info('Generated directory: %s', configResult.generatedDirectory);
   logger.info('Health check completed successfully.');
 }
 async function postProcessing(
+  configData: DataConfig,
   contributorData: ContributorData[]
 ): Promise<void> {
   if (!contributorData || contributorData.length === 0) {
@@ -115,12 +109,11 @@ async function postProcessing(
     return;
   }
 
-  await processActiveRepos(uniqueActiveRepos);
+  await processActiveRepos(configData, uniqueActiveRepos);
 
   //const uniqueActiveRepos = await processAndInsertActiveRepos(totalPrs);
   // handle workflows and dependabot alerts for uniqueActiveRepos
 }
-
 main().catch((error: unknown) => {
   logger.error(error);
   process.exit(1);

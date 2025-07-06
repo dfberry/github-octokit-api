@@ -1,25 +1,163 @@
 import GitHubApiClient from './github2/api-client.js';
 import RepositoryService from './github2/repository-service.js';
-import { DbService } from './typeorm/db-service.js';
 import { normalizeGitHubRepositoryToDatabaseRepository } from './utils/normalize.js';
 import type { SimpleRepository } from './utils/regex.js';
 import GithubWorkflowService from './github2/workflow-service.js';
 // import type { WorkflowWithStatus as GithubWorkflowWithStatus } from './github2/workflow-service.js';
 type GithubWorkflowWithStatus = any; // TODO: Replace 'any' with the correct type if/when available
 import { mapOctokitWorkflowToEntity } from './github2/mappers.js';
-import type { Workflow as DbWorkflow } from '@dfb/db';
+import DataConfig from './initialize-with-data.js';
 import pLimit from 'p-limit';
 import logger from './logger.js';
-
+import { GitHubWorkflowEntity } from '@dfb/db';
+import type { OctokitSearchIssue } from './github2/models.js';
+import { findUniquePrRepos } from './utils/urls.js';
+import { ContributorService } from './github2/contributor-service.js';
+import { GitHubRepoModified } from './github2/repository-service.js';
 /**
  * Process PRs, filter to unique active repos, insert repo data, and return unique active SimpleRepositories.
  */
+export async function getGitHubRepositoryDataActiveRepos(
+  configData: DataConfig,
+  uniqueActiveRepos: SimpleRepository[]
+): Promise<GitHubRepoModified[]> {
+  const apiClient = new GitHubApiClient();
+  const repoService = new RepositoryService(apiClient);
+
+  // Limit concurrency to avoid API rate limits and DB overload
+  const limit = pLimit(5);
+
+  // Repo data
+  const activeRepos = (
+    await Promise.all(
+      uniqueActiveRepos.map(repo =>
+        limit(async () => {
+          try {
+            return await repoService.getRepositoryGraphql(repo.org, repo.repo);
+          } catch (err) {
+            logger.error(
+              `Failed to fetch/insert repo for ${repo.org}/${repo.repo}: ${err instanceof Error ? err.message : String(err)}`
+            );
+            return undefined; // Explicitly return undefined on error
+          }
+        })
+      )
+    )
+  ).filter((repo): repo is NonNullable<typeof repo> => repo !== undefined);
+
+  return activeRepos;
+}
+export async function processWorkflow(
+  configData: DataConfig,
+  repo: SimpleRepository,
+  apiClient?: GitHubApiClient
+): Promise<GithubWorkflowWithStatus[]> {
+  try {
+    const client = apiClient ?? new GitHubApiClient();
+    await client.getAndTestGitHubToken();
+
+    const workflowService = new GithubWorkflowService(client);
+
+    const workflows = await workflowService.getWorkflowsWithStatus(
+      repo.org,
+      repo.repo
+    );
+
+    if (!workflows || workflows.length === 0) {
+      logger.warn(`Workflows NOT found for ${repo.org}/${repo.repo}`);
+      return [];
+    }
+
+    await updateRepoForWorkflowSummary(configData, repo, workflows);
+
+    // Prepare entities for batch insert
+    const workflowEntities: GitHubWorkflowEntity[] = [];
+    for (const workflow of workflows) {
+      logger.info(
+        `Workflow ${repo.org}/${repo.repo} - name:${workflow.name} id:${workflow.id} state:${workflow.state}`
+      );
+      if (workflow.id) {
+        const entity = mapOctokitWorkflowToEntity(
+          workflow,
+          `${repo.org}/${repo.repo}`,
+          {
+            id: workflow.lastRunId ?? undefined,
+            status: workflow.lastRunStatus ?? undefined,
+            created_at: workflow.lastRunDate ?? undefined,
+            url: workflow.lastRunUrl ?? undefined,
+          }
+        );
+        if (entity.id !== undefined) {
+          workflowEntities.push(entity as GitHubWorkflowEntity);
+        }
+      }
+    }
+    // Batch insert if any
+    if (workflowEntities.length > 0) {
+      await configData.db.databaseServices.workflowService.insertBatch(
+        workflowEntities
+      );
+    }
+    return workflows;
+  } catch (error) {
+    logger.error(
+      `Error fetching workflows for ${repo.org}/${repo.repo}: ${error instanceof Error ? error.message : String(error)}`
+    );
+    return [];
+  }
+}
+async function updateRepoForWorkflowSummary(
+  configData: DataConfig,
+  repo: SimpleRepository,
+  workflows: GithubWorkflowWithStatus[]
+): Promise<void> {
+  // Summarize workflow states
+  const stateCounts: Record<string, number> = {};
+  for (const workflow of workflows) {
+    const state = workflow.state || 'unknown';
+    stateCounts[state] = (stateCounts[state] || 0) + 1;
+  }
+  const stateSummary = Object.entries(stateCounts)
+    .map(([state, count]) => `${count} ${state}`)
+    .join(', ');
+  // Example: "Workflows: 5 (3 active, 2 disabled)"
+  const workflowStatus =
+    `Workflows: ${workflows.length}` +
+    (stateSummary ? ` (${stateSummary})` : '');
+
+  await configData.db.databaseServices.repositoryService.updateRepositoryWorkflowStatus(
+    `${repo.org}/${repo.repo}`,
+    workflowStatus
+  );
+}
+export async function getUniqueActiveSimpleRepositories(
+  totalPrs: OctokitSearchIssue[]
+): Promise<SimpleRepository[]> {
+  const simpleRepositories: SimpleRepository[] = findUniquePrRepos(totalPrs);
+  if (!simpleRepositories || simpleRepositories.length === 0) {
+    return [];
+  }
+  const apiClient = new GitHubApiClient();
+  const contributorService = new ContributorService(apiClient);
+  const activeRepos = (
+    await Promise.all(
+      simpleRepositories.map(async repo => {
+        const isActive = await contributorService.isActiveRepository(
+          repo.org,
+          repo.repo
+        );
+        return isActive ? repo : null;
+      })
+    )
+  ).filter(Boolean) as SimpleRepository[];
+  return activeRepos;
+}
 export async function processActiveRepos(
+  configData: DataConfig,
   uniqueActiveRepos: SimpleRepository[]
 ): Promise<void> {
   const apiClient = new GitHubApiClient();
   const repoService = new RepositoryService(apiClient);
-  await DbService.init();
 
   // Limit concurrency to avoid API rate limits and DB overload
   const limit = pLimit(5);
@@ -34,7 +172,7 @@ export async function processActiveRepos(
             repo.repo
           );
           if (repoData) {
-            await DbService.Repository.upsertBatch([
+            await configData.db.databaseServices.repositoryService.insertBatch([
               normalizeGitHubRepositoryToDatabaseRepository(repoData),
             ]);
           }
@@ -58,7 +196,11 @@ export async function processActiveRepos(
     uniqueActiveRepos.map(repo =>
       limit(async () => {
         try {
-          const repoWorkflows = await processWorkflow(repo, apiClient);
+          const repoWorkflows = await processWorkflow(
+            configData,
+            repo,
+            apiClient
+          );
           workFlows.push(...repoWorkflows);
         } catch (err) {
           console.error(
@@ -73,87 +215,6 @@ export async function processActiveRepos(
     `\n\n📊 Workflows data for ${workFlows.length} workflows saved to database\n`
   );
 }
-export async function processWorkflow(
-  repo: SimpleRepository,
-  apiClient?: GitHubApiClient
-): Promise<GithubWorkflowWithStatus[]> {
-  try {
-    const client = apiClient ?? new GitHubApiClient();
-    await client.getAndTestGitHubToken();
-
-    const workflowService = new GithubWorkflowService(client);
-
-    const workflows = await workflowService.getWorkflowsWithStatus(
-      repo.org,
-      repo.repo
-    );
-
-    if (!workflows || workflows.length === 0) {
-      logger.warn(`Workflows NOT found for ${repo.org}/${repo.repo}`);
-      return [];
-    }
-
-    await updateRepoForWorkflowSummary(repo, workflows);
-
-    // Prepare entities for batch insert
-    const workflowEntities: DbWorkflow[] = [];
-    for (const workflow of workflows) {
-      logger.info(
-        `Workflow ${repo.org}/${repo.repo} - name:${workflow.name} id:${workflow.id} state:${workflow.state}`
-      );
-      if (workflow.id) {
-        const entity = mapOctokitWorkflowToEntity(
-          workflow,
-          `${repo.org}/${repo.repo}`,
-          {
-            id: workflow.lastRunId ?? undefined,
-            status: workflow.lastRunStatus ?? undefined,
-            created_at: workflow.lastRunDate ?? undefined,
-            url: workflow.lastRunUrl ?? undefined,
-          }
-        );
-        if (entity.id !== undefined) {
-          workflowEntities.push(entity as DbWorkflow);
-        }
-      }
-    }
-    // Batch insert if any
-    if (workflowEntities.length > 0) {
-      await DbService.Workflow.upsertBatch(workflowEntities);
-    }
-    return workflows;
-  } catch (error) {
-    logger.error(
-      `Error fetching workflows for ${repo.org}/${repo.repo}: ${error instanceof Error ? error.message : String(error)}`
-    );
-    return [];
-  }
-}
-async function updateRepoForWorkflowSummary(
-  repo: SimpleRepository,
-  workflows: GithubWorkflowWithStatus[]
-): Promise<void> {
-  // Summarize workflow states
-  const stateCounts: Record<string, number> = {};
-  for (const workflow of workflows) {
-    const state = workflow.state || 'unknown';
-    stateCounts[state] = (stateCounts[state] || 0) + 1;
-  }
-  const stateSummary = Object.entries(stateCounts)
-    .map(([state, count]) => `${count} ${state}`)
-    .join(', ');
-  // Example: "Workflows: 5 (3 active, 2 disabled)"
-  const workflowStatus =
-    `Workflows: ${workflows.length}` +
-    (stateSummary ? ` (${stateSummary})` : '');
-
-  await DbService.updateRepositoryWorkflowStatus(
-    repo.org,
-    repo.repo,
-    workflowStatus
-  );
-}
-
 /*
 
 

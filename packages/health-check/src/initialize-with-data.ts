@@ -1,91 +1,25 @@
 import fs from 'fs';
 import path from 'path';
 import logger from './logger.js';
-
+import { Db, DbManager } from './db/index.js';
 /**
  * Configuration data class that provides access to repository and contributor information
  */
 export default class DataConfig {
-  private dataDirectory: string;
-  private generatedDirectory: string;
-  private _microsoftRepos: string[] | null = null;
-  private _microsoftOrgs: string[] | null = null;
-  private _microsoftLanguages: string[] | null = null;
-  private _microsoftTopics: string[] | null = null;
-  private _microsoftContributors: string[] | null = null;
-  private _activeRepos: Array<{ org: string; repo: string }> | null = null;
+  public dataDirectory: string;
+  public generatedDirectory: string;
+  public _microsoftContributors: string[] | null = null;
+  public db: DbManager;
 
   constructor(dataDirectory: string, generatedDirectory: string) {
     this.dataDirectory = dataDirectory;
     this.generatedDirectory = generatedDirectory;
   }
-
-  // Add getter for activeRepos
-  public get activeRepos(): Array<{ org: string; repo: string }> {
-    if (!this._activeRepos) {
-      const filePath = path.join(this.dataDirectory, 'active-repos.json');
-      try {
-        this._activeRepos =
-          this.readJsonFile<Array<{ org: string; repo: string }>>(filePath);
-        logger.info(
-          `Loaded ${this._activeRepos.length} repositories from active repos list`
-        );
-      } catch (error) {
-        logger.error(
-          `Error reading active-repos.json: ${error instanceof Error ? error.message : String(error)}`
-        );
-        // Fallback to an empty array
-        this._activeRepos = [];
-      }
-    }
-    return this._activeRepos;
+  public async init() {
+    const db = new Db();
+    const dbManager = await db.connect(this.generatedDirectory);
+    this.db = dbManager;
   }
-
-  public get microsoftRepos(): string[] {
-    if (!this._microsoftRepos) {
-      const filePath = path.join(this.dataDirectory, 'microsoft-repos.json');
-      try {
-        this._microsoftRepos = this.readJsonFile<string[]>(filePath);
-        logger.info(
-          `Loaded ${this._microsoftRepos.length} repositories from complete list`
-        );
-      } catch (error) {
-        logger.error(
-          `Error reading microsoft-repos.json: ${error instanceof Error ? error.message : String(error)}`
-        );
-        throw error;
-      }
-    }
-    return this._microsoftRepos;
-  }
-
-  public get microsoftOrgs(): string[] {
-    if (this._microsoftOrgs === null) {
-      const filePath = path.join(this.dataDirectory, 'microsoft-orgs.json');
-      this._microsoftOrgs = this.readJsonFile(filePath);
-    }
-    return this._microsoftOrgs || [];
-  }
-
-  public get microsoftLanguages(): string[] {
-    if (!this._microsoftLanguages) {
-      const filePath = path.join(
-        this.dataDirectory,
-        'microsoft-languages.json'
-      );
-      this._microsoftLanguages = this.readJsonFile(filePath);
-    }
-    return this._microsoftLanguages || [];
-  }
-
-  public get microsoftTopics(): string[] {
-    if (!this._microsoftTopics) {
-      const filePath = path.join(this.dataDirectory, 'microsoft-topics.json');
-      this._microsoftTopics = this.readJsonFile(filePath);
-    }
-    return this._microsoftTopics || [];
-  }
-
   public get microsoftContributors(): string[] {
     logger.info(`Getting Microsoft contributors`);
     if (!this._microsoftContributors) {
@@ -108,44 +42,6 @@ export default class DataConfig {
     }
     return this._microsoftContributors || [];
   }
-
-  /**
-   * Get Microsoft repositories from JSON file
-   * @returns Array of Microsoft repository URLs
-   */
-  public getMicrosoftRepos(): string[] {
-    // First try to load active-repos.json if it exists
-    const activeReposPath = path.join(this.dataDirectory, 'active-repos.json');
-    try {
-      if (fs.existsSync(activeReposPath)) {
-        const data =
-          this.readJsonFile<{ org: string; repo: string }[]>(activeReposPath);
-        logger.info(
-          `Using filtered list of ${data.length} active repositories`
-        );
-        return data.map(r => `${r.org}/${r.repo}`);
-      }
-    } catch (error) {
-      logger.warn(
-        `⚠️ Error reading active-repos.json: ${error instanceof Error ? error.message : String(error)}`
-      );
-      logger.info('Falling back to full repository list...');
-    }
-
-    // Fall back to microsoft-repos.json if no active repos list
-    const filePath = path.join(this.dataDirectory, 'microsoft-repos.json');
-    try {
-      const data = this.readJsonFile<string[]>(filePath);
-      logger.info(`Loaded ${data.length} repositories from full list`);
-      return data;
-    } catch (error) {
-      logger.error(
-        `❌ Error reading microsoft-repos.json: ${error instanceof Error ? error.message : String(error)}`
-      );
-      throw error;
-    }
-  }
-
   public get generatedDirectoryName(): string {
     return this.generatedDirectory;
   }

@@ -7,12 +7,13 @@ import {
   OctokitPR,
   OctokitDependabotAlert,
 } from './models.js';
-import { Workflow as WorkflowEntity } from '@dfb/db';
-import { Contributor } from '@dfb/db';
-import { Repository as RepositoryEntity } from '@dfb/db';
-import { ContributorIssuePr } from '@dfb/db';
-import { DependabotAlert as DependabotAlertEntity } from '@dfb/db';
-
+import {
+  GitHubContributorEntity,
+  GitHubContributorIssuePrEntity,
+  GitHubDependabotAlertEntity,
+  GitHubRepositoryEntity,
+  GitHubWorkflowEntity,
+} from '@dfb/db';
 export function mapOctokitWorkflowToEntity(
   wf: OctokitWorkflow,
   orgRepo: string,
@@ -22,7 +23,7 @@ export function mapOctokitWorkflowToEntity(
     created_at?: string;
     url?: string;
   }
-): Partial<WorkflowEntity> {
+): Partial<GitHubWorkflowEntity> {
   return {
     id: wf.id, // keep as number if that's what your entity expects
     orgRepo,
@@ -40,7 +41,9 @@ export function mapOctokitWorkflowToEntity(
 }
 
 // Map OctokitUser to Contributor entity
-export function mapOctokitUserToEntity(user: OctokitUser): Contributor {
+export function mapOctokitUserToEntity(
+  user: OctokitUser
+): GitHubContributorEntity {
   return {
     id: user.login,
     name: user.name ?? undefined,
@@ -59,7 +62,9 @@ export function mapOctokitUserToEntity(user: OctokitUser): Contributor {
   };
 }
 
-export function mapOctokitRepoToEntity(repo: OctokitRepo): RepositoryEntity {
+export function mapOctokitRepoToEntity(
+  repo: OctokitRepo
+): GitHubRepositoryEntity {
   return {
     id: repo.node_id,
     name: repo.name,
@@ -90,7 +95,7 @@ export function mapOctokitRepoToEntity(repo: OctokitRepo): RepositoryEntity {
 export function mapOctokitIssueToEntity(
   issue: OctokitIssue,
   username: string
-): ContributorIssuePr {
+): GitHubContributorIssuePrEntity {
   return {
     username,
     type: 'issue',
@@ -119,7 +124,7 @@ function hasMergedFields(
 export function mapOctokitPRToEntity(
   pr: OctokitPR,
   username: string
-): ContributorIssuePr {
+): GitHubContributorIssuePrEntity {
   return {
     username,
     type: 'pr',
@@ -141,7 +146,7 @@ export function mapOctokitPRToEntity(
 export function mapOctokitDependabotAlertToEntity(
   alert: OctokitDependabotAlert,
   repo: string
-): Partial<DependabotAlertEntity> {
+): Partial<GitHubDependabotAlertEntity> {
   return {
     id: alert.number,
     repo,

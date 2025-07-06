@@ -1,18 +1,13 @@
-import type { GitHubRepository } from '../models.js';
-import type { Repository as DatabaseRepository } from '@dfb/db';
+import type { GitHubRepositoryEntity } from '@dfb/db';
 import { GitHubRepoModified } from '../github2/repository-service.js';
-import type {
-  ContributorRepo,
-  OctokitRepo,
-  OctokitSearchRepo,
-} from '../github2/models.js';
+import type { ContributorRepo } from '../github2/models.js';
 
 /**
  * Normalize a GitHubRepository (GraphQL) to a TypeORM Repository entity shape.
  */
 export function normalizeGitHubRepositoryToDatabaseRepository(
   repo: GitHubRepoModified
-): Partial<DatabaseRepository> {
+): Partial<GitHubRepositoryEntity> {
   return {
     id: repo.id?.toString() ?? '',
     name: repo.name || '',
