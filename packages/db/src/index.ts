@@ -1,5 +1,10 @@
-export * as Contributor from './entity/Contributor.js';
-export * as ContributorIssuePr from './entity/ContributorIssuePr.js';
-export * as DependabotAlert from './entity/DependabotAlert.js';
-export * as Repository from './entity/Repository.js';
-export * as Workflow from './entity/Workflow.js';
+export * from './entity/ContributorIssuePr.js';
+export * from './entity/DependabotAlert.js';
+export * from './entity/Repository.js';
+export * from './entity/Workflow.js';
+export * from './entity/Contributor.js';
+export * from './service/ContributorIssuePr.js';
+export * from './service/DependabotAlert.js';
+export * from './service/Repository.js';
+export * from './service/Workflow.js';
+export * from './service/Contributor.js';

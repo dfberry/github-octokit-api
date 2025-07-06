@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity('workflows')
-export default class Workflow {
+export class GitHubWorkflowEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 

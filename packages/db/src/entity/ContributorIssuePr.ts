@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryColumn } from 'typeorm';
 
 @Entity('contributor_issues_prs')
-export default class ContributorIssuePr {
+export class GitHubContributorIssuePrEntity {
   @PrimaryColumn()
   username!: string;
 

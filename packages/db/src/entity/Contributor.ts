@@ -1,7 +1,7 @@
 import { Entity, PrimaryColumn, Column } from 'typeorm';
 
 @Entity('contributors')
-export default class ContributorEntity {
+export class GitHubContributorEntity {
   @PrimaryColumn()
   id!: string; // login
 
