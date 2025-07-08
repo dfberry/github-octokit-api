@@ -2,1059 +2,1548 @@
   {
     "name": "Aaron Powell",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/aaron-powell",
+    "twitterUrl": "https://twitter.com/slace",
     "twitter": "slace",
-    "specialties": [
-      ".NET",
-      "JavaScript",
-      "Web | Microsoft MVP Alumni"
-    ],
+    "bio": "Aaron is a Principal Cloud Advocate in the .NET advocacy team with nearly 20 years of experience in web and .NET development.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/aaron-powell.png",
+    "githubUrl": "https://github.com/aaronpowell",
     "github": "aaronpowell",
-    "github_confidence": "high"
+    "specialties": [
+      ".NET (C# & F#)",
+      "JavaScript/TypeScript",
+      "React",
+      "Node.js",
+      "Containers"
+    ]
   },
   {
     "name": "Aaron Wislang",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/aaron-wislang",
+    "twitterUrl": "https://twitter.com/as_w",
     "twitter": "as_w",
-    "specialties": [
-      "Linux"
-    ],
+    "bio": "Aaron is a Senior Cloud Developer Advocate at Microsoft with well over a decade of software development, systems architecture & security experience across the major clouds, development platforms and industries. His current areas of focus include Code (Go, .NET. python), Clouds, Containers (Docker, Kubernetes) & Security as well as Microsoft, Linux & other Open Source platforms. He joined Microsoft from Rackspace where he was a Senior Systems Architect & Software Developer on the Azure Product & Engineering team. Aaron and his wife currently live in Toronto, Canada with their two boys and their turtle.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/aaron-wislang.png",
+    "githubUrl": "https://github.com/asw101",
     "github": "asw101",
-    "github_confidence": "high"
+    "specialties": [
+      "Linux & Open Source",
+      "Containers & Kubernetes",
+      "Go",
+      "Python",
+      ".NET"
+    ]
   },
   {
     "name": "Abril Ureña",
-    "profile_url": "https://developer.microsoft.com/en-us/advocates/abril-ureña",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/abril-ure%C3%B1a",
+    "twitterUrl": "https://twitter.com/abrildaur",
     "twitter": "abrildaur",
+    "bio": "Abril Ureña is a Software Engineer and a former Gold Microsoft Learn Student Ambassador. She will be helping students and educators with Microsoft Services adoption via Visual Studio Code.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/abril-urena.png",
+    "githubUrl": "https://github.com/abrilurena",
+    "github": "abrilurena",
     "specialties": [
       "VS Code",
       "Front-end Development",
-      "UX Design"
-    ],
-    "github": "abrilurena",
-    "github_confidence": "high"
+      "UX Design",
+      "UI Design"
+    ]
   },
   {
     "name": "Alfredo Deza",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/alfredo-deza",
+    "twitterUrl": "https://twitter.com/alfredodeza",
     "twitter": "alfredodeza",
+    "bio": "Alfredo Deza is a passionate software engineer, speaker, author, and former Olympic athlete. With almost two decades of DevOps and software engineering experience, he teaches Machine Learning Engineering and gives lectures around the world about software development, personal development, and professional sports.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/alfredo-deza.png",
+    "githubUrl": "https://github.com/alfredodeza",
+    "github": "alfredodeza",
     "specialties": [
       "Python",
-      "MLOps",
-      "DevOps"
-    ],
-    "github": "alfredodeza",
-    "github_confidence": "high",
-    "github_validated": true
+      "ML & MLOps",
+      "DevOps",
+      "VimScript",
+      "DevOps",
+      "Containers",
+      "CI/CD"
+    ]
   },
   {
     "name": "Alvaro Videla",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/alvaro-videla",
+    "twitterUrl": "https://twitter.com/old_sound",
     "twitter": "old_sound",
+    "bio": "A former RabbitMQ core-dev and distributed system expert who enjoys thinking about scaling Real-Time Messaging architectures.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/alvaro-videla.png",
+    "githubUrl": "https://github.com/videlalvaro",
+    "github": "videlalvaro",
     "specialties": [
       "RabbitMQ",
-      "Functional Programming",
-      "Architecture"
-    ],
-    "github": "videlalvaro",
-    "github_confidence": "high"
+      "Real-Time Analytics",
+      "Microsoft Fabric",
+      "Architecture",
+      "Messaging",
+      "Scalability",
+      "Distributed Systems"
+    ]
   },
   {
     "name": "Amy Boyd",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/amy-boyd",
+    "twitterUrl": "https://twitter.com/AmyKateNicho",
     "twitter": "AmyKateNicho",
-    "specialties": [
-      "AI",
-      "ML"
-    ],
+    "bio": "Amy Boyd, with a background in Computer Science and a focus on Natural Language Processing and Machine Learning, is a Principal Cloud Advocate at Microsoft.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/amy-boyd.png",
+    "githubUrl": "https://github.com/amynic",
     "github": "amynic",
-    "github_confidence": "high"
+    "specialties": [
+      "Machine Learning",
+      "Generative AI",
+      "Azure AI Studio",
+      "Responsible AI",
+      "Python / Jupyter Notebooks",
+      "Azure AI Services",
+      "Power BI"
+    ]
   },
   {
     "name": "Amy Colyer",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/amy-colyer",
+    "twitterUrl": "https://twitter.com/wyrdgirl",
     "twitter": "wyrdgirl",
+    "bio": "Amy Colyer is a passionate tech enthusiast with a deep knowledge of infrastructure technologies after being in the industry for over 20 years.  She has crossed platforms such as networking, server engineering, virtualization, automation and now cloud.  Amy is certified in VMware, was a 5 times vExpert, as well as, being certified as an Azure Solutions Architect Expert.  Community empowerment has always been very important to her and fueled her to work on training materials to enable individual success. As a Senior Cloud Advocate, she is excited to bring that passion to Microsoft and share her knowledge on Azure technologies to the community.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/amy-colyer.jpg",
+    "githubUrl": "https://github.com/amycolyer",
+    "github": "amycolyer",
     "specialties": [
       "Infrastructure",
-      "Azure",
-      "Hybrid",
-      "Operations",
-      "IT Pro"
-    ],
-    "github": "amycolyer",
-    "github_confidence": "high"
+      "Microsoft Azure",
+      "Hydrid workloads",
+      "Datacenter Migrations",
+      "Cloud Architecture",
+      "Windows Server"
+    ]
   },
   {
     "name": "Anthony Bartolo",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/anthony-bartolo",
+    "twitterUrl": "https://twitter.com/wirelesslife",
     "twitter": "wirelesslife",
+    "bio": "As a Principal Cloud Advocate for Microsoft, Anthony Bartolo takes great pride in architecting and conducting “science experiments” that incorporate Microsoft technology and services to address a customer problem or opportunity. Anthony accomplishes this by conducting hackathons with industry leading organizations to test theories and create Proof of Concepts (PoC) utilizing Microsoft cloud services. Some of the more interesting Proof of Concepts completed have included teaching drones to identify objects to aid in search and rescue efforts and automating research via Azure Functions to extract information from social media to aid law enforcement in finding children reported missing. Results and best practices of these and other projects are then shared openly with the community at large to help upskill everyone.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/anthony-bartolo.png",
+    "githubUrl": "https://github.com/wirelesslife",
+    "github": "wirelesslife",
     "specialties": [
       "Developer Tools",
       "AI",
       "Infrastructure",
-      "Security | Microsoft MVP Alumni"
-    ],
-    "github": "WirelessLife",
-    "github_confidence": "high"
+      "Security"
+    ]
   },
   {
     "name": "Anthony Shaw",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/anthony-shaw",
+    "twitterUrl": "https://twitter.com/anthonypjshaw",
     "twitter": "anthonypjshaw",
-    "specialties": [
-      "Python"
-    ],
+    "bio": "Anthony is from Sydney, Australia and is a contributor to many open-source communities.\nRunning and contributing to several popular open-source tools for DevOps, Security, Automation and Code Quality.\nHe has been recognized for his contribution to open source, including as Fellow of the Python Software Foundation and member of the Apache Software Foundation.\nAnthony runs a Python blog and YouTube channel and has recently published a book on the Python compiler.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/anthony-shaw.png",
+    "githubUrl": "https://github.com/tonybaloney",
     "github": "tonybaloney",
-    "github_confidence": "high"
+    "specialties": [
+      "Python",
+      "DevOps",
+      "Security"
+    ]
   },
   {
     "name": "April Dunnam",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/april-dunnam",
+    "twitterUrl": "https://twitter.com/aprildunnam",
     "twitter": "aprildunnam",
+    "bio": "April is a woman who codes with a passion to help others build apps and automation with low code tools.  With years of development experience working as a consultant in the SharePoint and M365 space, April was an early adoptor of the Power Platform.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/april-dunnam.png",
+    "githubUrl": "https://github.com/AprilDunnam",
+    "github": "AprilDunnam",
     "specialties": [
-      "Power Platform"
-    ],
-    "github": "aprildunnam",
-    "github_confidence": "high"
+      "Power Apps",
+      "Power Automate",
+      "Power Virtual Agents",
+      "Dataverse",
+      "SharePoint",
+      "Microsoft Graph",
+      "SharePoint Framework",
+      "Microsoft Teams Development"
+    ]
   },
   {
     "name": "April Speight",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/april-speight",
+    "twitterUrl": "https://twitter.com/vogueandcode",
     "twitter": "vogueandcode",
-    "specialties": [
-      "AI",
-      "Responsible AI",
-      "Python"
-    ],
+    "bio": "April Speight's career began in the fashion industry, where she worked as a menswear stylist and visual merchandiser for prestigious brands like Club Monaco, Saks, and Neiman Marcus. She holds a BS in Global Business & Public Policy from the University of Maryland. Her transition to tech started with project management roles at the Consumer Technology Association, Lidl US, Impexium, and The Milken Institute.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/april-speight.png",
+    "githubUrl": "https://github.com/aprilspeight",
     "github": "aprilspeight",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Python",
+      "AI",
+      "Responsible AI"
+    ]
   },
   {
     "name": "Ayca Bas",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/ayca-bas",
+    "twitterUrl": "https://twitter.com/aycabs",
     "twitter": "aycabs",
-    "specialties": [
-      "Microsoft Graph"
-    ],
+    "bio": "Ayca Bas joined Microsoft with Developer Experience (DX) team where closely worked with MSP/MVP communities. Followed by Services Apps domain that she extensively focused on Azure App Services, Bots, Cognitive Services and IoT, and worked onsite with more than a hundred customers around EMEA. She joined the Advocacy team, concentrating on Microsoft Graph for developers.\nShe hold a double major degree in Electrical & Electronics Engineering and Software Engineering. In her free time, she likes playing piano, wake-surfing, camping, photography and doing smart home improvements with Raspberry Pi or Arduino.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/ayca-bas.png",
+    "githubUrl": "https://github.com/aycabas",
     "github": "aycabas",
-    "github_confidence": "high"
+    "specialties": [
+      "Microsoft Graph",
+      "Microsoft Teams",
+      ".NET / .NET Core",
+      "Azure App Services",
+      "Bot Framework / Azure Bot Service",
+      "Cognitive Services",
+      "Power Platform"
+    ]
   },
   {
     "name": "Barnam Bora",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/barnam-bora",
+    "twitterUrl": "https://twitter.com/barnambora",
     "twitter": "barnambora",
-    "specialties": [
-      "AI",
-      "ML",
-      "Microsoft Teams",
-      "Microsoft Graph",
-      "CTO Advisory"
-    ],
+    "bio": "I lead an amazing team of Cloud Developer Advocates at Microsoft who focus on Microsoft Teams and Graph. Our team helps Developers and Technology Professionals build the best versions of their products and services using the power of the cloud and Modern Developer Experiences.\nPrior to developer advocacy I spent many years as a developer/technology professional and leader across both engineering and strategic business roles. I have had the pleasure of leading multiple teams of amazing people and most recently I built and lead Amazon's AWS Artificial Intelligence Organization across Asia-Pacific.\nPreviously I managed a high growth engineering program for Artificial Intelligence at Microsoft, based at Microsoft's HQ in Redmond, Washington in the USA. Prior to that, I spent multiple years advising the largest companies, organizations & CTOs of the Asia Pacific Region as a Technology Strategy Advisor and a Specialist for Data Driven Decision Making.\nI have a strong bias towards taking things into production quickly at scale, may it be technology or processes.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/barnam-bora.png",
+    "githubUrl": "https://github.com/barnam-bora",
     "github": "barnam-bora",
-    "github_confidence": "high"
+    "specialties": []
   },
   {
     "name": "Bethany Cheum",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/bethany-cheum",
+    "twitterUrl": "https://twitter.com/bethanyjep",
     "twitter": "bethanyjep",
+    "bio": "Bethany is passionate about Data Science, Artificial Intelligence and Machine Learning.\nPrior to joining the role, she was a Gold Microsoft Learn Student Ambassador.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/bethany-cheum.png",
+    "githubUrl": "https://github.com/bethanyjep",
+    "github": "bethanyjep",
     "specialties": [
       "Python",
-      "Data Science",
-      "AI & ML"
-    ],
-    "github": "BethanyJep",
-    "github_confidence": "high"
+      "Data Science"
+    ]
   },
   {
     "name": "Bob German",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/bob-german",
+    "twitterUrl": "https://twitter.com/Bob1German",
     "twitter": "Bob1German",
-    "specialties": [
-      "Development on Microsoft 365 with Azure"
-    ],
+    "bio": "I'm a Cloud Developer Advocate for Microsoft focused on Microsoft Teams and Microsoft Graph and a contributing member of the Microsoft 365 Patterns and Practices team.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/bob-german.png",
+    "githubUrl": "https://github.com/BobGerman",
     "github": "BobGerman",
-    "github_confidence": "high"
+    "specialties": [
+      "Microsoft Teams development",
+      "Microsoft Graph",
+      "SharePoint Framework",
+      "Microsoft Bot Framework",
+      "NodeJS development in TypeScript and ES6",
+      ".NET Core development in C#",
+      "Azure Active Directory",
+      "Azure App Services, Serverless, LUIS and QnA Maker cognitive services"
+    ]
   },
   {
     "name": "Brian Benz",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/brian-benz",
+    "twitterUrl": "https://twitter.com/bbenz",
     "twitter": "bbenz",
+    "bio": "Brian is a Principal Cloud Advocate at Microsoft, a Java champion, and a Jakarta EE ambassador, helping developers get the most out of Azure. Before Joining Microsoft, he was a solution architect, consultant, developer, author and presenter at IBM, Deloitte, and other companies. Find him on most of the socials and GitHub @bbenz.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/brian-benz.png",
+    "githubUrl": "https://github.com/bbenz",
+    "github": "bbenz",
     "specialties": [
       "Java",
       "AI",
-      "DevOps",
-      "Cloud | Jakarta EE Ambassador | Java Champion"
-    ],
-    "github": "bbenz",
-    "github_confidence": "high"
+      "Cloud",
+      "Docker and Kubernetes",
+      "DevOps"
+    ]
   },
   {
     "name": "Bruno Capuano",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/bruno-capuano",
+    "twitterUrl": "https://twitter.com/elbruno",
     "twitter": "elbruno",
-    "specialties": [
-      "AI",
-      "ML",
-      ".NET | Microsoft MVP Alumni"
-    ],
+    "bio": "⚡ My name is Bruno Capuano! Principal Cloud Advocate at Microsoft.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/bruno-capuano.png",
+    "githubUrl": "https://github.com/elbruno",
     "github": "elbruno",
-    "github_confidence": "high"
+    "specialties": [
+      "AI / ML",
+      ".NET",
+      "Python",
+      "C++"
+    ]
   },
   {
     "name": "Burke Holland",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/burke-holland",
+    "twitterUrl": "https://twitter.com/burkeholland",
     "twitter": "burkeholland",
+    "bio": "Burke is a web developer living in Nashville, TN; the greatest city in the world. He likes JavaScript a lot because it's the only way he Node to Express himself. Get it? Is this thing on? 🎤",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/burke-holland.png",
+    "githubUrl": "https://github.com/burkeholland",
+    "github": "burkeholland",
     "specialties": [
       "JavaScript",
-      "VS Code"
-    ],
-    "github": "burkeholland",
-    "github_confidence": "high"
+      "Node.js",
+      "Napping",
+      "Making lists of skills"
+    ]
   },
   {
     "name": "Carlotta Castelluccio",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/carlotta-castelluccio",
-    "twitter": null,
-    "specialties": [
-      "Data Science",
-      "Azure",
-      "Artificial Intelligence"
-    ],
+    "bio": "I've been in Microsoft since 2019, mostly working in customer-face engagements focused on Conversational AI solutions.\nI am passioned about software development, in particular about developing solutions which integrate artificial intelligence. As a Cloud Developer Advocate, I work with Students and Educators in relation to Data Analytics and Data Science.\nOutside of work, I love going for a walk in the open air, practicing yoga and watching films.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/carlotta-castelluccio.jpeg",
+    "githubUrl": "https://github.com/carlotta94c",
     "github": "carlotta94c",
-    "github_confidence": "high"
+    "specialties": [
+      "Artificial Intelligence",
+      "Azure Cloud",
+      "Python",
+      ".NET, C#"
+    ]
   },
   {
     "name": "Cedric Vidal",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/cedric-vidal",
-    "twitter": null,
-    "specialties": [
-      "United States\n\n\nAI"
-    ],
+    "bio": "Cedric is a Principal AI Advocate at Microsoft, with a focus\non Generative AI 🤖 and the startup 🚀 ecosystem. He is dedicated to advocating for the use of AI in startups and helping\nthem bring their products to market.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/cedric-vidal.png",
+    "githubUrl": "https://github.com/cedricvidal/",
     "github": "cedricvidal",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "AI / LLM / Promptflow",
+      "Python / Java / TypeScript",
+      "Cloud Architecture",
+      "Kubernetes / Docker / Linux",
+      "Meta Modeling"
+    ]
   },
   {
     "name": "Chris Noring",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/chris-noring",
+    "twitterUrl": "https://twitter.com/chris_noring",
     "twitter": "chris_noring",
-    "specialties": [
-      "Web",
-      "Azure",
-      "JavaScript"
-    ],
+    "bio": "I am a Cloud Developer Advocate at Microsoft,",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/chris-noring.png",
+    "githubUrl": "https://github.com/softchris",
     "github": "softchris",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Angular/React/Vue.js",
+      "Node.js",
+      "JavaScript",
+      "C#"
+    ]
   },
   {
     "name": "Christopher Maneu",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/christopher-maneu",
+    "twitterUrl": "https://twitter.com/cmaneu",
     "twitter": "cmaneu",
-    "specialties": [
-      "Data Engineering & Analytics"
-    ],
+    "bio": "Christopher is a Cloud engineer & Data engineering advocate at Microsoft. His mission is to help every technologist on the planet succeed, focusing on data and data team behind the applications.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/christopher-maneu.png",
+    "githubUrl": "https://github.com/cmaneu",
     "github": "cmaneu",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Data Engineering",
+      ".NET",
+      "Cloud Architecture",
+      "DevOps"
+    ]
   },
   {
     "name": "Cynthia Zanoni",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/cynthia-zanoni",
+    "twitterUrl": "https://twitter.com/cynthia_zanoni",
     "twitter": "cynthia_zanoni",
-    "specialties": [
-      "JavaScript",
-      "GitHub",
-      "VSCode"
-    ],
+    "bio": "Cynthia Zanoni is a Cloud Advocate at Microsoft, specializing in Developer Tools and Artificial Intelligence. She is the co-author of the book #TPM Tech Para Mulheres (Tech for Women) and brings over 15 years of experience in technology. As the founder of WoMakersCode, a social impact initiative, Cynthia has been instrumental in advancing the education and employability of women in the IT sector, making a significant impact across Brazil and Latin America.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/cynthia-zanoni.png",
+    "githubUrl": "https://github.com/cyz",
     "github": "cyz",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Azure",
+      "JavaScript",
+      "Python",
+      "DevOps",
+      "VS Code",
+      "GitHub",
+      "Artificial Intelligence"
+    ]
   },
   {
     "name": "Dan Wahlin",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/dan-wahlin",
+    "twitterUrl": "https://twitter.com/danwahlin",
     "twitter": "danwahlin",
+    "bio": "Dan is a web developer, architect, and Principal Cloud Developer Advocate based in Arizona. He works with AI, JavaScript/TypeScript, Node.js, C#, ASP.NET, Azure, Microsoft 365, Docker, Kubernetes, and several other technologies. Prior to joining Microsoft, Dan ran a consulting, training, and architecture company for 20 years called Wahlin Consulting and provided technology services to developers and corporations around the world.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/dan-wahlin.jpg",
+    "githubUrl": "https://github.com/danwahlin",
+    "github": "danwahlin",
     "specialties": [
       "AI",
       "Azure",
-      "JavaScript | Google Developer Expert | Docker Captain | Microsoft\nRD Alumni | Microsoft MVP Alumni"
-    ],
-    "github": "danwahlin",
-    "github_confidence": "high",
-    "github_validated": true
+      "JavaScript",
+      "TypeScript",
+      "Node.js",
+      "C# and ASP.NET",
+      "Docker and Kubernetes",
+      "React/Angular/Vue"
+    ]
   },
   {
     "name": "Daniel Laskewitz",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/daniel-laskewitz",
+    "twitterUrl": "https://twitter.com/laskewitz",
     "twitter": "laskewitz",
-    "specialties": [
-      "Power Platform"
-    ],
+    "bio": "Daniel loves to help others build apps, workflows, chatbots and solutions with low code. For years, he has been working on SharePoint and M365, before moving towards the Power Platform as one of the first people in the world. Daniel is a fan of sharing best practices to make sure others can be productive.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/daniel-laskewitz.png",
+    "githubUrl": "https://github.com/laskewitz",
     "github": "laskewitz",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Power Apps",
+      "Power Automate",
+      "Power Virtual Agents",
+      "Power Pages",
+      "Dataverse",
+      "SharePoint",
+      "ALM",
+      "Governance"
+    ]
   },
   {
     "name": "Dave Glover",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/dave-glover",
+    "twitterUrl": "https://twitter.com/dglover",
     "twitter": "dglover",
-    "specialties": [
-      "IoT and Cloud"
-    ],
+    "bio": "I am a passionate software developer for as long as I can remember, I dream and code in C# and Python, hang out on Windows and Linux, and dabble in maker hardware.\nI have worked for Microsoft in the UK and Australia across customers, partners and the developer community.\nOver the years I have covered a broad range of technologies, from Windows and mobile, Web dev, IoT, communications, and cloud-centric computing.\nI am curious by nature, love to learn and connect with the developer community.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/dave-glover.png",
+    "githubUrl": "https://github.com/gloveboxes",
     "github": "gloveboxes",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Cloud Development",
+      "IoT and embedded",
+      "Windows and Linux",
+      "C#, and C/C++",
+      "Python"
+    ]
   },
   {
     "name": "David Smith",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/david-smith",
+    "twitterUrl": "https://twitter.com/revodavid",
     "twitter": "revodavid",
-    "specialties": [
-      "AI",
-      "ML",
-      "Data Science",
-      "R"
-    ],
+    "bio": "I lead the Artifical Intelligence & Machine Learning team for Microsoft Cloud Advocates.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/david-smith.png",
+    "githubUrl": "https://github.com/revodavid",
     "github": "revodavid",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": []
   },
   {
     "name": "Elaiza Benitez",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/elaiza-benitez",
+    "twitterUrl": "https://twitter.com/benitezhere",
     "twitter": "benitezhere",
-    "specialties": [
-      "Power Platform"
-    ],
+    "bio": "Hello | Kia Ora 🇳🇿 | Kamusta 🇵🇭",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/elaiza-benitez.jpg",
+    "githubUrl": "https://github.com/elaizabenitez",
     "github": "elaizabenitez",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Dataverse",
+      "Power Automate",
+      "Power Apps",
+      "Copilot Studio",
+      "Dynamics 365 Sales, Service",
+      "Microsoft Graph"
+    ]
   },
   {
     "name": "Em Lazer-Walker",
-    "profile_url": "https://developer.microsoft.com/en-us/advocates/em-lazer-walker",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/em-lazerwalker",
+    "twitterUrl": "https://twitter.com/lazerwalker",
     "twitter": "lazerwalker",
+    "bio": "Em (she/her or they/them) is a Cloud Advocate for Microsoft based in Toronto. She’s an artist/engineer who makes interactive art, experimental games, and open-source software tools to empower creativity. Most of her work focuses on using nontraditional interfaces to reframe everyday objects and spaces as playful experiences and to inspire people to become self-motivated learners.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/em-lazerwalker.png",
+    "githubUrl": "https://github.com/lazerwalker",
+    "github": "lazerwalker",
     "specialties": [
-      "Games",
-      "Mobile",
-      "JavaScript",
-      "IoT",
-      "Mixed Reality",
-      "HoloLens"
-    ],
-    "github": null
+      "Game design and development",
+      "Native iOS developemnt",
+      "Nontraditional computing interfaces: spatial computing (VR/AR), voice and conversational UIs, and more",
+      "IoT and hardware fabrication",
+      "TypeScript",
+      "Rich JavaScript webapps, particularly with React"
+    ]
   },
   {
     "name": "Frank Boucher",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/frank-boucher",
+    "twitterUrl": "https://twitter.com/fboucheros",
     "twitter": "fboucheros",
-    "specialties": [
-      "Development",
-      "DevOps",
-      "Serverless"
-    ],
+    "bio": "Frank Boucher, was born on the French side of this wide Canadian country. Passionate about the Cloud computing he is seeking to learn from other and share his knowledge. His goal is to make it easier for others to leverage the power of Azure in their business and projects.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/frank-boucher.png",
+    "githubUrl": "https://github.com/fboucher",
     "github": "fboucher",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Web Development",
+      "DevOps",
+      "Serverless",
+      ".NET",
+      "Linux",
+      "GitHub Copilot",
+      "Developer tools",
+      "Integration"
+    ]
   },
   {
     "name": "Garry Trinder",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/garry-trinder",
+    "twitterUrl": "https://twitter.com/garrytrinder",
     "twitter": "garrytrinder",
-    "specialties": [
-      "Development on Microsoft 365"
-    ],
+    "bio": "Garry is a Cloud Developer Advocate at Microsoft, focused on Microsoft 365. Before joining the Advocacy team, he worked for several Microsoft Partners for over a decade, as a developer, consultant and architect starting with SharePoint and more recently with Microsoft 365 and Azure. In that time, he became a Microsoft MVP of Office Development and also a member of the Microsoft 365 Platform Community (PnP) team, working with the community to share knowledge and best practices, through contributions to open source projects and speaking at local user groups & conferences.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/garry-trinder.jpeg",
+    "githubUrl": "https://github.com/garrytrinder",
     "github": "garrytrinder",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Microsoft 365 Business Applications (SharePoint Framework & React, Power Apps)",
+      "Microsoft 365 Integration (Azure Logic Apps, Azure Functions, Azure Automation, Power Automate, Microsoft Graph API, SharePoint Online API)",
+      "Microsoft 365 Authentication (Azure AD, Azure Managed Identity)",
+      "Microsoft SharePoint Administration & Development (2010, 2013, 2016, 2019, Online)",
+      "GitHub & Azure DevOps",
+      "TypeScript, JavaScript, Node.js, PowerShell, C#"
+    ]
   },
   {
     "name": "Glaucia Lemos",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/glaucia-lemos",
+    "twitterUrl": "https://twitter.com/glaucia_lemos86",
     "twitter": "glaucia_lemos86",
+    "bio": "Glaucia Lemos is a Developer Advocate in JavaScript and TypeScript at Microsoft and a Software Engineer with over 10 years of development experience in JavaScript, TypeScript, and Node.js (BackEnd), as well as in .NET C#. She has both national and international experience working with small and large companies. Glaucia enjoys making contributions to Open Source projects. She has been a Member and Contributor to the Node.js Foundation and the React Community, making contributions to the translations of the Nodejs.org and Reactjs.org websites into Portuguese. She also volunteers and serves as a Board Member for the WoMakersCode NGO.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/glaucia-lemos.png",
+    "githubUrl": "https://github.com/glaucia86/",
+    "github": "glaucia86",
     "specialties": [
       "JavaScript",
+      "TypeScript",
       "Node.js",
-      "A.I"
-    ],
-    "github": "glaucia86",
-    "github_confidence": "high",
-    "github_validated": true
+      "Angular",
+      "Vue.JS",
+      "A.I",
+      "ChatBots",
+      "Web Development",
+      "Linux"
+    ]
   },
   {
     "name": "Gomolemo Mohapi",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/gomolemo-mohapi",
+    "twitterUrl": "https://twitter.com/GomoMohapi",
     "twitter": "GomoMohapi",
+    "bio": "Gomolemo is a young South African who is determined to make a long-lasting impact on the world through technology.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/gomolemo-mohapi.png",
+    "githubUrl": "https://github.com/gomomohapi",
+    "github": "gomomohapi",
     "specialties": [
       "Power Apps",
-      "Fusion Development"
-    ],
-    "github": "gomomohapi",
-    "github_confidence": "high",
-    "github_validated": true
+      ".NET / .NET Core"
+    ]
   },
   {
     "name": "Gustavo Cordido",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/gustavo-cordido",
+    "twitterUrl": "https://twitter.com/gcordidoa",
     "twitter": "gcordidoa",
+    "bio": "Originally from Caracas, Venezuela. I am passionate about technology for social good, and aim to give my projects some of that outlook. I currently work as part of the Spatial/Mixed Reality team.\nOutside of tech, my hobby is cooking! I love experimenting with new ingredients and trying new cuisines.\nI am also a big futbol (soccer) and hockey fan. Excited to see the Seattle Kraken in the upcoming years, and one day see Venezuela classify to a World Cup.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/gustavo-cordido.jpg",
+    "githubUrl": "https://github.com/gcordido",
+    "github": "gcordido",
     "specialties": [
-      "Spatial Computing",
+      "C#",
+      "Python",
       "Mixed Reality",
       "AI"
-    ],
-    "github": "gcordido",
-    "github_confidence": "high",
-    "github_validated": true
+    ]
   },
   {
     "name": "Gwyneth Peña-Siguenza",
-    "profile_url": "https://developer.microsoft.com/en-us/advocates/gwyneth-peña-siguenza",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/gwyneth-penasiguenza",
+    "twitterUrl": "https://twitter.com/madebygps",
     "twitter": "madebygps",
+    "bio": "Gwen is a Cloud Advocate at Microsoft, focused on helping others build on Azure. In her spare time, she builds the open-source courseware LearnToCloud, documents her learnings and career on YouTube, reads, and spends time with her family, friends, and cats.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/gwyneth-penasiguenza.jpg",
+    "githubUrl": "https://github.com/madebygps",
+    "github": "madebygps",
     "specialties": [
-      "Cloud Engineering"
-    ],
-    "github": null
+      "Python",
+      "Azure Functions, App Service, and Container Apps",
+      "Cloud Engineering and Architecture"
+    ]
   },
   {
     "name": "Henk Boelman",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/henk-boelman",
+    "twitterUrl": "https://twitter.com/hboelman",
     "twitter": "hboelman",
-    "specialties": [
-      "AI",
-      "ML",
-      "Azure",
-      "DevOps"
-    ],
+    "bio": "I'm a Cloud Advocate specializing in Artificial intelligence and Azure with a background in application development. Currently I'm part of the regional cloud advocate team and based in the Netherlands. Before joining Microsoft, I was a Microsoft AI MVP and worked as a developer and architect building lots of AI powered platforms on Azure.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/henk-boelman.png",
+    "githubUrl": "https://github.com/hnky",
     "github": "hnky",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Azure Machine Learning Service",
+      "Cognitive Services",
+      "AI for developers",
+      "MLOps",
+      "Azure DevOps",
+      "Azure Architecture"
+    ]
   },
   {
     "name": "Ismaël Mejía",
-    "profile_url": "https://developer.microsoft.com/en-us/advocates/ismaël-mejía",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/ismael-mejia",
+    "twitterUrl": "https://twitter.com/iemejia",
     "twitter": "iemejia",
+    "bio": "Senior Cloud Developer Advocate focused on Data Engineering, Big Data, Distributed Systems.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/ismael-mejia.png",
+    "githubUrl": "https://github.com/iemejia",
+    "github": "iemejia",
     "specialties": [
       "Big Data",
-      "Data Engineering"
-    ],
-    "github": null
+      "Java / Python",
+      "Data Engineering",
+      "Open Source"
+    ]
   },
   {
     "name": "Japhlet Nwamu",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/japhlet-nwamu",
+    "twitterUrl": "https://twitter.com/japhletnwamu",
     "twitter": "japhletnwamu",
+    "bio": "Japhlet Nwamu is a Cloud Advocate focused on Microsoft Power Platform, Microsoft 365, Data and AI. He is a community builder and is passionate about empowering the world bit by bit, helping everyone on the planet achieve more with technology.\nJaphlet strongly believes that everyone when given access to the right tools and opportunities, can innovate and build mind-blowing solutions.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/japhlet-nwamu.jpg",
+    "githubUrl": "https://github.com/japhletnwamu",
+    "github": "japhletnwamu",
     "specialties": [
       "AI",
       "Power Platform",
-      "Microsoft 365",
-      "Students",
-      "Faculty"
-    ],
-    "github": "japhletnwamu",
-    "github_confidence": "high"
+      "Data Science",
+      "Microsoft Azure",
+      "C#",
+      "Community Building"
+    ]
   },
   {
     "name": "Jasmine Greenaway",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/jasmine-greenaway",
+    "twitterUrl": "https://twitter.com/paladique",
     "twitter": "paladique",
-    "specialties": [
-      "AI, Data"
-    ],
+    "bio": "I'm a seasoned technologist with over 15 years of experience, across roles in software development, computer science education, as well as active engagement as a speaker and technical community organizer. What I enjoy most about being a cloud advocate is that I'm always learning new things, it keeps my work exciting! Outside of work I enjoy gaming, playing piano, and rollerskating.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/jasmine-greenaway.jpg",
+    "githubUrl": "https://github.com/paladique",
     "github": "paladique",
-    "github_confidence": "high"
+    "specialties": [
+      ".NET",
+      "Python",
+      "Data Science",
+      "Web Development",
+      "Serverless",
+      "Tools",
+      "Databases"
+    ]
   },
   {
     "name": "Joey Snow",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/joey-snow",
+    "twitterUrl": "https://twitter.com/joeysnow",
     "twitter": "joeysnow",
-    "specialties": [
-      "Common sense security for all."
-    ],
+    "bio": "Joey is a Principal Security Advocate Lead whose teams goal is to enable all audiences to confidently implement security controls within their organizations leveraging Microsoft Security Solutions. Joey is also ½ of the technology podcast duo Patch & Switch and is a frequent speaker at various Microsoft, 3rd party, and industry-sponsored events.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/joey-snow.jpg",
+    "githubUrl": "https://github.com/joey-snow",
     "github": "joey-snow",
-    "github_confidence": "high"
+    "specialties": [
+      "Identity",
+      "Security Operations",
+      "Zero Trust",
+      "Infrastructure Operations",
+      "Cloud Security"
+    ]
   },
   {
     "name": "John Papa",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/john-papa",
+    "twitterUrl": "https://twitter.com/john_papa",
     "twitter": "john_papa",
-    "specialties": [
-      "DevRel leadership, Web technologist, Engineering leader",
-      "Google Developer\nExpert",
-      "Microsoft RD Alumni",
-      "Microsoft MVP Alumni"
-    ],
+    "bio": "John Papa is a dedicated father and husband, a professional Web Developer, and professional storyteller in the technology community. He currently is a Partner/GM in Developer Relations for Microsoft and has formerly worked for Disney on several web and mobile applications that you may have used.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/john-papa.png",
+    "githubUrl": "https://github.com/johnpapa",
     "github": "johnpapa",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Angular",
+      "APIs",
+      "Architecture",
+      "JavaScript",
+      "Node.js",
+      "React",
+      "Svelte",
+      "TypeScript",
+      "UX",
+      "Vue"
+    ]
   },
   {
     "name": "Jorge Arteiro",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/jorge-arteiro",
+    "twitterUrl": "https://twitter.com/jorgearteiro",
     "twitter": "jorgearteiro",
+    "bio": "I am a Cloud Developer Advocate for Containers based in Melbourne/Australia with over 20 years in the tech industry. As former Microsoft MVP - Most Valued Professional, I developed my passion to help and sponsor the Community to get into the tech industry, to learn how to collaborate and share their own knowledge with others.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/jorge-arteiro.png",
+    "githubUrl": "https://github.com/jorgearteiro",
+    "github": "jorgearteiro",
     "specialties": [
-      "Containers",
+      "Containers (Linux & Windows)",
       "Kubernetes",
       "Open Source",
-      "Linux"
-    ],
-    "github": "jorgearteiro",
-    "github_confidence": "high"
+      "Golang",
+      "Linux",
+      "DevOps & Infra as Code",
+      "API Management",
+      "Azure",
+      ".NET Development (Web & Desktop)"
+    ]
   },
   {
     "name": "Josh Ndemenge",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/josh-ndemenge",
+    "twitterUrl": "https://twitter.com/Jcardif254",
     "twitter": "Jcardif254",
-    "specialties": [
-      "Data & Analytics",
-      "Big Data"
-    ],
+    "bio": "Josh is a Cloud Developer Advocate at Microsoft, focusing on Azure Data, particularly Microsoft Fabric and operational databases. He works closely with engineering teams to provide valuable product feedback and develops content and code that helps developers get the most out of these technologies. He is Passionate about empowering developer communities, sharing knowledge and fostering collaboration. His goal is to help developers leverage technology to innovate and succeed.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/josh-ndemenge.jpg",
+    "githubUrl": "https://github.com/Jcardif",
     "github": "Jcardif",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Microsoft Fabric",
+      "Data & Analytics",
+      "Cloud Architecture",
+      "AI",
+      "IoT",
+      ".NET",
+      "Rust"
+    ]
   },
   {
     "name": "Joshua Duffney",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/joshua-duffney",
-    "twitter": null,
-    "specialties": [
-      "Secure Software Supply Chain"
-    ],
+    "bio": "Hey, I'm Joshua! A Senior Cloud Advocate at Microsoft, a former Microsoft MVP, and an ex-SRE at Stack Overflow. At the moment, I'm focused on containers, securing software supply chains, and writing as much code in golang as possible. In my free time I enjoy reading (mostly non-fiction), lifting heavy things, and spending time with my wife and kids.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/joshua-duffney.jpg",
+    "githubUrl": "https://github.com/duffney",
     "github": "duffney",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Secure Supply Chain",
+      "Container Security",
+      "Kubernetes",
+      "Go"
+    ]
   },
   {
     "name": "Joylynn Kirui",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/joylynn-kirui",
+    "twitterUrl": "https://twitter.com/joylynn_kirui",
     "twitter": "joylynn_kirui",
-    "specialties": [
-      "Cybersecurity"
-    ],
+    "bio": "Joylynn Kirui is an infosec evangelist who believes in empowering developers and users in general on security best practices. She has vast experience in web and mobile app security testing, DevSecOps and GSM security having previously worked in the telco industry for 6 years. She has a passion for mentorship and training students and empowering them. She has spoken in several conferences where she shares her knowledge in cyber security and software development. She is among the Top 50 Women in Cyber Security Africa 2020 finalists and Woman Hacker of the year Africa 2020.\nShe is a Senior Cloud Security Advocate at Microsoft; Based in Nairobi, Kenya.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/joylynn-kirui.jpg",
+    "githubUrl": "https://github.com/S2FrdQ",
     "github": "S2FrdQ",
-    "github_confidence": "high"
+    "specialties": [
+      "DevSecOps",
+      "Application Security",
+      "Infrastructure Security",
+      "Mobile App Security",
+      "IoT Security",
+      "Security analysis",
+      "Penetration testing"
+    ]
   },
   {
     "name": "Julia Muiruri",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/julia-muiruri",
+    "twitterUrl": "https://twitter.com/juliamuiruri4",
     "twitter": "juliamuiruri4",
-    "specialties": [
-      "Students",
-      "Educators",
-      "VS Code"
-    ],
+    "bio": "Julia, based in Nairobi Kenya is focused on helping students and educators with the adoption of different Microsoft Products and Services.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/julia-muiruri.jpg",
+    "githubUrl": "https://github.com/juliamuiruri4",
     "github": "juliamuiruri4",
-    "github_confidence": "high"
+    "specialties": [
+      "VS Code integration with Microsoft Azure",
+      "GitHub"
+    ]
   },
   {
     "name": "Julien Dubois",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/julien-dubois",
+    "twitterUrl": "https://twitter.com/juliendubois",
     "twitter": "juliendubois",
-    "specialties": [
-      "Java"
-    ],
+    "bio": "Julien manages the Java Developer Advocacy team and the JavaScript Developer Advocacy team at Microsoft. Julien is a Java Champion, and is mostly known in the Java community as the creator and lead developer of JHipster.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/julien-dubois.jpg",
+    "githubUrl": "https://github.com/jdubois",
     "github": "jdubois",
-    "github_confidence": "high"
+    "specialties": [
+      "Java",
+      "Full stack development",
+      "Cloud-native applications",
+      "Containers"
+    ]
   },
   {
     "name": "Justin Yoo",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/justin-yoo",
+    "twitterUrl": "https://twitter.com/justinchronicle",
     "twitter": "justinchronicle",
+    "bio": "I started my career as an HR consultant at Samsung for a few years. It was specialising in internal career development for engineers. Funnily enough, their successful career development influenced mine, and I changed my job to become a developer!",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/justin-yoo.png",
+    "githubUrl": "https://github.com/justinyoo",
+    "github": "justinyoo",
     "specialties": [
       ".NET",
       "Power Platform",
       "Cloud-native",
       "DevOps",
-      "Integration | Docker Captain |\nMicrosoft MVP Alumni"
-    ],
-    "github": "justinyoo",
-    "github_confidence": "high"
+      "Integration"
+    ]
   },
   {
     "name": "Kamal Shree Soundirapandian",
-    "profile_url": "https://developer.microsoft.com/en-us/advocates/kamal-shree-soundirapandian",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/kamalshree-soundirapandian",
+    "twitterUrl": "https://twitter.com/whatsupcoders",
     "twitter": "whatsupcoders",
-    "specialties": [
-      "Microsoft 365",
-      "Flutter & Dart",
-      "Android"
-    ],
-    "github": "whatsupcoders",
-    "github_confidence": "high"
+    "bio": "I am a Developer Advocate at Microsoft and work with the Microsoft 365 Developer Advocacy Team.\nI’m a Google Developer Expert in Flutter & Dart with 12 years of experience in Web Technologies, Android, Flutter, and HarmonyOS. I have worked for multinational firms in\nIndia, the Netherlands, and the USA. I am a Youtuber (whatsupcoders), Mentor @MentorCruise, and Open-Source Community Builder.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/kamalshree-soundirapandian.jpg",
+    "githubUrl": "https://github.com/kamalshree",
+    "github": "kamalshree",
+    "specialties": []
   },
   {
     "name": "Kinfey Lo",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/kinfey-lo",
+    "twitterUrl": "https://twitter.com/Ljh8304",
     "twitter": "Ljh8304",
+    "bio": "Kinfey Lo focuses on AI + Data. At this stage, he mainly provides technical evangelism to students, developers, and entrepreneurial teams, mainly including Semantic Kernel, LangChain's Copilot application development, AutoGen to build intelligent agent applications, as well as LLMOps and SLMOps, etc.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/kinfey-lo.jpg",
+    "githubUrl": "https://github.com/kinfey",
+    "github": "kinfey",
     "specialties": [
-      "AzureOpenAIService",
-      "AzureAI",
-      "GitHub"
-    ],
-    "github": "lokinfey",
-    "github_confidence": "high"
+      "Azure AI Service",
+      "Azure OpenAI Service",
+      "Python",
+      ".NET",
+      "Rust",
+      "MLOps",
+      "Visual Studio Code",
+      "GitHub",
+      "Artificial Intelligence for developers"
+    ]
   },
   {
     "name": "Korey Stegared-Pace",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/korey-stegared-pace",
+    "twitterUrl": "https://twitter.com/koreyspace",
     "twitter": "koreyspace",
-    "specialties": [
-      "Data Science",
-      "Azure",
-      "Artificial Intelligence"
-    ],
+    "bio": "Focused on educating and engaging the developer community on building the Generative AI applications.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/korey-stegaredpace.png",
+    "githubUrl": "https://github.com/koreyspace",
     "github": "koreyspace",
-    "github_confidence": "high"
+    "specialties": [
+      "Artificial Intelligence",
+      "Azure Cloud",
+      "Python",
+      ".NET, C#"
+    ]
   },
   {
     "name": "Laurent Bugnion",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/laurent-bugnion",
-    "twitter": null,
+    "bio": "I come to Microsoft after a long career in the industry as a software developer. Initially an electrical engineer, I started coding professionally for Siemens in the 90s (in C!) and did a postgrade education in software engineering. Back then all the cool kids did Java and so I did too. Those were fun days but then I discovered .NET in 2000 and never looked back. I did it all, from WinForms to WebForms to ASP.NET. But I was always interested in design and so when Siemens sent me to Vegas at the first MIX conference in 2006, and I discovered XAML and Blend, I was sold. The next years were spent doing a lot of WPF, Silverlight (Loved it!) and all subsequent XAML-based technologies.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/laurent-bugnion.png",
+    "githubUrl": "https://github.com/LBugnion",
+    "github": "LBugnion",
     "specialties": [
       ".NET",
-      "Azure",
-      "AI"
-    ],
-    "github": "lbugnion",
-    "github_confidence": "high"
+      "Visual Studio",
+      "GitHub Copilot",
+      "Azure Functions",
+      "Azure Static Web Apps",
+      "Azure App Service",
+      "Azure Logic Apps",
+      "Blazor",
+      "Azure SignalR Service",
+      "Azure AI Studio",
+      "and more..."
+    ]
   },
   {
     "name": "Lee Stott",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/lee-stott",
+    "twitterUrl": "https://twitter.com/lee_stott",
     "twitter": "lee_stott",
-    "specialties": [
-      "AI",
-      "ML"
-    ],
+    "bio": "Lee Stott, a highly accomplished Principal Cloud Advocate Manager in Microsoft's AI Advocacy team with over 20 years of experience in developing innovative solutions and services using the latest Microsoft technologies. Lee is also an Associate Professor at University College London, where he works closely with academic institutions to develop cutting-edge technology solutions that help shape the future of education.\nIn addition to his work at UCL, Lee is also a sought-after speaker at international conferences, where he shares his expertise on topics such as cloud computing, artificial intelligence, and machine learning. He is a member of several prestigious academic working groups with organizations such as IEEE and ACM, and has published numerous research papers in top-tier journals.\nWhen Lee's not out sharing his knowledge with the world, he can be found enjoying his hobbies. He loves touring and camping in his VW Campervan, casting a line for some fresh fish, and working on smart home technologies to improve the quality of life for his family",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/lee-stott.png",
+    "githubUrl": "https://github.com/leestott",
     "github": "leestott",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "AI Solution",
+      "ML Solutions",
+      "Data Science",
+      "Developer tools",
+      "Process / Patterns",
+      "ITIL"
+    ]
   },
   {
     "name": "Liam Hampton",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/liam-hampton",
+    "twitterUrl": "https://twitter.com/liamchampton",
     "twitter": "liamchampton",
+    "bio": "Liam is a Regional Cloud Advocate at Microsoft, UK. He is an IoT hobbyist, a podcast co-host and a Software Engineer with multiple Professional Cloud Certifications. He is passionate about cloud computing, clean code and creating simple and concise content for others. When he is not writing code or presenting, you'll either find him searching for the next best eatery in London, studying different cultures or at the airport jetting of to explore the next city on his TODO list.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/liam-hampton.jpg",
+    "githubUrl": "https://github.com/liamchampton",
+    "github": "liamchampton",
     "specialties": [
       "Go",
+      "JavaScript",
       "DevOps",
-      "Containers"
-    ],
-    "github": "liamchampton",
-    "github_confidence": "high",
-    "github_validated": true
+      "Serverless",
+      "Containers (Docker / Kubernetes)"
+    ]
   },
   {
     "name": "Madoka Chiyoda",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/madoka-chiyoda",
+    "twitterUrl": "https://twitter.com/chomado",
     "twitter": "chomado",
-    "specialties": [
-      "Mixed Reality",
-      "HoloLens",
-      "C#",
-      "Conversational AI",
-      "(Manga)"
-    ],
+    "bio": "I joined Microsoft in 2016 after being a mobile app developer using Xamarin for years. I love both programming and drawing manga, so I'm doing both. Check my manga work here.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/madoka-chiyoda.jpg",
+    "githubUrl": "https://github.com/chomado",
     "github": "chomado",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      ".NET (C#)",
+      "Xamarin",
+      "HoloLens",
+      "Azure Functions",
+      "bot",
+      "smartspeaker skill development"
+    ]
   },
   {
     "name": "Mark Heckler",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/mark-heckler",
+    "twitterUrl": "https://twitter.com/mkheck",
     "twitter": "mkheck",
-    "specialties": [
-      "Java"
-    ],
+    "bio": "Mark is a Developer Advocate specializing in Java/JVM languages at Microsoft, a computer scientist and MBA, and licensed pilot. He is a Java Champion and Kotlin Developer Expert, Rockstar presenter, and author of the O'Reilly book Spring Boot: Up and Running! Mark speaks English and Spanish/inglés y español.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/mark-heckler.png",
+    "githubUrl": "https://github.com/mkheck",
     "github": "mkheck",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Java",
+      "Spring",
+      "Full stack development",
+      "Cloud-native applications",
+      "Microservice architectures",
+      "Security"
+    ]
   },
   {
     "name": "Marlene Mhangami",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/marlene-mhangami",
+    "twitterUrl": "https://twitter.com/marlene_zw",
     "twitter": "marlene_zw",
-    "specialties": [
-      "Python"
-    ],
+    "bio": "Marlene is a Developer Advocate specializing in Python and AI at Microsoft, a computer scientist, keynote speaker and explorer. She is the current vice chair of the Association for Computing Machinery, was the previous vice chair of the Python Software Foundation and lead the first PyCon Africa. Marlene is an avid runner, loves to travel and is a big fan of cucumbers!",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/marlene-mhangami.jpeg",
+    "githubUrl": "https://github.com/marlenemhangami",
     "github": "marlenemhangami",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Python",
+      "Cython",
+      "Database infrustructure",
+      "GPU Accelerated Computing",
+      "AI and ML"
+    ]
   },
   {
     "name": "Matthew Soucoup",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/matthew-soucoup",
+    "twitterUrl": "https://twitter.com/codemillmatt",
     "twitter": "codemillmatt",
-    "specialties": [
-      ".NET",
-      "Xamarin"
-    ],
+    "bio": "Matthew Soucoup is a Senior Cloud Developer Advocate at Microsoft spreading the love of integrating Azure with Xamarin. Matt is also a Pluralsight author, a Telerik Developer Expert and prior to joining Microsoft a founder of a successful consulting firm targeting .NET and web development. Matt loves sharing his passion and insight for mobile and cloud development by blogging, writing articles, and presenting at conferences such as Xamarin Evolve, CodeMash, VS Live, and Mobile Era. When not behind a computer screen, Matt gardens hot peppers, rides bikes, and loves Wisconsin micro-brews and cheese. Follow Matt on Twitter at @codemillmatt and his personal blog at codemilltech.com.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/matthew-soucoup.png",
+    "githubUrl": "https://github.com/codemillmatt",
     "github": "codemillmatt",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Xamarin",
+      ".NET",
+      "iOS APIs",
+      "Android APIs",
+      "XAML"
+    ]
   },
   {
     "name": "Nitya Narasimhan",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/nitya-narasimhan",
+    "twitterUrl": "https://twitter.com/nitya",
     "twitter": "nitya",
-    "specialties": [
-      "Mobile, Multi-Platform, Azure, PWA"
-    ],
+    "bio": "Nitya is a PhD in Computer Engineering, and a Polyglot with 20+ years of experience in software research and development.  She is also a community builder and conference organizer in the Greater New York City region.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/nitya-narasimhan.png",
+    "githubUrl": "https://github.com/nitya",
     "github": "nitya",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Mobile Development (Android, Flutter)",
+      "Web Development (JavaScript, PWA)",
+      "Cloud Computing (Azure, Power Platform)",
+      "Sketchnoting (Visual Guides)",
+      "Distributed & Ubiquitous Computing (Research)"
+    ]
   },
   {
     "name": "Olivia Guzzardo",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/olivia-guzzardo",
-    "twitter": "@oliviaguzzardo",
-    "specialties": [
-      "VS Code",
-      "Azure",
-      "GitHub"
-    ],
+    "twitterUrl": "https://twitter.com/@oliviaguzzardo",
+    "bio": "Olivia Guzzardo is a Cloud Advocate living in Charleston, SC. She began her career in the .NET space as a consultant, spending most of her day developing applications for customers. These projects ranged from Xamarin, to Blazor, to CRM and SharePoint development, in both the private and public sectors. Her passion for connecting with developers led her to the advocacy side.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/olivia-guzzardo.png",
+    "githubUrl": "https://github.com/olguzzar",
     "github": "olguzzar",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      ".NET",
+      "JavaScript",
+      "Azure",
+      "DevOps"
+    ]
   },
   {
     "name": "Orin Thomas",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/orin-thomas",
+    "twitterUrl": "https://twitter.com/orinthomas",
     "twitter": "orinthomas",
-    "specialties": [
-      "IT Infrastructure",
-      "Operations",
-      "IT Pro",
-      "Azure | Microsoft Certified Trainer |\nMicrosoft RD Alumni | Microsoft MVP Alumni"
-    ],
+    "bio": "Orin Thomas is a Principal Cloud Operations Advocate at Microsoft and has written more than 45 books for Microsoft Press on topics including Windows Server, Azure Security, Microsoft 365, Hybrid Cloud, Windows Client, Azure, Microsoft 365, Office 365, System Center, Exchange Server, Security, and SQL Server.\nAs a Cloud Advocate with an IT Operations focus, Orin advocates to and on behalf of the Microsoft ecosystem IT Professional community. He is responsible for the creation of the Windows Server Hybrid Administrator Associate certification and the Active Directory Domain Services and Azure Monitor applied skill credentials.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/orin-thomas.png",
+    "githubUrl": "https://github.com/orin-thomas",
     "github": "orin-thomas",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Infrastructure",
+      "Windows Server",
+      "IT Operations",
+      "Hybrid Cloud",
+      "Security",
+      "Cloud Architecture"
+    ]
   },
   {
     "name": "Pablo Lopes",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/pablo-lopes",
-    "twitter": null,
-    "specialties": [
-      "Azure",
-      "DotNet",
-      "Visual Studio",
-      "AI | Microsoft Learn Student Ambassador Alumni"
-    ],
+    "bio": "Pablo is a passionate technology enthusiast, Software Engineer, and SysAdmin with a rich and diverse background. As a former Microsoft Learn Student Ambassador, he has been deeply involved in the tech community. Pablo thrives on the rapid pace of technological growth and is dedicated to advocating for cutting-edge technology integration among future IT professionals.\nWith experience spanning from startups to Fortune 500 companies, Pablo has tackled technology in various forms and capacities. He is now a proud member of the Microsoft Advocacy team, specializing in Application Development. Pablo is committed to bridging communities—students, startups, developers, and corporate entities—through the power of .NET, Python, Azure, AI, and the broader Microsoft stack. His mission is to foster a collaborative and innovative tech ecosystem for a brighter future.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/pablo-lopes.jpg",
+    "githubUrl": "https://github.com/PabloNunes",
     "github": "PabloNunes",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Dot Net",
+      "Python",
+      "VS + VSCode",
+      "AI",
+      "Azure"
+    ]
   },
   {
     "name": "Pamela Fox",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/pamela-fox",
+    "twitterUrl": "https://twitter.com/pamelafox",
     "twitter": "pamelafox",
-    "specialties": [
-      "Python"
-    ],
+    "bio": "👋🏻 Hi! I'm Pamela Fox, a human that loves to learn, teach, and create.\nI love being a Cloud Developer Advocate because I get to do all three at once!",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/pamela-fox.png",
+    "githubUrl": "https://github.com/pamelafox",
     "github": "pamelafox",
-    "github_confidence": "high"
+    "specialties": [
+      "Python",
+      "JavaScript",
+      "Web Development",
+      "Cloud"
+    ]
   },
   {
     "name": "Patrick Chanezon",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/patrick-chanezon",
+    "twitterUrl": "https://twitter.com/chanezon",
     "twitter": "chanezon",
-    "specialties": [
-      "Containers"
-    ],
+    "bio": "Patrick Chanezon is Principal Cloud Advocate at Microsoft, helping Azure be the cloud you love. Previously, at Docker Inc., he helped to build Docker, the world’s leading software container platform, for developers and sysadmins. Software developer and storyteller, he spent 10 years building platforms at Netscape & Sun, then 10 years evangelizing platforms at Google, VMware & Microsoft. His main professional interest is in building and kickstarting the network effect for these wondrous two-sided markets called Platforms. He has worked on platforms for Cloud, Distributed Systems, Web, Social, Commerce, Ads, and Portals.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/patrick-chanezon.png",
+    "githubUrl": "https://github.com/chanezon",
     "github": "chanezon",
-    "github_confidence": "high"
+    "specialties": [
+      "Developer Relations",
+      "Java",
+      "Python",
+      "JavaScript",
+      "Cloud",
+      "Linux",
+      "Web Development",
+      "Docker",
+      "Kubernetes",
+      "Azure",
+      "Cloud Foundry"
+    ]
   },
   {
     "name": "Paul DeCarlo",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/paul-decarlo",
+    "twitterUrl": "https://twitter.com/pjdecarlo",
     "twitter": "pjdecarlo",
-    "specialties": [
-      "AI, ML, Data, IoT"
-    ],
+    "bio": "Principal Cloud Developer Advocate focusing on AI, ML, Data, and IoT.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/paul-decarlo.png",
+    "githubUrl": "https://github.com/toolboc",
     "github": "toolboc",
-    "github_confidence": "high"
+    "specialties": [
+      "Artificial Intelligence",
+      "Machine Learning",
+      "Data",
+      "IoT",
+      "Linux"
+    ]
   },
   {
     "name": "Paul Yu",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/paul-yu",
+    "twitterUrl": "https://twitter.com/pauldotyu",
     "twitter": "pauldotyu",
-    "specialties": [],
+    "bio": "Paul Yu is a Senior Cloud Advocate at Microsoft focusing on cloud native technologies and the Kubernetes landscape. Paul has well over a decade of industry experience working as a Software Engineer and Solution Architect. He is passionate about promoting cloud native and sustainable solutions to help organizations optimize processes and workflows.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/paul-yu.jpg",
+    "githubUrl": "https://github.com/pauldotyu",
     "github": "pauldotyu",
-    "github_confidence": "high"
+    "specialties": [
+      "Containers",
+      "Kubernetes",
+      "Open source",
+      "Microsoft Azure",
+      "DevOps",
+      "IaC",
+      "Web dev"
+    ]
   },
   {
     "name": "Pierre Roman",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/pierre-roman",
+    "twitterUrl": "https://twitter.com/WiredCanuck",
     "twitter": "WiredCanuck",
+    "bio": "Pierre Roman engages with the operations and infrastructure communities on behalf of Microsoft. His role is to listen to the concerns of the communities and bring that information back to the Azure Engineering Team in order to improve the platform. With over 25 years of experience in the industry, Pierre brings a well-rounded view of the Ops/infra lifecycle. His experiences enable him to relate to his audiences and cultivate relationships at all levels (from the nuts and bolts guy/gal to management.) He’s a husband, a dad, a hockey fan, a gadget enthusiast and a geek. Pierre is always ready for a conversation (in English or français - naturellement).",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/pierre-roman.png",
+    "githubUrl": "https://github.com/pierreroman",
+    "github": "pierreroman",
     "specialties": [
       "Infrastructure",
-      "Azure",
-      "IaaS",
-      "Hybrid",
-      "Operations",
-      "IT Pro"
-    ],
-    "github": "WiredCanuck",
-    "github_confidence": "high"
+      "Microsoft Azure",
+      "IT Operations",
+      "Hydrid workloads",
+      "Datacenter Migrations"
+    ]
   },
   {
     "name": "Rabia Williams",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/rabia-williams",
+    "twitterUrl": "https://twitter.com/williamsrabia",
     "twitter": "williamsrabia",
-    "specialties": [
-      "Development on Microsoft 365"
-    ],
+    "bio": "I'm a Cloud Developer Advocate for Microsoft focused on Microsoft Teams and Microsoft Graph.\nA contributing member of the Microsoft 365 Patterns and Practices team, and maintainer of CLI for Microsoft365.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/rabia-williams.png",
+    "githubUrl": "https://github.com/rabwill",
     "github": "rabwill",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Microsoft Teams development using SPFx",
+      "Microsoft Graph",
+      "SharePoint Framework (SPFx)",
+      "NodeJS development in TypeScript and ES6",
+      "React",
+      ".NET development in C#",
+      "Azure Functions",
+      "PowerShell"
+    ]
   },
   {
     "name": "Renee Noble",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/renee-noble",
+    "twitterUrl": "https://twitter.com/noble_renee",
     "twitter": "noble_renee",
+    "bio": "Renee is the Regional Cloud Advocate for the Sydney Reactor and the Australia region. She's passionate about technology, education, community, and bringing them all together in-person and online.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/renee-noble.png",
+    "githubUrl": "https://github.com/reneenoble/",
+    "github": "reneenoble",
     "specialties": [
       "Python",
-      "AI",
-      "ML"
-    ],
-    "github": "reneenoble",
-    "github_confidence": "high",
-    "github_validated": true
+      "AI / ML",
+      "Web Development",
+      "Algorithms",
+      "Making tech approachable for beginners",
+      "Diversity & Inclusion"
+    ]
   },
   {
     "name": "Rick Claus",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/rick-claus",
+    "twitterUrl": "https://twitter.com/RicksterCDN",
     "twitter": "RicksterCDN",
-    "specialties": [
-      "Azure",
-      "IaaS",
-      "Windows Server",
-      "On-Prem",
-      "IT Pro"
-    ],
+    "bio": "Rick Claus engages in person and online with the worldwide IT Pro / Ops community on behalf of Microsoft. As a lead for one of the Cloud Advocate teams in Azure engineering, Rick's role is to connect with technical communities in order capture feedback on how to make things better and to share his knowledge about the ecosystem.\nTechnical areas of expertise from his 20+ years of experience in the IT Industry include; Core Azure infrastructure services, Windows Server, systems management and all things \"cloud\" ;-)",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/rick-claus.png",
+    "githubUrl": "https://github.com/RicksterCDN",
     "github": "RicksterCDN",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Microsoft Azure",
+      "IT Operations",
+      "Windows Server",
+      "Datacenter Migrations"
+    ]
   },
   {
     "name": "Rob Conery",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/rob-conery",
+    "twitterUrl": "https://twitter.com/robconery",
     "twitter": "robconery",
-    "specialties": [],
+    "bio": "Rob is a Senior Cloud Developer Advocate at Microsoft with well over a two decades of software development, systems architecture & database experience across the major clouds, development platforms and industries. His current areas of focus include Code (Node.js, Ruby, C#/.NET), Databases (PostgreSQL, MongoDB, RethinkDB), Linux & other Open Source platforms. Rob joined Microsoft in 2006, working on ASP.NET MVC and rejoined in 2018 as a Cloud Advocate. Rob lives in Santa Barbara CA and enjoys biking and swimming in cold water.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/rob-conery.jpg",
+    "githubUrl": "https://github.com/robconery",
     "github": "robconery",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Microsoft Azure",
+      "PostgreSQL/Databases",
+      "ASP.NET",
+      "NodeJS",
+      "Vue/Nuxt/JavaScript"
+    ]
   },
   {
     "name": "Rory Preddy",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/rory-preddy",
+    "twitterUrl": "https://twitter.com/rorypreddy",
     "twitter": "rorypreddy",
-    "specialties": [
-      "Java"
-    ],
+    "bio": "Rory is a Developer Advocate for Java at Microsoft and a passionate Accessibility Advocate.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/rory-preddy.png",
+    "githubUrl": "https://github.com/roryp",
     "github": "roryp",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Java",
+      "Accessibility",
+      "Tooling",
+      "Azure"
+    ]
   },
   {
     "name": "Sandra Ahlgrimm",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/sandra-ahlgrimm",
+    "twitterUrl": "https://twitter.com/skriemhild",
     "twitter": "skriemhild",
-    "specialties": [
-      "Container",
-      "Java",
-      "DevOps"
-    ],
+    "bio": "Sandra is a Cloud Developer Advocate focusing on Java in Microservice Architectures and Containers on the Azure platform. She helps in the Docker and\nKubernetes community whenever she can. She is organizing the JUG Berlin/Brandenburg and the Berlin Docker Meetup.\nSandra has a strong background in software development. She holds an M.Sc. in Media and Computer Science from Berlin University of Applied Sciences.\nDuring her studies she worked in several Start Ups and Companies of Axel Springers where she gained expertise in setting up hybrid infrastructures, devops culture and process automation.\nSandra is a huge fan of event driven architectures with real time requirements.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/sandra-ahlgrimm.png",
+    "githubUrl": "https://github.com/sandraahlgrimm",
     "github": "sandraahlgrimm",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Linux & Open Source",
+      "Container",
+      "Kubernetes",
+      "Java"
+    ]
   },
   {
     "name": "Sarah Kaiser",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/sarah-kaiser",
+    "twitterUrl": "https://twitter.com/crazy4pi314",
     "twitter": "crazy4pi314",
+    "bio": "👋 Hi! My name is Sarah Kaiser (she/her), your friendly neighborhood Cloud Advocate at Microsoft.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/sarah-kaiser.png",
+    "githubUrl": "https://github.com/crazy4pi314",
+    "github": "crazy4pi314",
     "specialties": [
       "Python",
-      "Microsoft MVP Alumni"
-    ],
-    "github": "crazy4pi314",
-    "github_confidence": "high",
-    "github_validated": true
+      "Data Science",
+      "AI/ML",
+      "Quantum Technologies",
+      "OSS Community Building",
+      "Public Speaking"
+    ]
   },
   {
     "name": "Sarah Young",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/sarah-young",
+    "twitterUrl": "https://twitter.com/_sarahyo",
     "twitter": "_sarahyo",
-    "specialties": [
-      "Security for all the things"
-    ],
+    "bio": "Talks about and does security things.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/sarah-young.png",
+    "githubUrl": "https://github.com/sarah-yo",
     "github": "sarah-yo",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "AI Security",
+      "Cloud Security",
+      "Security Operations",
+      "Security Architecture",
+      "Zero Trust"
+    ]
   },
   {
     "name": "Scott Durow",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/scott-durow",
+    "twitterUrl": "https://twitter.com/ScottDurow",
     "twitter": "ScottDurow",
-    "specialties": [
-      "Power Platform"
-    ],
+    "bio": "👋🏻 Hi, I'm Scott, and I have a passion for helping developers work with the Power Platform to give them more power using low-code along side their existing pro-dev tools.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/scott-durow.png",
+    "githubUrl": "https://github.com/scottdurow",
     "github": "scottdurow",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Power Apps",
+      "Power Automate",
+      "Power Virtual Agents",
+      "Dataverse",
+      "Dynamics 365 Sales, Service & Marketing",
+      "SharePoint",
+      "Microsoft Graph",
+      "Extending the Power Platform using .NET (C#), JavaScript/TypeScript, & Azure",
+      "ALM",
+      "React & Power Apps Component Framework"
+    ]
   },
   {
     "name": "Someleze Diko",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/someleze-diko",
+    "twitterUrl": "https://twitter.com/DikoSomeleze",
     "twitter": "DikoSomeleze",
-    "specialties": [
-      "Data & AI",
-      "Microsoft Learn Student Ambassador Alumni"
-    ],
+    "bio": "Someleze is a Cloud Advocate at Microsoft, where he assists developers and data professionals to leverage\nthe power of the cloud and AI for their projects. He is part of the Data Advocacy team, which focuses on\nempowering data communities with the latest tools and technologies for data analysis, vizualization, and\nmachine learning using Microsoft Fabric. He is also an active speaker, blogger, and mentor who shares his\nknowledge and experience with various audiences across Africa and beyond.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/someleze-diko.png",
+    "githubUrl": "https://github.com/dikodev",
     "github": "dikodev",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "Power Apps",
+      "Power Automate",
+      "C#/.NET",
+      "Python",
+      "Data Science",
+      "Data Engineering",
+      "Data Analysis",
+      "AI"
+    ]
   },
   {
     "name": "Sonia Cuff",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/sonia-cuff",
+    "twitterUrl": "https://twitter.com/SoniaCuff",
     "twitter": "SoniaCuff",
-    "specialties": [
-      "IT Infrastructure",
-      "IT Pro",
-      "FinOps",
-      "Azure | Microsoft MVP Alumni"
-    ],
+    "bio": "Sonia Cuff leads the Modern Infrastructure and Cloud Native & Linux teams in Microsoft's Cloud Advocacy division. She connects in person & online with the worldwide IT community, with an IT Operations focus. Sonia educates, empowers and upskills technical communities and captures feedback on how to make Microsoft's products even better. With over 25 years’ experience in tech, from large enterprises and government to small & medium businesses, Sonia brings a unique perspective to the realities of operating Cloud and hybrid workloads.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/sonia-cuff.png",
+    "githubUrl": "https://github.com/Scuffy",
     "github": "Scuffy",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "FinOps Certified Practitioner",
+      "Cost Management",
+      "Infrastructure",
+      "Windows Server",
+      "IT Operations",
+      "Monitoring & Alerting",
+      "Hybrid",
+      "Cloud Architecture",
+      "Managed Service Providers",
+      "Small and Medium Business",
+      "Industrys: Finance, Government, Defence, Police"
+    ]
   },
   {
     "name": "Steven Murawski",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/steven-murawski",
+    "twitterUrl": "https://twitter.com/stevenmurawski",
     "twitter": "stevenmurawski",
-    "specialties": [
-      "Cloud Native"
-    ],
+    "bio": "Steven is a Cloud Developer Advocate at Microsoft. Steven is an open source developer exploring the bounds of WebAssembly in the Cloud Native ecosystem.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/steven-murawski.png",
+    "githubUrl": "https://github.com/smurawski",
     "github": "smurawski",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "DevOps",
+      "Distributed Systems",
+      "PowerShell",
+      "Ruby",
+      "Rust",
+      "WebAssembly"
+    ]
   },
   {
     "name": "Thomas Lewis",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/thomas-lewis",
+    "twitterUrl": "https://twitter.com/tommylee",
     "twitter": "tommylee",
-    "specialties": [
-      "Mixed Reality",
-      "HoloLens"
-    ],
+    "bio": "Cloud Advocate in Microsoft's Developer Relations. Spatial Computing + Academic advocacy. Favorites: MR/AR/VR/XR, Web, Design & otters. Pronouns: he/him.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/thomas-lewis.png",
+    "githubUrl": "https://github.com/tholewis",
     "github": "tholewis",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      "DevRel Management",
+      "Spatial Computing",
+      "Mixed Reality",
+      "HoloLens",
+      "Web Development",
+      "Inclusive Design"
+    ]
   },
   {
     "name": "Todd Anglin",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/todd-anglin",
+    "twitterUrl": "https://twitter.com/toddanglin",
     "twitter": "toddanglin",
-    "specialties": [
-      "DevRel Leadership | Web",
-      "Mobile Development | Microsoft MVP Alumni"
-    ],
+    "bio": "Hi. I'm Todd, a Parnter Cloud Advocate Lead here at Microsoft.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/todd-anglin.png",
+    "githubUrl": "https://github.com/toddanglin",
     "github": "toddanglin",
-    "github_confidence": "high",
-    "github_validated": true
+    "specialties": [
+      ".NET / C#",
+      "JavaScript / Web Development",
+      "Mobile Apps / NativeScript"
+    ]
   },
   {
     "name": "Tomomi Imura",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/tomomi-imura",
+    "twitterUrl": "https://twitter.com/girlie_mac",
     "twitter": "girlie_mac",
-    "specialties": [
-      "JavaScript",
-      "UX"
-    ],
+    "bio": "Tomomi Imura is a seasoned developer advocate and a software developer with over 15 years industry experience in San Francisco Bay Area. Prior to Microsoft, she was working at Slack.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/tomomi-imura.jpg",
+    "githubUrl": "https://github.com/girliemac",
     "github": "girliemac",
-    "github_confidence": "high"
+    "specialties": [
+      "JavaScript / Node.js",
+      "Web Development / CSS",
+      "Developer Relations",
+      "User Experience Design",
+      "Tech Doodling / Sketchnoting",
+      "🐱-as-a-Service"
+    ]
   },
   {
     "name": "Vinayak Hegde",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/vinayak-hegde",
+    "twitterUrl": "https://twitter.com/vinayakh",
     "twitter": "vinayakh",
-    "specialties": [
-      "AI",
-      "ML"
-    ],
+    "bio": "Vinayak Hegde is a Principal AI advocate focussing on Generative AI and Machine Learning. Earlier at Microsoft, I worked in startups team helping startups bring their AI products to market and scale them. I use my experience in this field to educate and mentor startups, students and enterprises to adopt latest AI technoligies and build scalable products.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/vinayak-hegde.png",
+    "githubUrl": "https://github.com/vinayakh",
     "github": "vinayakh",
-    "github_confidence": "high"
+    "specialties": [
+      "AI / ML",
+      "Data Science",
+      "Cloud Architecture / Large scale data / Large scale networks",
+      "Python / Java / C & C++",
+      "Postgres"
+    ]
   },
   {
     "name": "Vinicius Apolinario",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/vinicius-apolinario",
+    "twitterUrl": "https://twitter.com/vrapolinario",
     "twitter": "vrapolinario",
-    "specialties": [
-      "Azure",
-      "IaaS",
-      "Windows Server",
-      "Containers",
-      "Kubernetes",
-      "IT Pro"
-    ],
+    "bio": "Vinicius has been working with IT for 20+ years. He has a passion for helping ITPros/Ops and whenever possible, you'll see him on conferences engaging with customers and community. Vinicius holds many Microsoft certifications, has 2 books published (Learning Hyper-V, and Windows Containers for ITPros), is an MCT since 2009, has worked as a Program Manager in the Windows Containers team, and blogs about anything he thinks will help customers be sucessful.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/vinicius-apolinario.png",
+    "githubUrl": "https://github.com/vrapolinario",
     "github": "vrapolinario",
-    "github_confidence": "high"
+    "specialties": [
+      "Microsoft Azure",
+      "IT Operations",
+      "Windows Server",
+      "Windows Containers",
+      "Azure Kubernetes Service"
+    ]
   },
   {
     "name": "Waldek Mastykarz",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/waldek-mastykarz",
+    "twitterUrl": "https://twitter.com/waldekm",
     "twitter": "waldekm",
-    "specialties": [
-      "Microsoft 365",
-      "Microsoft MVP Alumni"
-    ],
+    "bio": "Waldek is a Cloud Developer Advocate at Microsoft focusing on Microsoft 365. In this role he helps developers build applications on top of Microsoft 365. He's also a part of the Microsoft 365 community where he builds developer guidance and tooling for extending Microsoft 365 together with the community.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/waldek-mastykarz.png",
+    "githubUrl": "https://github.com/waldekmastykarz",
     "github": "waldekmastykarz",
-    "github_confidence": "high"
+    "specialties": [
+      "Microsoft 365 Copilot",
+      "Microsoft Graph",
+      "Microsoft Teams",
+      "SharePoint Framework (SPFx)",
+      "Node.js",
+      "TypeScript",
+      "JavaScript",
+      "Identity",
+      "Azure Serverless",
+      "Power Platform",
+      "React",
+      "C#",
+      "Docker"
+    ]
   },
   {
     "name": "Wassim Chegham",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/wassim-chegham",
+    "twitterUrl": "https://twitter.com/manekinekko",
     "twitter": "manekinekko",
+    "bio": "Wassim is a member of the Angular team, an open source advocate and a Senior Cloud Advocate at Microsoft.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/wassim-chegham.jpeg",
+    "githubUrl": "https://github.com/manekinekko",
+    "github": "manekinekko",
     "specialties": [
       "Node.js",
       "JavaScript",
-      "Web"
-    ],
-    "github": "wassim-chegham",
-    "github_confidence": "high"
+      "Angular",
+      "IoT",
+      "Chatbots"
+    ]
   },
   {
     "name": "Yohan Lasorsa",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/yohan-lasorsa",
+    "twitterUrl": "https://twitter.com/sinedied",
     "twitter": "sinedied",
+    "bio": "Yohan Lasorsa is a Senior Cloud Advocate at Microsoft.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/yohan-lasorsa.png",
+    "githubUrl": "https://github.com/sinedied",
+    "github": "sinedied",
     "specialties": [
       "JavaScript",
       "Node.js",
-      "Web",
-      "Mobile"
-    ],
-    "github": "sinedied",
-    "github_confidence": "high"
+      "Angular",
+      "Mobile & Hybrid development",
+      "UX Design",
+      "IoT"
+    ]
   },
   {
     "name": "Yoshio Terada",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/yoshio-terada",
+    "twitterUrl": "https://twitter.com/yoshioterada",
     "twitter": "yoshioterada",
-    "specialties": [
-      "Java"
-    ],
+    "bio": "I joined Microsoft in 2015. Before joined Microsoft, I had worked at Sun Microsystems and Oracle as Java Evangelist since 2005.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/yoshio-terada.png",
+    "githubUrl": "https://github.com/yoshioterada",
     "github": "yoshioterada",
-    "github_confidence": "high"
+    "specialties": [
+      "Java SE/EE",
+      "DevOps",
+      "Cloud Native App",
+      "Microservices",
+      "Kubernetes (AKS)"
+    ]
   },
   {
     "name": "Yoshua Wuyts",
     "profile_url": "https://developer.microsoft.com/en-us/advocates/yoshua-wuyts",
+    "twitterUrl": "https://twitter.com/yoshuawuyts",
     "twitter": "yoshuawuyts",
-    "specialties": [
-      "Rust"
-    ],
+    "bio": "Yosh is a developer advocate at Microsoft for the Rust programming language, based\nin Copenhagen, Denmark. They've spent their career working on public projects,\nstarting in Node.js but gradually moving to doing more in Rust until that became\ntheir primary focus.",
+    "imageUrl": "https://developer.microsoft.com/media/profiles/yoshua-wuyts.jpg",
+    "githubUrl": "https://github.com/yoshuawuyts",
     "github": "yoshuawuyts",
-    "github_confidence": "high"
+    "specialties": []
   }
 ]

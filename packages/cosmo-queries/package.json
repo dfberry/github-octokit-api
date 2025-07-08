@@ -1,0 +1,27 @@
+{
+  "name": "cosmo-queries",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build:tsc": "tsc",
+    "build:tsc:debug": "tsc --pretty --traceResolution --noEmit",
+    "build": "npm run clean && npm run format && npm run build:tsc",
+    "prestart": "npm run build",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\"",
+    "lint": "eslint \"src/**/*.ts\" ",
+    "lint:check": "eslint \"src/**/*.ts\"",
+    "start": "npm run start:index",
+    "start:index": "node -r dotenv/config ./dist/index.js",
+    "test": "vitest run --coverage"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@azure/cosmos": "^4.4.1",
+    "dotenv": "^17.0.1"
+  }
+}

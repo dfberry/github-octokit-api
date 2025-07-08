@@ -1,0 +1,23 @@
+# docker compose up -d
+# docker exec -it ollama ollama pull nomic-embed-text
+
+version: '3.8'
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]  # Remove this block if you're not using a GPU
+
+volumes:
+  ollama_data:

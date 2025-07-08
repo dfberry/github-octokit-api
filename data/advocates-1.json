@@ -1,0 +1,1060 @@
+[
+  {
+    "name": "Aaron Powell",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/aaron-powell",
+    "twitter": "slace",
+    "specialties": [
+      ".NET",
+      "JavaScript",
+      "Web | Microsoft MVP Alumni"
+    ],
+    "github": "aaronpowell",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Aaron Wislang",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/aaron-wislang",
+    "twitter": "as_w",
+    "specialties": [
+      "Linux"
+    ],
+    "github": "asw101",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Abril Ureña",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/abril-ureña",
+    "twitter": "abrildaur",
+    "specialties": [
+      "VS Code",
+      "Front-end Development",
+      "UX Design"
+    ],
+    "github": "abrilurena",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Alfredo Deza",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/alfredo-deza",
+    "twitter": "alfredodeza",
+    "specialties": [
+      "Python",
+      "MLOps",
+      "DevOps"
+    ],
+    "github": "alfredodeza",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Alvaro Videla",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/alvaro-videla",
+    "twitter": "old_sound",
+    "specialties": [
+      "RabbitMQ",
+      "Functional Programming",
+      "Architecture"
+    ],
+    "github": "videlalvaro",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Amy Boyd",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/amy-boyd",
+    "twitter": "AmyKateNicho",
+    "specialties": [
+      "AI",
+      "ML"
+    ],
+    "github": "amynic",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Amy Colyer",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/amy-colyer",
+    "twitter": "wyrdgirl",
+    "specialties": [
+      "Infrastructure",
+      "Azure",
+      "Hybrid",
+      "Operations",
+      "IT Pro"
+    ],
+    "github": "amycolyer",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Anthony Bartolo",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/anthony-bartolo",
+    "twitter": "wirelesslife",
+    "specialties": [
+      "Developer Tools",
+      "AI",
+      "Infrastructure",
+      "Security | Microsoft MVP Alumni"
+    ],
+    "github": "WirelessLife",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Anthony Shaw",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/anthony-shaw",
+    "twitter": "anthonypjshaw",
+    "specialties": [
+      "Python"
+    ],
+    "github": "tonybaloney",
+    "github_confidence": "high"
+  },
+  {
+    "name": "April Dunnam",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/april-dunnam",
+    "twitter": "aprildunnam",
+    "specialties": [
+      "Power Platform"
+    ],
+    "github": "aprildunnam",
+    "github_confidence": "high"
+  },
+  {
+    "name": "April Speight",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/april-speight",
+    "twitter": "vogueandcode",
+    "specialties": [
+      "AI",
+      "Responsible AI",
+      "Python"
+    ],
+    "github": "aprilspeight",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Ayca Bas",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/ayca-bas",
+    "twitter": "aycabs",
+    "specialties": [
+      "Microsoft Graph"
+    ],
+    "github": "aycabas",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Barnam Bora",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/barnam-bora",
+    "twitter": "barnambora",
+    "specialties": [
+      "AI",
+      "ML",
+      "Microsoft Teams",
+      "Microsoft Graph",
+      "CTO Advisory"
+    ],
+    "github": "barnam-bora",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Bethany Cheum",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/bethany-cheum",
+    "twitter": "bethanyjep",
+    "specialties": [
+      "Python",
+      "Data Science",
+      "AI & ML"
+    ],
+    "github": "BethanyJep",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Bob German",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/bob-german",
+    "twitter": "Bob1German",
+    "specialties": [
+      "Development on Microsoft 365 with Azure"
+    ],
+    "github": "BobGerman",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Brian Benz",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/brian-benz",
+    "twitter": "bbenz",
+    "specialties": [
+      "Java",
+      "AI",
+      "DevOps",
+      "Cloud | Jakarta EE Ambassador | Java Champion"
+    ],
+    "github": "bbenz",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Bruno Capuano",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/bruno-capuano",
+    "twitter": "elbruno",
+    "specialties": [
+      "AI",
+      "ML",
+      ".NET | Microsoft MVP Alumni"
+    ],
+    "github": "elbruno",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Burke Holland",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/burke-holland",
+    "twitter": "burkeholland",
+    "specialties": [
+      "JavaScript",
+      "VS Code"
+    ],
+    "github": "burkeholland",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Carlotta Castelluccio",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/carlotta-castelluccio",
+    "twitter": null,
+    "specialties": [
+      "Data Science",
+      "Azure",
+      "Artificial Intelligence"
+    ],
+    "github": "carlotta94c",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Cedric Vidal",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/cedric-vidal",
+    "twitter": null,
+    "specialties": [
+      "United States\n\n\nAI"
+    ],
+    "github": "cedricvidal",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Chris Noring",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/chris-noring",
+    "twitter": "chris_noring",
+    "specialties": [
+      "Web",
+      "Azure",
+      "JavaScript"
+    ],
+    "github": "softchris",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Christopher Maneu",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/christopher-maneu",
+    "twitter": "cmaneu",
+    "specialties": [
+      "Data Engineering & Analytics"
+    ],
+    "github": "cmaneu",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Cynthia Zanoni",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/cynthia-zanoni",
+    "twitter": "cynthia_zanoni",
+    "specialties": [
+      "JavaScript",
+      "GitHub",
+      "VSCode"
+    ],
+    "github": "cyz",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Dan Wahlin",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/dan-wahlin",
+    "twitter": "danwahlin",
+    "specialties": [
+      "AI",
+      "Azure",
+      "JavaScript | Google Developer Expert | Docker Captain | Microsoft\nRD Alumni | Microsoft MVP Alumni"
+    ],
+    "github": "danwahlin",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Daniel Laskewitz",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/daniel-laskewitz",
+    "twitter": "laskewitz",
+    "specialties": [
+      "Power Platform"
+    ],
+    "github": "laskewitz",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Dave Glover",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/dave-glover",
+    "twitter": "dglover",
+    "specialties": [
+      "IoT and Cloud"
+    ],
+    "github": "gloveboxes",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "David Smith",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/david-smith",
+    "twitter": "revodavid",
+    "specialties": [
+      "AI",
+      "ML",
+      "Data Science",
+      "R"
+    ],
+    "github": "revodavid",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Elaiza Benitez",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/elaiza-benitez",
+    "twitter": "benitezhere",
+    "specialties": [
+      "Power Platform"
+    ],
+    "github": "elaizabenitez",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Em Lazer-Walker",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/em-lazer-walker",
+    "twitter": "lazerwalker",
+    "specialties": [
+      "Games",
+      "Mobile",
+      "JavaScript",
+      "IoT",
+      "Mixed Reality",
+      "HoloLens"
+    ],
+    "github": null
+  },
+  {
+    "name": "Frank Boucher",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/frank-boucher",
+    "twitter": "fboucheros",
+    "specialties": [
+      "Development",
+      "DevOps",
+      "Serverless"
+    ],
+    "github": "fboucher",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Garry Trinder",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/garry-trinder",
+    "twitter": "garrytrinder",
+    "specialties": [
+      "Development on Microsoft 365"
+    ],
+    "github": "garrytrinder",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Glaucia Lemos",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/glaucia-lemos",
+    "twitter": "glaucia_lemos86",
+    "specialties": [
+      "JavaScript",
+      "Node.js",
+      "A.I"
+    ],
+    "github": "glaucia86",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Gomolemo Mohapi",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/gomolemo-mohapi",
+    "twitter": "GomoMohapi",
+    "specialties": [
+      "Power Apps",
+      "Fusion Development"
+    ],
+    "github": "gomomohapi",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Gustavo Cordido",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/gustavo-cordido",
+    "twitter": "gcordidoa",
+    "specialties": [
+      "Spatial Computing",
+      "Mixed Reality",
+      "AI"
+    ],
+    "github": "gcordido",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Gwyneth Peña-Siguenza",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/gwyneth-peña-siguenza",
+    "twitter": "madebygps",
+    "specialties": [
+      "Cloud Engineering"
+    ],
+    "github": null
+  },
+  {
+    "name": "Henk Boelman",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/henk-boelman",
+    "twitter": "hboelman",
+    "specialties": [
+      "AI",
+      "ML",
+      "Azure",
+      "DevOps"
+    ],
+    "github": "hnky",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Ismaël Mejía",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/ismaël-mejía",
+    "twitter": "iemejia",
+    "specialties": [
+      "Big Data",
+      "Data Engineering"
+    ],
+    "github": null
+  },
+  {
+    "name": "Japhlet Nwamu",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/japhlet-nwamu",
+    "twitter": "japhletnwamu",
+    "specialties": [
+      "AI",
+      "Power Platform",
+      "Microsoft 365",
+      "Students",
+      "Faculty"
+    ],
+    "github": "japhletnwamu",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Jasmine Greenaway",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/jasmine-greenaway",
+    "twitter": "paladique",
+    "specialties": [
+      "AI, Data"
+    ],
+    "github": "paladique",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Joey Snow",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/joey-snow",
+    "twitter": "joeysnow",
+    "specialties": [
+      "Common sense security for all."
+    ],
+    "github": "joey-snow",
+    "github_confidence": "high"
+  },
+  {
+    "name": "John Papa",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/john-papa",
+    "twitter": "john_papa",
+    "specialties": [
+      "DevRel leadership, Web technologist, Engineering leader",
+      "Google Developer\nExpert",
+      "Microsoft RD Alumni",
+      "Microsoft MVP Alumni"
+    ],
+    "github": "johnpapa",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Jorge Arteiro",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/jorge-arteiro",
+    "twitter": "jorgearteiro",
+    "specialties": [
+      "Containers",
+      "Kubernetes",
+      "Open Source",
+      "Linux"
+    ],
+    "github": "jorgearteiro",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Josh Ndemenge",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/josh-ndemenge",
+    "twitter": "Jcardif254",
+    "specialties": [
+      "Data & Analytics",
+      "Big Data"
+    ],
+    "github": "Jcardif",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Joshua Duffney",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/joshua-duffney",
+    "twitter": null,
+    "specialties": [
+      "Secure Software Supply Chain"
+    ],
+    "github": "duffney",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Joylynn Kirui",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/joylynn-kirui",
+    "twitter": "joylynn_kirui",
+    "specialties": [
+      "Cybersecurity"
+    ],
+    "github": "S2FrdQ",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Julia Muiruri",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/julia-muiruri",
+    "twitter": "juliamuiruri4",
+    "specialties": [
+      "Students",
+      "Educators",
+      "VS Code"
+    ],
+    "github": "juliamuiruri4",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Julien Dubois",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/julien-dubois",
+    "twitter": "juliendubois",
+    "specialties": [
+      "Java"
+    ],
+    "github": "jdubois",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Justin Yoo",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/justin-yoo",
+    "twitter": "justinchronicle",
+    "specialties": [
+      ".NET",
+      "Power Platform",
+      "Cloud-native",
+      "DevOps",
+      "Integration | Docker Captain |\nMicrosoft MVP Alumni"
+    ],
+    "github": "justinyoo",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Kamal Shree Soundirapandian",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/kamal-shree-soundirapandian",
+    "twitter": "whatsupcoders",
+    "specialties": [
+      "Microsoft 365",
+      "Flutter & Dart",
+      "Android"
+    ],
+    "github": "whatsupcoders",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Kinfey Lo",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/kinfey-lo",
+    "twitter": "Ljh8304",
+    "specialties": [
+      "AzureOpenAIService",
+      "AzureAI",
+      "GitHub"
+    ],
+    "github": "lokinfey",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Korey Stegared-Pace",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/korey-stegared-pace",
+    "twitter": "koreyspace",
+    "specialties": [
+      "Data Science",
+      "Azure",
+      "Artificial Intelligence"
+    ],
+    "github": "koreyspace",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Laurent Bugnion",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/laurent-bugnion",
+    "twitter": null,
+    "specialties": [
+      ".NET",
+      "Azure",
+      "AI"
+    ],
+    "github": "lbugnion",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Lee Stott",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/lee-stott",
+    "twitter": "lee_stott",
+    "specialties": [
+      "AI",
+      "ML"
+    ],
+    "github": "leestott",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Liam Hampton",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/liam-hampton",
+    "twitter": "liamchampton",
+    "specialties": [
+      "Go",
+      "DevOps",
+      "Containers"
+    ],
+    "github": "liamchampton",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Madoka Chiyoda",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/madoka-chiyoda",
+    "twitter": "chomado",
+    "specialties": [
+      "Mixed Reality",
+      "HoloLens",
+      "C#",
+      "Conversational AI",
+      "(Manga)"
+    ],
+    "github": "chomado",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Mark Heckler",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/mark-heckler",
+    "twitter": "mkheck",
+    "specialties": [
+      "Java"
+    ],
+    "github": "mkheck",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Marlene Mhangami",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/marlene-mhangami",
+    "twitter": "marlene_zw",
+    "specialties": [
+      "Python"
+    ],
+    "github": "marlenemhangami",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Matthew Soucoup",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/matthew-soucoup",
+    "twitter": "codemillmatt",
+    "specialties": [
+      ".NET",
+      "Xamarin"
+    ],
+    "github": "codemillmatt",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Nitya Narasimhan",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/nitya-narasimhan",
+    "twitter": "nitya",
+    "specialties": [
+      "Mobile, Multi-Platform, Azure, PWA"
+    ],
+    "github": "nitya",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Olivia Guzzardo",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/olivia-guzzardo",
+    "twitter": "@oliviaguzzardo",
+    "specialties": [
+      "VS Code",
+      "Azure",
+      "GitHub"
+    ],
+    "github": "olguzzar",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Orin Thomas",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/orin-thomas",
+    "twitter": "orinthomas",
+    "specialties": [
+      "IT Infrastructure",
+      "Operations",
+      "IT Pro",
+      "Azure | Microsoft Certified Trainer |\nMicrosoft RD Alumni | Microsoft MVP Alumni"
+    ],
+    "github": "orin-thomas",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Pablo Lopes",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/pablo-lopes",
+    "twitter": null,
+    "specialties": [
+      "Azure",
+      "DotNet",
+      "Visual Studio",
+      "AI | Microsoft Learn Student Ambassador Alumni"
+    ],
+    "github": "PabloNunes",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Pamela Fox",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/pamela-fox",
+    "twitter": "pamelafox",
+    "specialties": [
+      "Python"
+    ],
+    "github": "pamelafox",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Patrick Chanezon",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/patrick-chanezon",
+    "twitter": "chanezon",
+    "specialties": [
+      "Containers"
+    ],
+    "github": "chanezon",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Paul DeCarlo",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/paul-decarlo",
+    "twitter": "pjdecarlo",
+    "specialties": [
+      "AI, ML, Data, IoT"
+    ],
+    "github": "toolboc",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Paul Yu",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/paul-yu",
+    "twitter": "pauldotyu",
+    "specialties": [],
+    "github": "pauldotyu",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Pierre Roman",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/pierre-roman",
+    "twitter": "WiredCanuck",
+    "specialties": [
+      "Infrastructure",
+      "Azure",
+      "IaaS",
+      "Hybrid",
+      "Operations",
+      "IT Pro"
+    ],
+    "github": "WiredCanuck",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Rabia Williams",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/rabia-williams",
+    "twitter": "williamsrabia",
+    "specialties": [
+      "Development on Microsoft 365"
+    ],
+    "github": "rabwill",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Renee Noble",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/renee-noble",
+    "twitter": "noble_renee",
+    "specialties": [
+      "Python",
+      "AI",
+      "ML"
+    ],
+    "github": "reneenoble",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Rick Claus",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/rick-claus",
+    "twitter": "RicksterCDN",
+    "specialties": [
+      "Azure",
+      "IaaS",
+      "Windows Server",
+      "On-Prem",
+      "IT Pro"
+    ],
+    "github": "RicksterCDN",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Rob Conery",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/rob-conery",
+    "twitter": "robconery",
+    "specialties": [],
+    "github": "robconery",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Rory Preddy",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/rory-preddy",
+    "twitter": "rorypreddy",
+    "specialties": [
+      "Java"
+    ],
+    "github": "roryp",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Sandra Ahlgrimm",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/sandra-ahlgrimm",
+    "twitter": "skriemhild",
+    "specialties": [
+      "Container",
+      "Java",
+      "DevOps"
+    ],
+    "github": "sandraahlgrimm",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Sarah Kaiser",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/sarah-kaiser",
+    "twitter": "crazy4pi314",
+    "specialties": [
+      "Python",
+      "Microsoft MVP Alumni"
+    ],
+    "github": "crazy4pi314",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Sarah Young",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/sarah-young",
+    "twitter": "_sarahyo",
+    "specialties": [
+      "Security for all the things"
+    ],
+    "github": "sarah-yo",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Scott Durow",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/scott-durow",
+    "twitter": "ScottDurow",
+    "specialties": [
+      "Power Platform"
+    ],
+    "github": "scottdurow",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Someleze Diko",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/someleze-diko",
+    "twitter": "DikoSomeleze",
+    "specialties": [
+      "Data & AI",
+      "Microsoft Learn Student Ambassador Alumni"
+    ],
+    "github": "dikodev",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Sonia Cuff",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/sonia-cuff",
+    "twitter": "SoniaCuff",
+    "specialties": [
+      "IT Infrastructure",
+      "IT Pro",
+      "FinOps",
+      "Azure | Microsoft MVP Alumni"
+    ],
+    "github": "Scuffy",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Steven Murawski",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/steven-murawski",
+    "twitter": "stevenmurawski",
+    "specialties": [
+      "Cloud Native"
+    ],
+    "github": "smurawski",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Thomas Lewis",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/thomas-lewis",
+    "twitter": "tommylee",
+    "specialties": [
+      "Mixed Reality",
+      "HoloLens"
+    ],
+    "github": "tholewis",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Todd Anglin",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/todd-anglin",
+    "twitter": "toddanglin",
+    "specialties": [
+      "DevRel Leadership | Web",
+      "Mobile Development | Microsoft MVP Alumni"
+    ],
+    "github": "toddanglin",
+    "github_confidence": "high",
+    "github_validated": true
+  },
+  {
+    "name": "Tomomi Imura",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/tomomi-imura",
+    "twitter": "girlie_mac",
+    "specialties": [
+      "JavaScript",
+      "UX"
+    ],
+    "github": "girliemac",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Vinayak Hegde",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/vinayak-hegde",
+    "twitter": "vinayakh",
+    "specialties": [
+      "AI",
+      "ML"
+    ],
+    "github": "vinayakh",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Vinicius Apolinario",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/vinicius-apolinario",
+    "twitter": "vrapolinario",
+    "specialties": [
+      "Azure",
+      "IaaS",
+      "Windows Server",
+      "Containers",
+      "Kubernetes",
+      "IT Pro"
+    ],
+    "github": "vrapolinario",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Waldek Mastykarz",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/waldek-mastykarz",
+    "twitter": "waldekm",
+    "specialties": [
+      "Microsoft 365",
+      "Microsoft MVP Alumni"
+    ],
+    "github": "waldekmastykarz",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Wassim Chegham",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/wassim-chegham",
+    "twitter": "manekinekko",
+    "specialties": [
+      "Node.js",
+      "JavaScript",
+      "Web"
+    ],
+    "github": "wassim-chegham",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Yohan Lasorsa",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/yohan-lasorsa",
+    "twitter": "sinedied",
+    "specialties": [
+      "JavaScript",
+      "Node.js",
+      "Web",
+      "Mobile"
+    ],
+    "github": "sinedied",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Yoshio Terada",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/yoshio-terada",
+    "twitter": "yoshioterada",
+    "specialties": [
+      "Java"
+    ],
+    "github": "yoshioterada",
+    "github_confidence": "high"
+  },
+  {
+    "name": "Yoshua Wuyts",
+    "profile_url": "https://developer.microsoft.com/en-us/advocates/yoshua-wuyts",
+    "twitter": "yoshuawuyts",
+    "specialties": [
+      "Rust"
+    ],
+    "github": "yoshuawuyts",
+    "github_confidence": "high"
+  }
+]

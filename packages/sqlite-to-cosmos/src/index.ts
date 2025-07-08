@@ -21,6 +21,9 @@ async function main(): Promise<void> {
                 doc.id = (doc.id as string).replace(/\//g, ':');
             }
             const table = doc.category?.split(':')[0] || '';
+
+
+            
             const vectorText = getVectorText(table, doc);
             if(!vectorText || vectorText.length === 0){
                 console.log("empty vector text");

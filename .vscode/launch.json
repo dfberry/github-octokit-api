@@ -1,4 +1,3 @@
-
 {
     // Use IntelliSense to learn about possible attributes.
     // Hover to view descriptions of existing attributes.
@@ -19,7 +18,21 @@
             "type": "node",
             "cwd": "${workspaceFolder}/packages/health-check"
         },
-                {
+               {
+            "name": "Template",
+            "request": "launch",
+            "runtimeArgs": [
+                "run-script",
+                "start"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node",
+            "cwd": "${workspaceFolder}/packages/create-document-template-data"
+        },
+        {
             "name": "Chat load",
             "request": "launch",
             "runtimeArgs": [
@@ -33,7 +46,7 @@
             "type": "node",
             "cwd": "${workspaceFolder}/packages/chat"
         },
-                        {
+        {
             "name": "Chat run",
             "request": "launch",
             "runtimeArgs": [
