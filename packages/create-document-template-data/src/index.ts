@@ -1,6 +1,10 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { jsonToMarkdown } from './json-to-md.js';
-import { processTables, EntityDescriptor } from './processEntities.js';
+import {
+  processTables,
+  EntityDescriptor,
+  processTablesToSame,
+} from './processEntities.js';
 import {
   GitHubContributorIssuePrEntity,
   GitHubContributorEntity,
@@ -90,13 +94,17 @@ export function constructCategory(
 export async function createDocumentTemplateData() {
   const sourceDbPath = process.env.SQLITE_DB_FILE || './data/github.db';
   const timestamp = getTimestamp();
-  const dbPath = path.join(__dirname, '../data/');
-  const newDbPath = path.join(dbPath, `document_templates_${timestamp}.db`);
+  const outputDir = process.env.OUTPUT_DIR || './generated/';
+  const newDbPath = path.join(__dirname, '../', outputDir);
+  const newDbPathFile = path.join(
+    newDbPath,
+    `document_templates_${timestamp}.db`
+  );
 
   console.log(
-    `Creating document template data in data ${dbPath} from ${sourceDbPath} to ${newDbPath}...`
+    `Creating document template data from ${sourceDbPath} to ${newDbPath}...`
   );
-  await fs.mkdir(path.dirname(dbPath), { recursive: true });
+  await fs.mkdir(path.dirname(newDbPath), { recursive: true });
 
   // Connect to source DB
   const sourceOptions: DataSourceOptions = {
@@ -115,7 +123,7 @@ export async function createDocumentTemplateData() {
   // Connect to new DB (target) with DocumentTemplateEntity
   const targetOptions: DataSourceOptions = {
     type: 'sqlite',
-    database: newDbPath,
+    database: newDbPathFile,
     entities: [DocumentTemplateEntity],
     synchronize: true, // Ensure the schema is created
   };
@@ -139,10 +147,43 @@ export async function createDocumentTemplateData() {
   await targetDataSource.destroy();
   return { insertedCount, skippedCount, newDbPath };
 }
+export async function createDocumentTemplateDataSingleDb() {
+  const sourceDbPath = process.env.SQLITE_DB_FILE || './data/github.db';
+
+  // Connect to source DB
+  const sourceOptions: DataSourceOptions = {
+    type: 'sqlite',
+    database: sourceDbPath,
+    entities: [
+      GitHubContributorIssuePrEntity,
+      GitHubContributorEntity,
+      GitHubRepositoryEntity,
+      GitHubWorkflowEntity,
+    ],
+  };
+  const sourceDataSource = new DataSource(sourceOptions);
+  await sourceDataSource.initialize();
+
+  const entities = getRelevantTables();
+  const { insertedCount, skippedCount } = await processTablesToSame(
+    entities as EntityDescriptor[],
+    sourceDataSource,
+    jsonToMarkdown
+  );
+
+  console.log(
+    `Finished processing. Inserted: ${insertedCount}, Skipped: ${skippedCount}, New DB: ${sourceDbPath}`
+  );
+
+  await sourceDataSource.destroy();
+  return { insertedCount, skippedCount };
+}
 
 // Update your script runner:
 if (import.meta.url === `file://${process.argv[1]}`) {
-  createDocumentTemplateData()
+  createDocumentTemplateDataSingleDb()
     .then(() => console.log('Data creation completed.'))
-    .catch(err => console.error('Data creation failed:', err));
+    .catch((err: unknown) => {
+      console.error('Data creation failed:', err);
+    });
 }

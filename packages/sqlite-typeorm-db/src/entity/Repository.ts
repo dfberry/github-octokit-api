@@ -76,4 +76,18 @@ export class GitHubRepositoryEntity {
 
   @Column({ nullable: true })
   workflow_status?: string;
+
+  @Column({ type: 'text', nullable: true })
+  document_category?: string;
+
+  @Column({ type: 'text', nullable: true })
+  document_summary?: string;
+
+  @Column({ type: 'text', nullable: true })
+  document?: string;
+
+  // store as JSON string
+  // When reading/writing, parse/stringify the array in your application code.
+  @Column({ type: 'text', nullable: true })
+  documentEmbedding?: string[];
 }

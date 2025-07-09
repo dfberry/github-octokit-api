@@ -32,7 +32,7 @@
     "sqlite3": "^5.1.7",
     "typeorm": "^0.3.25",
     "winston": "^3.17.0",
-    "@dfb/db": "file:../db"
+    "@dfb/db": "file:../sqlite-typeorm-db"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.0",

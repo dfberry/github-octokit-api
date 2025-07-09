@@ -1,0 +1,37 @@
+{
+  "name": "@dfb/summary",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rimraf dist && tsc",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "format": "prettier --write .",
+    "start": "npm run build && node -r dotenv/config dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "@dfb/models": "1.0.0",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.30.0",
+    "@eslint/json": "^0.12.0",
+    "@tsconfig/recommended": "^1.0.8",
+    "@types/node": "^22.15.3",
+    "@vitest/coverage-v8": "^3.2.2",
+    "eslint": "^9.30.0",
+    "globals": "^16.2.0",
+    "prettier": "^3.5.3",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.35.0",
+    "vitest": "^3.2.2"
+  }
+}

@@ -43,4 +43,18 @@ export class GitHubContributorEntity {
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   last_updated?: Date;
+
+  @Column({ type: 'text', nullable: true })
+  document_category?: string;
+
+  @Column({ type: 'text', nullable: true })
+  document_summary?: string;
+
+  @Column({ type: 'text', nullable: true })
+  document?: string;
+
+  // store as JSON string
+  // When reading/writing, parse/stringify the array in your application code.
+  @Column({ type: 'text', nullable: true })
+  documentEmbedding?: string[];
 }
