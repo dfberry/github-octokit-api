@@ -1,13 +1,13 @@
 import { AzureOpenAI  } from 'openai';
 
-const openai = new AzureOpenAI({
-  endpoint: process.env.OPENAI_ENDPOINT!,
-  apiKey: process.env.OPENAI_API_KEY!,
-  apiVersion: process.env.OPENAI_API_VERSION!,
-  deployment: process.env.OPENAI_DEPLOYMENT_NAME!,
-});
 
-export async function createEmbedding(document: string): Promise<{vector:number[], tokens: {prompt_tokens:number, total_tokens:number}} > {
+import type { AzureOpenAIConfig } from './completion.js';
+
+export async function createEmbedding(
+  config: AzureOpenAIConfig,
+  document: string
+): Promise<{ vector: number[]; tokens: { prompt_tokens: number; total_tokens: number } }> {
+  const openai = new AzureOpenAI(config);
   try {
     const response = await openai.embeddings.create({
       model: 'text-embedding-ada-002',

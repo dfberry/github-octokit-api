@@ -17,16 +17,20 @@ export async function createVectorizedTableAndIndex() {
   ]);
 }
 
-export async function insertMovieVector(title: string, year: number, vector: number[]) {
+export async function insertMovieVector(
+  title: string,
+  year: number,
+  vector: number[]
+) {
   await db.execute({
-    sql: "INSERT INTO movie2 (title, year, emb) VALUES (?, ?, vector(?))",
+    sql: 'INSERT INTO movie2 (title, year, emb) VALUES (?, ?, vector(?))',
     args: [title, year, JSON.stringify(vector)],
   });
 }
 
 export async function updateMovieVector(id: number, vector: number[]) {
   await db.execute({
-    sql: "UPDATE movie2 SET emb = vector(?) WHERE id = ?",
+    sql: 'UPDATE movie2 SET emb = vector(?) WHERE id = ?',
     args: [JSON.stringify(vector), id],
   });
 }

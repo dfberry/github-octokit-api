@@ -18,6 +18,21 @@
             "type": "node",
             "cwd": "${workspaceFolder}/packages/health-check"
         },
+        {
+            "name": "summarize",
+            "request": "launch",
+            "runtimeArgs": [
+                "run-script",
+                "start"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node",
+            "cwd": "${workspaceFolder}/packages/summary"
+        },
+
                {
             "name": "Template",
             "request": "launch",

@@ -1,38 +1,39 @@
 import { AzureOpenAI } from 'openai';
+import type { AzureClientOptions } from 'openai/azure';
+import type { ChatCompletionCreateParamsNonStreaming, ChatCompletion } from 'openai/resources/chat/completions';
 
-const openai = new AzureOpenAI({
-  endpoint: process.env.OPENAI_ENDPOINT!,
-  apiKey: process.env.OPENAI_API_KEY!,
-  apiVersion: process.env.OPENAI_API_VERSION!,
-  deployment: process.env.OPENAI_DEPLOYMENT_NAME!,
-});
 
-export interface CompletionOptions {
-  prompt: string;
+// Use AzureClientOptions from openai/azure
+export type AzureOpenAIConfig = AzureClientOptions;
+
+
+export type CompletionOptions = {
+  systemPrompt: string;
+  userPrompt: string;
   maxTokens?: number;
   temperature?: number;
   stop?: string[];
-  model?: string;
-}
+};
 
-export async function createCompletion({
-  prompt,
-  model = process.env.OPENAI_LLM_DEPLOYMENT_NAME!,
-}: CompletionOptions): Promise<{ completion: string; usage: any }> {
+export async function createCompletion(
+  config: AzureOpenAIConfig,
+  options: CompletionOptions
+): Promise<ChatCompletion> {
+  const { systemPrompt, userPrompt, maxTokens, temperature, stop } = options;
+  const openai = new AzureOpenAI(config);
   try {
-    const response = await openai.completions.create({
-      model,
-      prompt
-    });
-
-    if (response.choices && response.choices.length > 0) {
-      return {
-        completion: response.choices[0].text,
-        usage: response.usage,
-      };
-    } else {
-      throw new Error('No completion returned');
-    }
+    const params: ChatCompletionCreateParamsNonStreaming = {
+      model: config.deployment!,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userPrompt },
+      ],
+      max_tokens: maxTokens,
+      temperature,
+      stop,
+    };
+    return openai.chat.completions.create(params);
+    
   } catch (error) {
     console.error('Error creating completion:', error);
     throw error;
@@ -40,22 +41,47 @@ export async function createCompletion({
 }
 
 // Add logic to handle errors and retry with a shorter prompt
-export async function createCompletionWithRetry(options: CompletionOptions): Promise<{ completion: string; usage: any }> {
-  try {
-    return await createCompletion(options);
-  } catch (error) {
-    if (error instanceof Error && error.message.includes('maximum context length')) {
-      // Try with a shorter prompt (take first half)
-      const shorterPrompt = options.prompt.slice(0, Math.floor(options.prompt.length / 2));
-      try {
-        console.log('Retrying with shorter prompt.');
-        return await createCompletion({ ...options, prompt: shorterPrompt });
-      } catch (retryError) {
-        console.error('Error creating completion after retry:', retryError);
-        throw retryError;
+export async function createCompletionWithRetry(
+  config: AzureOpenAIConfig,
+  options: CompletionOptions
+): Promise<ChatCompletion> {
+  let lastError: unknown = null;
+  let currentOptions = { ...options };
+  // Backoff times in ms: 5s, 10s, 15s
+  const backoffTimes = [5000, 10000, 15000];
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      return await createCompletion(config, currentOptions);
+    } catch (error: any) {
+      lastError = error;
+      // Check for retryable errors (rate limit, context length, network, 5xx, etc)
+      const message = error instanceof Error ? error.message : String(error);
+      const isRetryable =
+        message.includes('maximum context length') ||
+        message.includes('Rate limit') ||
+        message.includes('429') ||
+        message.includes('timeout') ||
+        message.includes('ECONNRESET') ||
+        message.includes('503') ||
+        message.includes('500') ||
+        message.includes('temporarily unavailable');
+      if (!isRetryable) {
+        throw error;
       }
-    } else {
-      throw error;
+      // For context length errors, try with a shorter userPrompt
+      if (message.includes('maximum context length') && currentOptions.userPrompt.length > 20) {
+        currentOptions = {
+          ...currentOptions,
+          userPrompt: currentOptions.userPrompt.slice(0, Math.floor(currentOptions.userPrompt.length / 2)),
+        };
+        console.warn(`[RETRY] Attempt ${attempt}: Reducing userPrompt length and retrying...`);
+      } else {
+        // Fixed backoff for other retryable errors
+        const backoff = backoffTimes[attempt - 1];
+        console.warn(`[RETRY] Attempt ${attempt}: Retrying after ${backoff / 1000}s due to error: ${message}`);
+        await new Promise((res) => setTimeout(res, backoff));
+      }
     }
   }
+  throw lastError;
 }

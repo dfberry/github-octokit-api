@@ -1,22 +1,27 @@
 {
-  "name": "@dfb/ai-models",
+  "name": "@dfb/ai",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest run",
     "build": "rimraf dist && tsc",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "format": "prettier --write .",
-    "start": "npm run build && node -r dotenv/config dist/index.js"
+    "start": "npm run build && node -r dotenv/config dist/index.js",
+    "start:run-completions": "npm run build && node -r dotenv/config dist/examples/runCompletion.js",
+    "start:run-summary": "npm run build && node -r dotenv/config dist/examples/runSummary.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@dqbd/tiktoken": "^1.0.21",
     "dotenv": "^16.5.0",
+    "gpt-tokenizer": "^3.0.1",
+    "js-tiktoken": "^1.0.20",
     "openai": "^5.6.0",
     "winston": "^3.17.0"
   },
