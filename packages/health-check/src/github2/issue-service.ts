@@ -4,6 +4,57 @@ import type { PrSearchItem } from '../models.js';
 export class IssueService {
   constructor(private api: GitHubApiClient) {}
 
+  /**
+   * Fetches all issues for a repo where created, updated, or closed is within the last N days.
+   * Uses the GitHub REST search API for date filtering.
+   * @param owner - The repo owner
+   * @param repo - The repo name
+   * @param daysAgo - Number of days in the past to include
+   */
+  async getRecentIssues(
+    owner: string,
+    repo: string,
+    daysAgo: number
+  ): Promise<PrSearchItem[]> {
+    const octokit = this.api.getRest();
+    const sinceDate = new Date(Date.now() - daysAgo * 24 * 60 * 60 * 1000)
+      .toISOString()
+      .slice(0, 10);
+    // Search for issues and PRs created, updated, or closed in the last N days
+    const query = [
+      `repo:${owner}/${repo}`,
+      `((created:>=${sinceDate}) OR (updated:>=${sinceDate}) OR (closed:>=${sinceDate}))`,
+    ].join(' ');
+    const results: PrSearchItem[] = [];
+    let page = 1;
+    let totalCount = 0;
+    do {
+      const { data } = await octokit.rest.search.issuesAndPullRequests({
+        q: query,
+        sort: 'updated',
+        order: 'desc',
+        per_page: 100,
+        page,
+      });
+      // Only include issues (not PRs)
+      const issues = data.items.filter(item => !item.pull_request);
+      results.push(...(issues as PrSearchItem[]));
+      totalCount = data.total_count;
+      page++;
+      // GitHub search API only returns up to 1000 results
+      if (page > 10) break;
+    } while (results.length < totalCount);
+    // Deduplicate by id or url
+    const seen = new Set<string>();
+    const deduped = results.filter(issue => {
+      const key = issue.id ? String(issue.id) : issue.url;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+    return deduped;
+  }
+
   async getIssues(owner: string, repo: string): Promise<PrSearchItem[]> {
     const octokit = this.api.getRest();
     const { data } = await octokit.rest.issues.listForRepo({
@@ -57,9 +108,14 @@ export class IssueService {
         }
       }
     `;
-    const result = await graphql.graphql(query, { owner, repo });
+    const result: unknown = await graphql.graphql(query, { owner, repo });
+    // Narrow type for result
     const issues =
-      (result as Record<string, any>).repository?.issues?.nodes || [];
+      (result &&
+        typeof result === 'object' &&
+        'repository' in result &&
+        (result as any).repository?.issues?.nodes) ||
+      [];
     return issues as PrSearchItem[];
   }
 }

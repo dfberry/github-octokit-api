@@ -1,222 +1,16 @@
-import { encoding_for_model } from '@dqbd/tiktoken';
+
 import { Tiktoken } from 'js-tiktoken/lite';
 import cl100k_base from 'js-tiktoken/ranks/cl100k_base';
 
-/**
- * Trims the input text to fit within a maximum token count using js-tiktoken's cl100k_base encoding.
- * Trims from the end (keeps the start of the text), and takes an extra 10% off the end.
- * @param text The input string to trim.
- * @param maxTokens The maximum number of tokens allowed.
- * @returns An object with the trimmed text, whether it was trimmed, and how many tokens were trimmed.
- */
-export function trimTextToTokenLimit(text: string, maxTokens: number): { trimmedText: string, wasTrimmed: boolean, tokensTrimmed: number } {
-  const enc = new Tiktoken(cl100k_base);
-  const tokens = enc.encode(text);
-  const allowed = Math.floor(maxTokens * 0.9);
-  if (tokens.length <= allowed) {
-    return { trimmedText: text, wasTrimmed: false, tokensTrimmed: 0 };
-  }
-  const trimmed = enc.decode(tokens.slice(0, allowed));
-  return {
-    trimmedText: typeof trimmed === 'string' ? trimmed : new TextDecoder().decode(trimmed),
-    wasTrimmed: true,
-    tokensTrimmed: tokens.length - allowed
-  };
-}
 
-// Map model names to encodings based on https://github.com/niieani/gpt-tokenizer/blob/HEAD/src/models.ts
-const modelToEncoding: Record<string, string> = {
-  // GPT-4o, GPT-4, GPT-3.5-turbo, etc.
-  'gpt-4o': 'cl100k_base',
-  'gpt-4': 'cl100k_base',
-  'gpt-4-32k': 'cl100k_base',
-  'gpt-4-1106-preview': 'cl100k_base',
-  'gpt-4-0125-preview': 'cl100k_base',
-  'gpt-4-0613': 'cl100k_base',
-  'gpt-4-32k-0613': 'cl100k_base',
-  'gpt-3.5-turbo': 'cl100k_base',
-  'gpt-3.5-turbo-16k': 'cl100k_base',
-  'gpt-3.5-turbo-0613': 'cl100k_base',
-  'gpt-3.5-turbo-16k-0613': 'cl100k_base',
-  'text-embedding-ada-001': 'cl100k_base',
-  'text-embedding-ada-002': 'cl100k_base',
-  'text-embedding-ada-003': 'cl100k_base',
-  // Add more mappings as needed
-};
-
-/**
- * Counts the number of tokens in a string for a given OpenAI model (using js-tiktoken for cl100k_base models).
- * @param text The input string to tokenize.
- * @param model The model name (e.g., 'gpt-4o', 'gpt-4', 'gpt-3.5-turbo').
- * @returns The number of tokens.
- */
-export function countGptTokens(text: string, model: string): number {
-  // For now, all mapped models use cl100k_base, so use js-tiktoken for speed and compatibility
-  const encodingName = modelToEncoding[model] || 'cl100k_base';
-  if (encodingName === 'cl100k_base') {
-    const enc = new Tiktoken(cl100k_base);
-    const tokens = enc.encode(text);
-    return tokens.length;
-  }
-  // If you add more encodings, handle them here
-  throw new Error(`Encoding not supported: ${encodingName}`);
-}
-
-/**
- * Counts the number of tokens in a string for a given OpenAI model using @dqbd/tiktoken.
- * @param text The input string to tokenize.
- * @param model The model name (e.g., 'gpt-4o', 'gpt-4', 'gpt-3.5-turbo').
- * @returns The number of tokens.
- */
-export function countTokensTiktoken(text: string, model: string = 'gpt-4o'): number {
-  // encoding_for_model expects a TiktokenModel type, so cast if you are sure
-  const enc = encoding_for_model(model as any);
-  const tokens = enc.encode(text);
-  enc.free();
-  return tokens.length;
-}
-
-/**
- * Counts the number of tokens in a string using js-tiktoken's cl100k_base encoding.
- * @param text The input string to tokenize.
- * @returns The number of tokens.
- */
-export function countTokensJsTiktoken(text: string): number {
-  const enc = new Tiktoken(cl100k_base);
-  const tokens = enc.encode(text);
-  // No free() needed for js-tiktoken
-  return tokens.length;
-}
-
-/**
- * Trims the input text to fit within a maximum token count using @dqbd/tiktoken for a given model.
- * Trims from the end (keeps the start of the text), and takes an extra 10% off the end.
- * @param text The input string to trim.
- * @param maxTokens The maximum number of tokens allowed.
- * @param model The model name (e.g., 'gpt-4o', 'gpt-4', 'gpt-3.5-turbo').
- * @returns An object with the trimmed text, whether it was trimmed, and how many tokens were trimmed.
- */
-export function trimTextToTokenLimitTiktoken(text: string, maxTokens: number, model: string = 'gpt-4o'): { trimmedText: string, wasTrimmed: boolean, tokensTrimmed: number } {
-  // Map unsupported models to a supported one for @dqbd/tiktoken
-  let tiktokenModel = model;
-  if (model === 'text-embedding-ada-001') {
-    tiktokenModel = 'text-embedding-ada-002';
-  }
-  const enc = encoding_for_model(tiktokenModel as unknown as any); // tiktoken expects a TiktokenModel type
-  const tokens = enc.encode(text);
-  const allowed = Math.floor(maxTokens * 0.9);
-  if (tokens.length <= allowed) {
-    enc.free();
-    return { trimmedText: text, wasTrimmed: false, tokensTrimmed: 0 };
-  }
-  const trimmedBytes = enc.decode(tokens.slice(0, allowed));
-  enc.free();
-  return {
-    trimmedText: new TextDecoder().decode(trimmedBytes),
-    wasTrimmed: true,
-    tokensTrimmed: tokens.length - allowed
-  };
-}
-
-/**
- * Trims the input text to fit within a maximum token count using countGptTokens (js-tiktoken for mapped models).
- * Trims from the end (keeps the start of the text), and takes an extra 10% off the end.
- * @param text The input string to trim.
- * @param maxTokens The maximum number of tokens allowed.
- * @param model The model name (e.g., 'gpt-4o', 'gpt-4', 'gpt-3.5-turbo').
- * @returns An object with the trimmed text, whether it was trimmed, and how many tokens were trimmed.
- */
-export function trimTextToTokenLimitGpt(text: string, maxTokens: number, model: string): { trimmedText: string, wasTrimmed: boolean, tokensTrimmed: number } {
-  const encodingName = modelToEncoding[model] || 'cl100k_base';
-  const allowed = Math.floor(maxTokens * 0.9);
-  if (encodingName === 'cl100k_base') {
-    const enc = new Tiktoken(cl100k_base);
-    const tokens = enc.encode(text);
-    if (tokens.length <= allowed) {
-      return { trimmedText: text, wasTrimmed: false, tokensTrimmed: 0 };
-    }
-    const trimmed = enc.decode(tokens.slice(0, allowed));
-    return {
-      trimmedText: typeof trimmed === 'string' ? trimmed : new TextDecoder().decode(trimmed),
-      wasTrimmed: true,
-      tokensTrimmed: tokens.length - allowed
-    };
-  }
-  throw new Error(`Encoding not supported: ${encodingName}`);
-}
-
-/**
- * Returns the maximum text length (in characters) that fits within a given token limit for a model.
- * This is an estimate, as tokenization is not 1:1 with characters.
- * @param text The input string to check.
- * @param maxTokens The maximum number of tokens allowed.
- * @param model The model name (e.g., 'gpt-4o', 'gpt-4', 'gpt-3.5-turbo').
- * @returns The length in characters of the largest substring of text that fits within maxTokens tokens for the model.
- */
-export function getMaxTextLengthForTokensTiktoken(text: string, maxTokens: number, model: string = 'gpt-4o'): number {
-  const enc = encoding_for_model(model as unknown as any);
-  const tokens = enc.encode(text);
-  if (tokens.length <= maxTokens) {
-    enc.free();
-    return text.length;
-  }
-  // Find the largest substring that fits
-  let end = text.length;
-  let start = 0;
-  let result = 0;
-  while (start < end) {
-    const mid = Math.floor((start + end + 1) / 2);
-    const subTokens = enc.encode(text.slice(0, mid));
-    if (subTokens.length <= maxTokens) {
-      result = mid;
-      start = mid;
-    } else {
-      end = mid - 1;
-    }
-  }
-  enc.free();
-  return result;
-}
-
-/**
- * Returns the maximum text length (in characters) that fits within a given token limit for a model using js-tiktoken.
- * This is an estimate, as tokenization is not 1:1 with characters.
- * @param text The input string to check.
- * @param maxTokens The maximum number of tokens allowed.
- * @param model The model name (e.g., 'gpt-4o', 'gpt-4', 'gpt-3.5-turbo').
- * @returns The length in characters of the largest substring of text that fits within maxTokens tokens for the model.
- */
-export function getMaxTextLengthForTokensGpt(text: string, maxTokens: number, model: string): number {
-  const encodingName = modelToEncoding[model] || 'cl100k_base';
-  if (encodingName === 'cl100k_base') {
-    const enc = new Tiktoken(cl100k_base);
-    if (enc.encode(text).length <= maxTokens) return text.length;
-    // Binary search for max substring
-    let end = text.length;
-    let start = 0;
-    let result = 0;
-    while (start < end) {
-      const mid = Math.floor((start + end + 1) / 2);
-      const subTokens = enc.encode(text.slice(0, mid));
-      if (subTokens.length <= maxTokens) {
-        result = mid;
-        start = mid;
-      } else {
-        end = mid - 1;
-      }
-    }
-    return result;
-  }
-  throw new Error(`Encoding not supported: ${encodingName}`);
-}
+// (modelToEncoding removed; all models use cl100k_base)
 
 /**
  * Returns the default max tokens for a given model name.
  * @param model The model name (e.g., 'gpt-4o', 'gpt-4', 'gpt-3.5-turbo').
  * @returns The default max tokens for the model.
  */
-export function getDefaultMaxTokensForModel(model: string): number {
-  // These are common defaults; adjust as needed for your use case
+export function getMaxTokens(model: string): number {
   switch (model) {
     case 'gpt-4o':
     case 'gpt-4':
@@ -243,165 +37,42 @@ export function getDefaultMaxTokensForModel(model: string): number {
 }
 
 /**
- * Trims the input text to fit within the default max token count for the given model using js-tiktoken's cl100k_base encoding.
- * Trims from the end (keeps the start of the text), and takes an extra 10% off the end.
- * @param text The input string to trim.
- * @param model The model name.
- * @returns An object with the trimmed text, whether it was trimmed, and how many tokens were trimmed.
+ * Counts the number of tokens in a string using js-tiktoken (cl100k_base encoding).
+ * @param text The input string to tokenize.
+ * @returns The number of tokens.
  */
-export function trimTextToModelLimitJsTiktoken(text: string, model: string): { trimmedText: string, wasTrimmed: boolean, tokensTrimmed: number } {
-  const maxTokens = getDefaultMaxTokensForModel(model);
-  return trimTextToTokenLimit(text, maxTokens);
-}
-
-/**
- * Trims the input text to fit within the default max token count for the given model using @dqbd/tiktoken.
- * Trims from the end (keeps the start of the text), and takes an extra 10% off the end.
- * @param text The input string to trim.
- * @param model The model name.
- * @returns An object with the trimmed text, whether it was trimmed, and how many tokens were trimmed.
- */
-export function trimTextToModelLimitDqbdTiktoken(text: string, model: string): { trimmedText: string, wasTrimmed: boolean, tokensTrimmed: number } {
-  const maxTokens = getDefaultMaxTokensForModel(model);
-  return trimTextToTokenLimitTiktoken(text, maxTokens, model);
-}
-
-/**
- * Trims the input text to fit within the default max token count for the given model using js-tiktoken for mapped models.
- * Trims from the end (keeps the start of the text), and takes an extra 10% off the end.
- * @param text The input string to trim.
- * @param model The model name.
- * @returns An object with the trimmed text, whether it was trimmed, and how many tokens were trimmed.
- */
-export function trimTextToModelLimitGptJsTiktoken(text: string, model: string): { trimmedText: string, wasTrimmed: boolean, tokensTrimmed: number } {
-  const maxTokens = getDefaultMaxTokensForModel(model);
-  return trimTextToTokenLimitGpt(text, maxTokens, model);
-}
-
-/**
- * Trims text to fit within a token limit (with 10% margin) using js-tiktoken, stopping at the last sentence boundary before the limit.
- * @param text The input string to trim.
- * @param maxTokens The maximum number of tokens allowed.
- * @returns An object with the trimmed text, whether it was trimmed, and how many tokens were trimmed.
- */
-export function trimTextToTokenLimitJsTiktokenSentence(text: string, maxTokens: number): { trimmedText: string, wasTrimmed: boolean, tokensTrimmed: number } {
+export function countTokens(text: string): number {
   const enc = new Tiktoken(cl100k_base);
   const tokens = enc.encode(text);
-  const allowed = Math.floor(maxTokens * 0.9);
-  if (tokens.length <= allowed) {
-    return { trimmedText: text, wasTrimmed: false, tokensTrimmed: 0 };
+  return tokens.length;
+}
+
+/**
+ * Trims the input text to fit within the model's token limit, trimming at the last sentence boundary before the limit.
+ * @param text The input string to trim.
+ * @param model The model name (e.g., 'gpt-4o', 'gpt-4', 'gpt-3.5-turbo').
+ * @returns The trimmed text (at a sentence boundary, from the back, within the model's token limit).
+ */
+export function getTrimmedText(text: string, model: string): string {
+  const maxTokens = getMaxTokens(model);
+  const enc = new Tiktoken(cl100k_base);
+  const tokens = enc.encode(text);
+  if (tokens.length <= maxTokens) {
+    return text;
   }
   // Find the last sentence boundary before the allowed token count
-  const sentenceEndRegex = /([.!?])(?=\s|$)/g;
   let lastBoundary = 0;
   let match;
+  const sentenceEndRegex = /([.!?])(?=\s|$)/g;
   while ((match = sentenceEndRegex.exec(text)) !== null) {
-    lastBoundary = match.index + 1;
-    const subTokens = enc.encode(text.slice(0, lastBoundary));
-    if (subTokens.length > allowed) break;
+    const boundary = match.index + 1;
+    if (enc.encode(text.slice(0, boundary)).length > maxTokens) break;
+    lastBoundary = boundary;
   }
   if (lastBoundary === 0) {
     // No sentence boundary found, fallback to token slice
-    const trimmed = enc.decode(tokens.slice(0, allowed));
-    return {
-      trimmedText: typeof trimmed === 'string' ? trimmed : new TextDecoder().decode(trimmed),
-      wasTrimmed: true,
-      tokensTrimmed: tokens.length - allowed
-    };
+    const trimmed = enc.decode(tokens.slice(0, maxTokens));
+    return typeof trimmed === 'string' ? trimmed : new TextDecoder().decode(trimmed);
   }
-  const trimmedTokens = enc.encode(text.slice(0, lastBoundary));
-  return {
-    trimmedText: text.slice(0, lastBoundary).trim(),
-    wasTrimmed: true,
-    tokensTrimmed: tokens.length - trimmedTokens.length
-  };
-}
-
-/**
- * Trims text to fit within a token limit (with 10% margin) using @dqbd/tiktoken, stopping at the last sentence boundary before the limit.
- * @param text The input string to trim.
- * @param maxTokens The maximum number of tokens allowed.
- * @param model The model name.
- * @returns An object with the trimmed text, whether it was trimmed, and how many tokens were trimmed.
- */
-export function trimTextToTokenLimitDqbdTiktokenSentence(text: string, maxTokens: number, model: string = 'gpt-4o'): { trimmedText: string, wasTrimmed: boolean, tokensTrimmed: number } {
-  // Map unsupported models to a supported one for @dqbd/tiktoken
-  let tiktokenModel = model;
-  if (model === 'text-embedding-ada-001') {
-    tiktokenModel = 'text-embedding-ada-002';
-  }
-  const enc = encoding_for_model(tiktokenModel as unknown as any);
-  const tokens = enc.encode(text);
-  const allowed = Math.floor(maxTokens * 0.9);
-  if (tokens.length <= allowed) {
-    enc.free();
-    return { trimmedText: text, wasTrimmed: false, tokensTrimmed: 0 };
-  }
-  const sentenceEndRegex = /([.!?])(?=\s|$)/g;
-  let lastBoundary = 0;
-  let match;
-  while ((match = sentenceEndRegex.exec(text)) !== null) {
-    lastBoundary = match.index + 1;
-    const subTokens = enc.encode(text.slice(0, lastBoundary));
-    if (subTokens.length > allowed) break;
-  }
-  let result: string;
-  let tokensTrimmed: number;
-  if (lastBoundary === 0) {
-    const trimmedBytes = enc.decode(tokens.slice(0, allowed));
-    result = new TextDecoder().decode(trimmedBytes);
-    tokensTrimmed = tokens.length - allowed;
-  } else {
-    result = text.slice(0, lastBoundary).trim();
-    const trimmedTokens = enc.encode(result);
-    tokensTrimmed = tokens.length - trimmedTokens.length;
-  }
-  enc.free();
-  return {
-    trimmedText: result,
-    wasTrimmed: true,
-    tokensTrimmed
-  };
-}
-
-/**
- * Trims text to fit within a token limit (with 10% margin) using js-tiktoken for mapped models, stopping at the last sentence boundary before the limit.
- * @param text The input string to trim.
- * @param maxTokens The maximum number of tokens allowed.
- * @param model The model name.
- * @returns An object with the trimmed text, whether it was trimmed, and how many tokens were trimmed.
- */
-export function trimTextToTokenLimitGptJsTiktokenSentence(text: string, maxTokens: number, model: string): { trimmedText: string, wasTrimmed: boolean, tokensTrimmed: number } {
-  const encodingName = modelToEncoding[model] || 'cl100k_base';
-  const allowed = Math.floor(maxTokens * 0.9);
-  if (encodingName === 'cl100k_base') {
-    const enc = new Tiktoken(cl100k_base);
-    const tokens = enc.encode(text);
-    if (tokens.length <= allowed) {
-      return { trimmedText: text, wasTrimmed: false, tokensTrimmed: 0 };
-    }
-    const sentenceEndRegex = /([.!?])(?=\s|$)/g;
-    let lastBoundary = 0;
-    let match;
-    while ((match = sentenceEndRegex.exec(text)) !== null) {
-      lastBoundary = match.index + 1;
-      const subTokens = enc.encode(text.slice(0, lastBoundary));
-      if (subTokens.length > allowed) break;
-    }
-    if (lastBoundary === 0) {
-      const trimmed = enc.decode(tokens.slice(0, allowed));
-      return {
-        trimmedText: typeof trimmed === 'string' ? trimmed : new TextDecoder().decode(trimmed),
-        wasTrimmed: true,
-        tokensTrimmed: tokens.length - allowed
-      };
-    }
-    const trimmedTokens = enc.encode(text.slice(0, lastBoundary));
-    return {
-      trimmedText: text.slice(0, lastBoundary).trim(),
-      wasTrimmed: true,
-      tokensTrimmed: tokens.length - trimmedTokens.length
-    };
-  }
-  throw new Error(`Encoding not supported: ${encodingName}`);
+  return text.slice(0, lastBoundary).trim();
 }

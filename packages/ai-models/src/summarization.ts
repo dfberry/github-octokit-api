@@ -22,9 +22,7 @@ export async function getSummary(
   const userPrompt = getPrompt(document);
   const options = {
     systemPrompt: 'You are an expert technical writer.',
-    userPrompt,
-    maxTokens: 512,
-    temperature: 0.7,
+    userPrompt
   };
   const response = await createCompletionWithRetry(config, options);
   // For ChatCompletion, the content is in response.choices[0].message.content

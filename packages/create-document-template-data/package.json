@@ -21,7 +21,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@dfb/db": "file:../sqlite-typeorm-db",
     "dotenv": "^17.0.1",
-    "@dfb/db": "file:../sqlite-typeorm-db"
+    "p-retry": "^6.2.1"
   }
 }

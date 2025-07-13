@@ -1,5 +1,5 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
-import { jsonToMarkdown } from './json-to-md.js';
+import { jsonToMarkdown } from './lib/json-to-md.js';
 import {
   processTables,
   EntityDescriptor,
@@ -155,7 +155,6 @@ export async function createDocumentTemplateDataSingleDb() {
     type: 'sqlite',
     database: sourceDbPath,
     entities: [
-      GitHubContributorIssuePrEntity,
       GitHubContributorEntity,
       GitHubRepositoryEntity,
       GitHubWorkflowEntity,

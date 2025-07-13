@@ -1,6 +1,63 @@
-import type { GitHubRepositoryEntity } from '@dfb/db';
+import type { GitHubRepositoryEntity, GitHubContributorIssuePrEntity } from '@dfb/db';
 import { GitHubRepoModified } from '../github2/repository-service.js';
-import type { ContributorRepo } from '../github2/models.js';
+import type { ContributorRepo, PrSearchItem } from '../github2/models.js';
+
+/**
+ * Normalize a PrSearchItem (from GitHub API) to a GitHubContributorIssuePrEntity shape.
+ */
+export function normalizePrSearchItemToContributorIssuePrEntity(
+  item: PrSearchItem,
+  username: string
+): GitHubContributorIssuePrEntity {
+  // Helper to get a property in snake_case or camelCase
+  function getField<T = string>(obj: Record<string, unknown>, ...keys: string[]): T | '' {
+    for (const key of keys) {
+      if (typeof obj[key] !== 'undefined') return obj[key] as T;
+    }
+    return '' as T;
+  }
+
+  // Try to extract org/repo from url or repository_url
+  const url = (item as Record<string, unknown>).url as string || (item as Record<string, unknown>).html_url as string || '';
+  let org = '', repo = '';
+  if (url) {
+    const match = url.match(/github.com\/(.*?)\/(.*?)\//);
+    if (match) {
+      org = match[1];
+      repo = match[2];
+    }
+  }
+  const repositoryUrl = getField<string>(item as Record<string, unknown>, 'repository_url');
+  if ((!org || !repo) && repositoryUrl) {
+    const repoUrl = repositoryUrl.replace('https://api.github.com/repos/', '');
+    [org, repo] = repoUrl.split('/');
+  }
+  const type = (
+    'pull_request' in item && item.pull_request !== undefined
+  ) || 'pull_request_url' in item || 'pull_request_html_url' in item
+    ? 'pr'
+    : 'issue';
+
+  return {
+    id: item.id ? item.id.toString() : '',
+    username,
+    org: org || '',
+    repo: repo || '',
+    url,
+    type,
+    number: (() => {
+      const n = getField<unknown>(item as Record<string, unknown>, 'number');
+      return typeof n === 'number' ? n : typeof n === 'string' && !isNaN(Number(n)) ? Number(n) : 0;
+    })(),
+    title: getField<string>(item as Record<string, unknown>, 'title') ?? '',
+    state: getField<string>(item as Record<string, unknown>, 'state') ?? '',
+    createdAt: getField<string>(item as Record<string, unknown>, 'created_at', 'createdAt') || '',
+    updatedAt: getField<string>(item as Record<string, unknown>, 'updated_at', 'updatedAt') || '',
+    closedAt: getField<string>(item as Record<string, unknown>, 'closed_at', 'closedAt') || '',
+    mergedAt: getField<string>(item as Record<string, unknown>, 'merged_at', 'mergedAt') || '',
+    merged: typeof (item as Record<string, unknown>).merged === 'boolean' ? (item as Record<string, unknown>).merged as boolean : false,
+  };
+}
 
 /**
  * Normalize a GitHubRepository (GraphQL) to a TypeORM Repository entity shape.

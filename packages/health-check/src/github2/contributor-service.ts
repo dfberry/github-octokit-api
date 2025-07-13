@@ -155,86 +155,66 @@ export class ContributorService {
     username: string,
     additionalDataSize: number = 30
   ): Promise<ContributorData> {
-    const graphql = this.api.getGraphql();
-    const query = `
-      fragment IssueFields on Issue {
-        id
-        number
-        title
-        url
-        state
-        createdAt
-        updatedAt
-        closedAt
-        author { login url avatarUrl }
-      }
-      fragment PRFields on PullRequest {
-        id
-        number
-        title
-        url
-        state
-        createdAt
-        updatedAt
-        closedAt
-        author { login url avatarUrl }
-        merged
-        mergedAt
-      }
-      query($username: String!) {
-        user(login: $username) {
-          login
-          id
-          name
-          company
-          bio
-          location
-          email
-          websiteUrl
-          avatarUrl
-          url
-          twitterUsername
-          followers { totalCount }
-          following { totalCount }
-          createdAt
-          updatedAt
-          isHireable
-          isDeveloperProgramMember
-          isCampusExpert
-          isSiteAdmin
-          issues(first:  ${additionalDataSize}, orderBy: {field: CREATED_AT, direction: DESC}) {
-            totalCount
-            nodes { ...IssueFields }
-          }
-          pullRequests(first:  ${additionalDataSize}, orderBy: {field: CREATED_AT, direction: DESC}) {
-            totalCount
-            nodes { ...PRFields }
-          }
-          organizations(first:  ${additionalDataSize}) {
-            totalCount
-            nodes { login name }
+    try {
+      const graphql = this.api.getGraphql();
+      // Calculate the date 7 days ago in ISO format
+      const sevenDaysAgo = new Date(
+        Date.now() - 7 * 24 * 60 * 60 * 1000
+      ).toISOString();
+      const query = `
+        query($username: String!, $since: DateTime!) {
+          user(login: $username) {
+            login
+            id
+            name
+            company
+            bio
+            location
+            email
+            websiteUrl
+            avatarUrl
+            url
+            twitterUsername
+            followers { totalCount }
+            following { totalCount }
+            createdAt
+            updatedAt
+            isHireable
+            isDeveloperProgramMember
+            isCampusExpert
+            isSiteAdmin
+            organizations(first:  ${additionalDataSize}) {
+              totalCount
+              nodes { login name }
+            }
           }
         }
-      }
-    `;
-    const result = await graphql.graphql(query, { username });
-    const user = (result as Record<string, unknown>).user as any;
-    return {
-      login: user.login,
-      name: user.name || user.login,
-      avatarUrl: user.avatarUrl,
-      bio: user.bio || '',
-      company: user.company || '',
-      blog: user.websiteUrl || '',
-      location: user.location || '',
-      twitter: user.twitterUsername || '',
-      followers: user.followers.totalCount || 0,
-      following: user.following.totalCount || 0,
-      publicRepos: 0,
-      publicGists: 0, // Not available in this query
-      repos: [],
-      recentPRs: user.pullRequests.nodes || [],
-    };
+      `;
+      const result = await graphql.graphql(query, {
+        username,
+        since: sevenDaysAgo,
+      });
+      const user = (result as Record<string, unknown>).user as any;
+      return {
+        login: user.login,
+        name: user.name || user.login,
+        avatarUrl: user.avatarUrl,
+        bio: user.bio || '',
+        company: user.company || '',
+        blog: user.websiteUrl || '',
+        location: user.location || '',
+        twitter: user.twitterUsername || '',
+        followers: user.followers.totalCount || 0,
+        following: user.following.totalCount || 0,
+        publicRepos: 0,
+        publicGists: 0, // Not available in this query
+        repos: [],
+        recentPRs: user.pullRequests.nodes || [],
+      };
+    } catch (error) {
+      console.error('getContributorGraphql failed:', error);
+      throw error;
+    }
   }
 
   async getContributorRepositoriesGraphql(

@@ -1,58 +1,41 @@
-import { extractOrgAndRepoFromFullName } from './utils/regex.js';
-import type { ContributorData } from './github2/models.js';
-import { PrSearchItem } from './github2/models.js';
+import type { ContributorData, PrSearchItem } from './github2/models.js';
+import { IssueService } from './github2/issue-service.js';
 import logger from './logger.js';
 import type DataConfig from './initialize-with-data.js';
 import { GitHubContributorIssuePrEntity } from '@dfb/db';
+import GitHubApiClient from './github2/api-client.js';
 /**
  * Insert unique issues and PRs for a contributor into the database.
  */
 export async function processContributorIssuesAndPRs(
   configData: DataConfig,
   contributorData: ContributorData
-) {
+): Promise<any> {
   if (Array.isArray(contributorData.recentPRs)) {
     let count = 0;
-
-    // get unique issues and PRs from recentPRs
-    const uniqueItems = new Map<string, PrSearchItem>();
-    for (const item of contributorData.recentPRs) {
-      const key = `${item.id}-${item.url}`;
-      if (!uniqueItems.has(key)) {
-        uniqueItems.set(key, item);
-      }
-    }
-
-    logger.info(
-      `Issues/PR - reduced from ${contributorData.recentPRs.length} to ${uniqueItems.size} unique items`
-    );
-
-    // Prepare entities for batch insert
+    const apiClient = new GitHubApiClient();
+    const issueService = new IssueService(apiClient);
     const issuePrEntities: GitHubContributorIssuePrEntity[] = [];
-    for (const item of uniqueItems.values()) {
-      const type = item.pull_request ? 'pr' : 'issue';
-      const { org, repo } = extractOrgAndRepoFromFullName(item.url);
 
-      logger.info(`Issue/PR: ${org}/${repo} - ${item.id}`);
+    const prSearchItems: PrSearchItem[] = [];
 
-      issuePrEntities.push({
-        id: item.id.toString(),
-        username: contributorData.login,
-        org,
-        repo,
-        url: item.url,
-        type,
-        number: item.number,
-        title: item.title,
-        state: item.state,
-        createdAt: 'createdAt' in item ? (item.createdAt as string) : '',
-        updatedAt: 'updatedAt' in item ? (item.updatedAt as string) : '',
-        closedAt: 'closedAt' in item ? (item.closedAt as string) : '',
-        mergedAt: 'mergedAt' in item ? (item.mergedAt as string) : '',
-        merged: 'merged' in item ? (item.merged as boolean) : false,
-      });
-      count++;
+    for await (const repo of (contributorData.repos || [])) {
+      logger.info(`Fetching issues for repo: ${repo}`);
+      const [owner, repoName] = repo.full_name.split('/');
+
+      const issues = await issueService.getRecentIssues(
+        owner,
+        repoName,
+        7);
+
+      prSearchItems.push(...issues);
     }
+
+    prSearchItems.map((prSearchItem) => {
+      const normalizedIssues = normalizePrSearchItemToContributorIssuePrEntity(prSearchItem, contributorData.username);
+      issuePrEntities.push(normalizedIssues);
+    });
+
     // Batch insert if any
     if (issuePrEntities.length > 0) {
       await configData.db.databaseServices.contributorIssuePrService.insertBatch(
