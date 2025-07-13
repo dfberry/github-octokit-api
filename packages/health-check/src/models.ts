@@ -252,6 +252,7 @@ export interface ContributorData {
   following: number;
   publicRepos: number;
   publicGists: number;
+  found?: boolean
   repos: ContributorRepo[];
   recentPRs: PrSearchItem[];
 }

@@ -29,8 +29,9 @@ async function fetchContributorsFromGitHub(
       logger.info(`Processing contributor: ${contributor}`);
       try {
         // Use the GraphQL method for full data
-        const contributorData =
+        const contributorData: ContributorData =
           await contributorCollector.getContributorGraphql(contributor, 30);
+
         return contributorData as unknown as ContributorData;
       } catch (error) {
         logger.error(
@@ -95,7 +96,8 @@ export default async function processContributors(
     logger.info(
       `\n\n🔍 ---------------------------------------\nContributor index `
     );
-    const contributorDataList = await fetchContributorsFromGitHub(configData);
+    const contributorDataList: ContributorData[] =
+      await fetchContributorsFromGitHub(configData);
     // Deduplicate contributors by login
     const seenLogins = new Set<string>();
     const uniqueContributors = contributorDataList.filter(c => {

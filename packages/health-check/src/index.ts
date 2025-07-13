@@ -32,7 +32,7 @@ export function getConfigData(
   return new DataConfig(dataDirectory, generatedDirectory);
 }
 
-async function init() {
+async function init(): Promise<DataConfig | undefined> {
   const dataDir = process.env.DATA_DIRECTORY || '../../../data';
   const generatedDir = process.env.GENERATED_DIRECTORY || '../generated';
   const generatedDirWithTimestamp = createTimestampedDirectory(generatedDir);
@@ -80,7 +80,9 @@ async function main(): Promise<void> {
     await Promise.all(
       // process issues and prs for each contributor
       contributorData.map(contributor =>
-        processContributorIssuesAndPRs(configResult, contributor)
+        contributor?.found && contributor?.found == true
+          ? processContributorIssuesAndPRs(configResult, contributor)
+          : Promise.resolve()
       )
     );
     await postProcessing(configResult, contributorData);

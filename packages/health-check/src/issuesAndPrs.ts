@@ -40,8 +40,10 @@ export async function processContributorIssuesAndPRs(
       issuePrEntities
     );
   }
-  logger.info(
-    `\n\n📊 IssuesAndPRs data collected for ${count} issues and prs and saved to database\n\n`
-  );
+  if (count > 0) {
+    logger.info(
+      `\n\n📊 IssuesAndPRs for ${contributorData.login} = ${count}\n`
+    );
+  }
   return items;
 }

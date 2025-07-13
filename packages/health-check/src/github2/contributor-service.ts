@@ -27,6 +27,7 @@ export class ContributorService {
         following: user.following || 0,
         publicRepos: user.public_repos || 0,
         publicGists: user.public_gists || 0,
+        found: true,
         repos: [], // Use getContributorRepositories for this
         recentPRs: [], // Use getContributorPRs for this
       };
@@ -204,14 +205,31 @@ export class ContributorService {
         followers: user.followers.totalCount || 0,
         following: user.following.totalCount || 0,
         publicRepos: 0,
-        publicGists: 0, // Not available in this query
+        publicGists: 0,
+        found: false,
         repos: [],
         recentPRs: [],
       };
     } catch (error) {
-      console.error('getContributorGraphql failed:', error);
-      throw error;
+      console.error(`Contributor fetch failed for ${username}:`, error);
     }
+    return {
+      login: '',
+      name: '',
+      avatarUrl: '',
+      bio: '',
+      company: '',
+      blog: '',
+      location: '',
+      twitter: '',
+      followers: 0,
+      following: 0,
+      publicRepos: 0,
+      publicGists: 0,
+      found: false,
+      repos: [],
+      recentPRs: [],
+    };
   }
 
   async getContributorRepositoriesGraphql(
