@@ -17,9 +17,9 @@ export class IssueService {
     daysAgo: number
   ): Promise<PrSearchItem[]> {
     const octokit = this.api.getRest();
-    const sinceDate = new Date(Date.now() - daysAgo * 24 * 60 * 60 * 1000)
-      .toISOString()
-      .slice(0, 10);
+    const daysAgoMs = daysAgo * 24 * 60 * 60 * 1000;
+    const since = new Date(Date.now() - daysAgoMs);
+    const sinceDate = `${since.toISOString().slice(0, 10)} (last ${daysAgo} days)`;
     // Search for issues and PRs created, updated, or closed in the last N days
     const query = [
       `repo:${owner}/${repo}`,
@@ -37,8 +37,7 @@ export class IssueService {
         page,
       });
       // Only include issues (not PRs)
-      const issues = data.items.filter(item => !item.pull_request);
-      results.push(...(issues as PrSearchItem[]));
+      results.push(...(data.items as PrSearchItem[]));
       totalCount = data.total_count;
       page++;
       // GitHub search API only returns up to 1000 results
@@ -117,6 +116,49 @@ export class IssueService {
         (result as any).repository?.issues?.nodes) ||
       [];
     return issues as PrSearchItem[];
+  }
+
+  /**
+   * Fetches all issues and PRs a user has touched (author, assignee, commenter) in the last N days using the REST search API.
+   * @param username - The GitHub username
+   * @param daysAgo - Number of days in the past to include
+   */
+  async getRecentInvolvedIssues(
+    username: string,
+    daysAgo: number
+  ): Promise<PrSearchItem[]> {
+    const octokit = this.api.getRest();
+    const daysAgoMs = daysAgo * 24 * 60 * 60 * 1000;
+    const since = new Date(Date.now() - daysAgoMs);
+    const sinceDate = `${since.toISOString().slice(0, 10)} (last ${daysAgo} days)`;
+    const query = `involves:${username} updated:>=${sinceDate}`;
+    const results: PrSearchItem[] = [];
+    let page = 1;
+    let totalCount = 0;
+    do {
+      const { data } = await octokit.rest.search.issuesAndPullRequests({
+        q: query,
+        advanced_search: 'true',
+        sort: 'updated',
+        order: 'desc',
+        per_page: 100,
+        page,
+      });
+      // Include both issues and PRs
+      results.push(...(data.items as PrSearchItem[]));
+      totalCount = data.total_count;
+      page++;
+      if (page > 10) break;
+    } while (results.length < totalCount);
+    // Deduplicate by id or url
+    const seen = new Set<string>();
+    const deduped = results.filter(issue => {
+      const key = issue.id ? String(issue.id) : issue.url;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+    return deduped;
   }
 }
 

@@ -1,3 +1,9 @@
+/*
+      const sevenDaysAgo = new Date(
+        Date.now() - 7 * 24 * 60 * 60 * 1000
+      ).toISOString();
+*/
+
 export function getDateMonthsAgo(months: number): string {
   const date = new Date();
   date.setMonth(date.getMonth() - months);

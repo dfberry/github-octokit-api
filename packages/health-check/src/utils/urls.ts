@@ -1,5 +1,7 @@
 import { OctokitSearchIssue } from '../github2/models.js';
+import DataConfig from '../initialize-with-data.js';
 import { extractOrgAndRepo, SimpleRepository } from './regex.js';
+import { GitHubContributorIssuePrEntity } from '@dfb/db';
 
 export function findUniqueRepoUrls(urls: string[]): SimpleRepository[] {
   if (!urls || urls.length === 0) {
@@ -40,15 +42,27 @@ export function findUniqueSimpleRepos(
   return Array.from(repoMap.values());
 }
 
-export function findUniquePrRepos(
-  prs: OctokitSearchIssue[]
-): SimpleRepository[] {
-  if (!prs || prs.length === 0) {
+type OrgRepo = {
+  org: string;
+  repo: string;
+};
+
+export async function findUniquePrRepos(
+  configData: DataConfig
+): Promise<SimpleRepository[]> {
+  const orgRepos: OrgRepo[] =
+    await configData.db.databaseServices.contributorIssuePrService.getUniqueOrgsAndRepos();
+  if (!orgRepos || orgRepos.length === 0) {
     return [];
   }
-  // Map PRs to their repository URLs and find unique repos
-  const repoUrls = prs
-    .map(pr => pr.url)
-    .filter((url): url is string => typeof url === 'string' && !!url);
-  return findUniqueRepoUrls(repoUrls);
+
+  const simpleArray = orgRepos.map(
+    ({ org, repo }) =>
+      ({
+        org,
+        repo,
+        name: `${org}/${repo} (from PRs)`,
+      }) as SimpleRepository
+  );
+  return simpleArray;
 }

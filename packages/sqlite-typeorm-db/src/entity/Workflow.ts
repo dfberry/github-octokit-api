@@ -9,7 +9,7 @@ export class GitHubWorkflowEntity {
   node_id!: string; // GitHub node id
 
   @Column({ nullable: true })
-  orgRepo!: string;
+  org_repo!: string;
 
   @Column({ nullable: true })
   name!: string;
@@ -30,16 +30,16 @@ export class GitHubWorkflowEntity {
   url!: string;
 
   @Column({ nullable: true })
-  lastRunId!: string;
+  last_run_id!: string;
 
   @Column({ nullable: true })
-  lastRunStatus!: string;
+  last_run_status!: string;
 
   @Column({ nullable: true })
-  lastRunDate!: string;
+  last_run_date!: string;
 
   @Column({ nullable: true })
-  lastRunUrl!: string;
+  last_run_url!: string;
 
   @Column({ type: 'text', nullable: true })
   document_category?: string;

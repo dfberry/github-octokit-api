@@ -99,11 +99,7 @@ async function postProcessing(
     return;
   }
 
-  const totalPrs: OctokitSearchIssue[] = contributorData.flatMap(
-    contrib => contrib.recentPRs
-  );
-
-  const uniqueActiveRepos = await getUniqueActiveSimpleRepositories(totalPrs);
+  const uniqueActiveRepos = await getUniqueActiveSimpleRepositories(configData);
   if (!uniqueActiveRepos || uniqueActiveRepos.length === 0) {
     logger.error('No unique repositories found in recent PRs.');
     return;

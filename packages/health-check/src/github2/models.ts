@@ -36,7 +36,7 @@ export type ContributorData = {
   publicRepos: number;
   publicGists: number;
   repos: OctokitRepo[];
-  recentPRs: OctokitSearchIssue[];
+  recentPRs: PrSearchItem[];
 };
 
 export type ContributorRepo = OctokitRepo | OctokitSearchRepo;

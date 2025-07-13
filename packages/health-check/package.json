@@ -24,15 +24,17 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@dfb/db": "file:../sqlite-typeorm-db",
     "@octokit/core": "^6.1.5",
-    "@octokit/rest": "^21.1.1",
+    "@octokit/rest": "^22.0.0",
     "dotenv": "^16.5.0",
+    "install": "^0.13.0",
+    "npm": "^11.4.2",
     "octokit": "^4.1.4",
     "reflect-metadata": "^0.2.2",
     "sqlite3": "^5.1.7",
     "typeorm": "^0.3.25",
-    "winston": "^3.17.0",
-    "@dfb/db": "file:../sqlite-typeorm-db"
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.0",

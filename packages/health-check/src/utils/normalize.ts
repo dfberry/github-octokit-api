@@ -1,6 +1,32 @@
-import type { GitHubRepositoryEntity, GitHubContributorIssuePrEntity } from '@dfb/db';
+import type {
+  GitHubRepositoryEntity,
+  GitHubContributorIssuePrEntity,
+} from '@dfb/db';
 import { GitHubRepoModified } from '../github2/repository-service.js';
 import type { ContributorRepo, PrSearchItem } from '../github2/models.js';
+
+/**
+ * Extracts org and repo from a GitHub API or web URL.
+ * Supports URLs like:
+ *   - https://api.github.com/repos/org/repo/issues/123
+ *   - https://github.com/org/repo/issues/123
+ * Returns [org, repo] or [undefined, undefined] if not found.
+ */
+export function extractOrgRepoFromIssueUrl(
+  url: string
+): [string | undefined, string | undefined] {
+  if (!url) return [undefined, undefined];
+  // Try web URL first
+  //let match = url.match(/github.com\/(.*?)\/(.*?)\//);
+  //if (!match) {
+  // Try API URL
+  const match = url.match(/github\.com\/repos\/([^/]+)\/([^/]+)/);
+  //}
+  if (match) {
+    return [match[1], match[2]];
+  }
+  return [undefined, undefined];
+}
 
 /**
  * Normalize a PrSearchItem (from GitHub API) to a GitHubContributorIssuePrEntity shape.
@@ -10,52 +36,72 @@ export function normalizePrSearchItemToContributorIssuePrEntity(
   username: string
 ): GitHubContributorIssuePrEntity {
   // Helper to get a property in snake_case or camelCase
-  function getField<T = string>(obj: Record<string, unknown>, ...keys: string[]): T | '' {
+  function getField<T = string>(
+    obj: Record<string, unknown>,
+    ...keys: string[]
+  ): T | '' {
     for (const key of keys) {
       if (typeof obj[key] !== 'undefined') return obj[key] as T;
     }
     return '' as T;
   }
 
-  // Try to extract org/repo from url or repository_url
-  const url = (item as Record<string, unknown>).url as string || (item as Record<string, unknown>).html_url as string || '';
-  let org = '', repo = '';
-  if (url) {
-    const match = url.match(/github.com\/(.*?)\/(.*?)\//);
-    if (match) {
-      org = match[1];
-      repo = match[2];
-    }
-  }
-  const repositoryUrl = getField<string>(item as Record<string, unknown>, 'repository_url');
-  if ((!org || !repo) && repositoryUrl) {
-    const repoUrl = repositoryUrl.replace('https://api.github.com/repos/', '');
-    [org, repo] = repoUrl.split('/');
-  }
-  const type = (
-    'pull_request' in item && item.pull_request !== undefined
-  ) || 'pull_request_url' in item || 'pull_request_html_url' in item
-    ? 'pr'
-    : 'issue';
+  const [org, repo] = extractOrgRepoFromIssueUrl(
+    (item as Record<string, unknown>).url as string
+  );
+
+  const type =
+    ('pull_request' in item && item.pull_request !== undefined) ||
+    'pull_request_url' in item ||
+    'pull_request_html_url' in item
+      ? 'pr'
+      : 'issue';
 
   return {
     id: item.id ? item.id.toString() : '',
     username,
     org: org || '',
     repo: repo || '',
-    url,
+    url: item.url,
     type,
     number: (() => {
       const n = getField<unknown>(item as Record<string, unknown>, 'number');
-      return typeof n === 'number' ? n : typeof n === 'string' && !isNaN(Number(n)) ? Number(n) : 0;
+      return typeof n === 'number'
+        ? n
+        : typeof n === 'string' && !isNaN(Number(n))
+          ? Number(n)
+          : 0;
     })(),
     title: getField<string>(item as Record<string, unknown>, 'title') ?? '',
     state: getField<string>(item as Record<string, unknown>, 'state') ?? '',
-    createdAt: getField<string>(item as Record<string, unknown>, 'created_at', 'createdAt') || '',
-    updatedAt: getField<string>(item as Record<string, unknown>, 'updated_at', 'updatedAt') || '',
-    closedAt: getField<string>(item as Record<string, unknown>, 'closed_at', 'closedAt') || '',
-    mergedAt: getField<string>(item as Record<string, unknown>, 'merged_at', 'mergedAt') || '',
-    merged: typeof (item as Record<string, unknown>).merged === 'boolean' ? (item as Record<string, unknown>).merged as boolean : false,
+    created_at:
+      getField<string>(
+        item as Record<string, unknown>,
+        'created_at',
+        'createdAt'
+      ) || '',
+    updated_at:
+      getField<string>(
+        item as Record<string, unknown>,
+        'updated_at',
+        'updatedAt'
+      ) || '',
+    closed_at:
+      getField<string>(
+        item as Record<string, unknown>,
+        'closed_at',
+        'closedAt'
+      ) || '',
+    merged_at:
+      getField<string>(
+        item as Record<string, unknown>,
+        'merged_at',
+        'mergedAt'
+      ) || '',
+    merged:
+      typeof (item as Record<string, unknown>).merged === 'boolean'
+        ? ((item as Record<string, unknown>).merged as boolean)
+        : false,
   };
 }
 
@@ -68,25 +114,25 @@ export function normalizeGitHubRepositoryToDatabaseRepository(
   return {
     id: repo.id?.toString() ?? '',
     name: repo.name || '',
-    nameWithOwner: repo.nameWithOwner || '',
+    name_with_owner: repo.nameWithOwner || '',
     url: repo.url || '',
     description: repo.description || '',
-    stargazerCount: repo.stargazerCount ?? 0,
-    forkCount: repo.forkCount ?? 0,
-    isPrivate: repo.isPrivate ?? false,
-    isFork: repo.isFork ?? false,
-    isArchived: repo.isArchived ?? false,
-    isDisabled: repo.isDisabled ?? false,
-    primaryLanguage: repo.primaryLanguage?.name ?? undefined,
-    licenseInfo: repo.licenseInfo?.name ?? undefined,
+    stargazer_count: repo.stargazerCount ?? 0,
+    fork_count: repo.forkCount ?? 0,
+    is_private: repo.isPrivate ?? false,
+    is_fork: repo.isFork ?? false,
+    is_archived: repo.isArchived ?? false,
+    is_disabled: repo.isDisabled ?? false,
+    primary_language: repo.primaryLanguage?.name ?? undefined,
+    license_info: repo.licenseInfo?.name ?? undefined,
     owner: repo.owner?.login ?? '',
-    diskUsage: repo.diskUsage ?? undefined,
-    createdAt: repo.createdAt ?? undefined,
-    updatedAt: repo.updatedAt ?? undefined,
-    pushedAt: repo.pushedAt ?? undefined,
-    watchersCount: repo.watchers?.totalCount ?? undefined,
-    issuesCount: repo.issues.totalCount ?? 0,
-    pullRequestsCount: repo.pullRequests.totalCount ?? 0,
+    disk_usage: repo.diskUsage ?? undefined,
+    created_at: repo.createdAt ?? undefined,
+    updated_at: repo.updatedAt ?? undefined,
+    pushed_at: repo.pushedAt ?? undefined,
+    watchers_count: repo.watchers?.totalCount ?? undefined,
+    issues_count: repo.issues.totalCount ?? 0,
+    pull_requests_count: repo.pullRequests.totalCount ?? 0,
     topics: repo.topics.nodes.map(t => t.topic?.name).join(',') || undefined,
     readme: normalizeReadme(repo?.readme?.text),
   };
@@ -147,25 +193,25 @@ export function normalizeReadme(
 export type NormalizedRepo = {
   id: string;
   name: string;
-  nameWithOwner: string;
+  name_with_owner: string;
   url: string;
   description: string;
-  stargazerCount: number;
-  forkCount: number;
-  isPrivate: boolean;
-  isFork: boolean;
-  isArchived: boolean;
-  isDisabled: boolean;
-  primaryLanguage?: string;
-  licenseInfo?: string;
+  stargazer_count: number;
+  fork_count: number;
+  is_private: boolean;
+  is_fork: boolean;
+  is_archived: boolean;
+  is_disabled: boolean;
+  primary_language?: string;
+  license_info?: string;
   owner: string;
-  diskUsage?: number;
-  createdAt?: string;
-  updatedAt?: string;
-  pushedAt?: string;
-  watchersCount?: number;
-  issuesCount?: number;
-  pullRequestsCount?: number;
+  disk_usage?: number;
+  created_at?: string;
+  updated_at?: string;
+  pushed_at?: string;
+  watchers_count?: number;
+  issues_count?: number;
+  pull_requests_count?: number;
   topics?: string;
   readme?: string | null;
 };
@@ -247,20 +293,20 @@ export function normalizeRepo(
     return {
       id: repoObjRaw.id?.toString() ?? '',
       name: repoObjRaw.name || '',
-      nameWithOwner: repoObjRaw.nameWithOwner,
+      name_with_owner: repoObjRaw.nameWithOwner,
       url: repoObjRaw.url || '',
       description: repoObjRaw.description || '',
-      stargazerCount: repoObjRaw.stargazerCount ?? 0,
-      forkCount: repoObjRaw.forkCount ?? 0,
-      isPrivate: repoObjRaw.isPrivate ?? false,
-      isFork: repoObjRaw.isFork ?? false,
-      isArchived: repoObjRaw.isArchived ?? false,
-      isDisabled: repoObjRaw.isDisabled ?? false,
-      primaryLanguage:
+      stargazer_count: repoObjRaw.stargazerCount ?? 0,
+      fork_count: repoObjRaw.forkCount ?? 0,
+      is_private: repoObjRaw.isPrivate ?? false,
+      is_fork: repoObjRaw.isFork ?? false,
+      is_archived: repoObjRaw.isArchived ?? false,
+      is_disabled: repoObjRaw.isDisabled ?? false,
+      primary_language:
         typeof repoObjRaw.primaryLanguage === 'string'
           ? repoObjRaw.primaryLanguage || undefined
           : repoObjRaw.primaryLanguage?.name || undefined,
-      licenseInfo:
+      license_info:
         typeof repoObjRaw.licenseInfo === 'string'
           ? repoObjRaw.licenseInfo || undefined
           : repoObjRaw.licenseInfo?.name || undefined,
@@ -268,13 +314,13 @@ export function normalizeRepo(
         typeof repoObjRaw.owner === 'string'
           ? repoObjRaw.owner
           : (repoObjRaw.owner?.login ?? ''),
-      diskUsage: repoObjRaw.diskUsage ?? undefined,
-      createdAt: repoObjRaw.createdAt ?? undefined,
-      updatedAt: repoObjRaw.updatedAt ?? undefined,
-      pushedAt: repoObjRaw.pushedAt ?? undefined,
-      watchersCount: repoObjRaw.watchers?.totalCount ?? undefined,
-      issuesCount: repoObjRaw.issues?.totalCount ?? undefined,
-      pullRequestsCount: repoObjRaw.pullRequests?.totalCount ?? undefined,
+      disk_usage: repoObjRaw.diskUsage ?? undefined,
+      created_at: repoObjRaw.createdAt ?? undefined,
+      updated_at: repoObjRaw.updatedAt ?? undefined,
+      pushed_at: repoObjRaw.pushedAt ?? undefined,
+      watchers_count: repoObjRaw.watchers?.totalCount ?? undefined,
+      issues_count: repoObjRaw.issues?.totalCount ?? undefined,
+      pull_requests_count: repoObjRaw.pullRequests?.totalCount ?? undefined,
       topics: normalizeTopics(repoObjRaw.repositoryTopics ?? repoObjRaw.topics),
       readme: normalizeReadme(repoObjRaw.readme),
     };
@@ -283,28 +329,28 @@ export function normalizeRepo(
     return {
       id: repoObjRaw.id?.toString() ?? repoObjRaw.node_id ?? '',
       name: repoObjRaw.name || '',
-      nameWithOwner: repoObjRaw.full_name || '',
+      name_with_owner: repoObjRaw.full_name || '',
       url: repoObjRaw.html_url || '',
       description: repoObjRaw.description || '',
-      stargazerCount: repoObjRaw.stargazers_count ?? 0,
-      forkCount: repoObjRaw.forks_count ?? 0,
-      isPrivate: repoObjRaw.private ?? false,
-      isFork: repoObjRaw.fork ?? false,
-      isArchived: repoObjRaw.archived ?? false,
-      isDisabled: repoObjRaw.disabled ?? false,
-      primaryLanguage: repoObjRaw.language || undefined,
-      licenseInfo: repoObjRaw.license?.name || undefined,
+      stargazer_count: repoObjRaw.stargazers_count ?? 0,
+      fork_count: repoObjRaw.forks_count ?? 0,
+      is_private: repoObjRaw.private ?? false,
+      is_fork: repoObjRaw.fork ?? false,
+      is_archived: repoObjRaw.archived ?? false,
+      is_disabled: repoObjRaw.disabled ?? false,
+      primary_language: repoObjRaw.language || undefined,
+      license_info: repoObjRaw.license?.name || undefined,
       owner:
         typeof repoObjRaw.owner === 'string'
           ? repoObjRaw.owner
           : (repoObjRaw.owner?.login ?? ''),
-      diskUsage: repoObjRaw.disk_usage ?? undefined,
-      createdAt: repoObjRaw.created_at ?? undefined,
-      updatedAt: repoObjRaw.updated_at ?? undefined,
-      pushedAt: repoObjRaw.pushed_at ?? undefined,
-      watchersCount: repoObjRaw.watchers_count ?? undefined,
-      issuesCount: repoObjRaw.open_issues_count ?? undefined,
-      pullRequestsCount: undefined, // REST API does not provide this directly
+      disk_usage: repoObjRaw.disk_usage ?? undefined,
+      created_at: repoObjRaw.created_at ?? undefined,
+      updated_at: repoObjRaw.updated_at ?? undefined,
+      pushed_at: repoObjRaw.pushed_at ?? undefined,
+      watchers_count: repoObjRaw.watchers_count ?? undefined,
+      issues_count: repoObjRaw.open_issues_count ?? undefined,
+      pull_requests_count: undefined, // REST API does not provide this directly
       topics: normalizeTopics(repoObjRaw.topics),
       readme: undefined, // REST API does not provide this directly
     };

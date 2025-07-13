@@ -158,11 +158,9 @@ export class ContributorService {
     try {
       const graphql = this.api.getGraphql();
       // Calculate the date 7 days ago in ISO format
-      const sevenDaysAgo = new Date(
-        Date.now() - 7 * 24 * 60 * 60 * 1000
-      ).toISOString();
+
       const query = `
-        query($username: String!, $since: DateTime!) {
+        query($username: String!) {
           user(login: $username) {
             login
             id
@@ -192,7 +190,6 @@ export class ContributorService {
       `;
       const result = await graphql.graphql(query, {
         username,
-        since: sevenDaysAgo,
       });
       const user = (result as Record<string, unknown>).user as any;
       return {
@@ -209,7 +206,7 @@ export class ContributorService {
         publicRepos: 0,
         publicGists: 0, // Not available in this query
         repos: [],
-        recentPRs: user.pullRequests.nodes || [],
+        recentPRs: [],
       };
     } catch (error) {
       console.error('getContributorGraphql failed:', error);

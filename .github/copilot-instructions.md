@@ -4,7 +4,9 @@ Imports always go at the top of the file. Only comments can precede the imports.
 Every package in ./packages is a typescript esm package.
 
 When performing a code review, please ensure: 
-* 
+
+Data entities are:
+- using snake_case for database column names
 
 Our preferred stack:
 - TypeScript

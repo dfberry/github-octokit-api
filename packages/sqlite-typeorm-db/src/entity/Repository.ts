@@ -9,7 +9,7 @@ export class GitHubRepositoryEntity {
   name?: string;
 
   @Column({ nullable: true })
-  nameWithOwner?: string;
+  name_with_owner?: string;
 
   @Column({ nullable: true })
   url?: string;
@@ -18,52 +18,52 @@ export class GitHubRepositoryEntity {
   description?: string;
 
   @Column({ type: 'integer', nullable: true })
-  stargazerCount?: number;
+  stargazer_count?: number;
 
   @Column({ type: 'integer', nullable: true })
-  forkCount?: number;
+  fork_count?: number;
 
   @Column({ type: 'boolean', nullable: true })
-  isPrivate?: boolean;
+  is_private?: boolean;
 
   @Column({ type: 'boolean', nullable: true })
-  isFork?: boolean;
+  is_fork?: boolean;
 
   @Column({ type: 'boolean', nullable: true })
-  isArchived?: boolean;
+  is_archived?: boolean;
 
   @Column({ type: 'boolean', nullable: true })
-  isDisabled?: boolean;
+  is_disabled?: boolean;
 
   @Column({ nullable: true })
-  primaryLanguage?: string; // reduced to primaryLanguage.name
+  primary_language?: string; // reduced to primaryLanguage.name
 
   @Column({ nullable: true })
-  licenseInfo?: string; // reduced to licenseInfo.name
+  license_info?: string; // reduced to licenseInfo.name
 
   @Column({ type: 'integer', nullable: true })
-  diskUsage?: number;
+  disk_usage?: number;
 
   @Column({ nullable: true })
-  createdAt?: string;
+  created_at?: string;
 
   @Column({ nullable: true })
-  updatedAt?: string;
+  updated_at?: string;
 
   @Column({ nullable: true })
-  pushedAt?: string;
+  pushed_at?: string;
 
   @Column({ nullable: true })
   owner?: string; // reduced to owner.login
 
   @Column({ type: 'integer', nullable: true })
-  watchersCount?: number;
+  watchers_count?: number;
 
   @Column({ type: 'integer', nullable: true })
-  issuesCount?: number;
+  issues_count?: number;
 
   @Column({ type: 'integer', nullable: true })
-  pullRequestsCount?: number;
+  pull_requests_count?: number;
 
   @Column({ nullable: true })
   topics?: string; // comma-delimited list

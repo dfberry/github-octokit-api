@@ -131,25 +131,35 @@ async function updateRepoForWorkflowSummary(
   );
 }
 export async function getUniqueActiveSimpleRepositories(
-  totalPrs: OctokitSearchIssue[]
+  configData: DataConfig
 ): Promise<SimpleRepository[]> {
-  const simpleRepositories: SimpleRepository[] = findUniquePrRepos(totalPrs);
+  const simpleRepositories: SimpleRepository[] =
+    await findUniquePrRepos(configData);
   if (!simpleRepositories || simpleRepositories.length === 0) {
     return [];
   }
+
   const apiClient = new GitHubApiClient();
   const contributorService = new ContributorService(apiClient);
   const activeRepos = (
     await Promise.all(
       simpleRepositories.map(async repo => {
+        const org = repo.org;
+        const repoName = repo.repo;
+
         const isActive = await contributorService.isActiveRepository(
-          repo.org,
-          repo.repo
+          org,
+          repoName
         );
         return isActive ? repo : null;
       })
     )
   ).filter(Boolean) as SimpleRepository[];
+
+  console.log(
+    `Found ${simpleRepositories.length} unique repositories, reduced to ${activeRepos.length} active repos.`
+  );
+
   return activeRepos;
 }
 export async function processActiveRepos(

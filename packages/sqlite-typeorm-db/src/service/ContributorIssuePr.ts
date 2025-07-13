@@ -25,4 +25,16 @@ export class GitHubContributorIssuePrService {
     }
     return this.#repo.find();
   }
+  getUniqueOrgsAndRepos(): Promise<{ org: string; repo: string }[]> {
+    return this.#repo
+      .createQueryBuilder('contributor_issue_prs')
+      .select([
+        'contributor_issue_prs.org AS org',
+        'contributor_issue_prs.repo AS repo',
+      ])
+      .where('contributor_issue_prs.org IS NOT NULL')
+      .andWhere('contributor_issue_prs.repo IS NOT NULL')
+      .distinct(true)
+      .getRawMany();
+  }
 }

@@ -21,9 +21,9 @@ export class GitHubRepositoryService {
   }
 
   async getByOrgRepo(
-    nameWithOwner: string
+    name_with_owner: string
   ): Promise<GitHubRepositoryEntity | null> {
-    return this.#repo.findOneBy({ nameWithOwner });
+    return this.#repo.findOneBy({ name_with_owner });
   }
 
   async getAll(): Promise<GitHubRepositoryEntity[]> {
@@ -31,9 +31,9 @@ export class GitHubRepositoryService {
   }
 
   async updateRepositoryWorkflowStatus(
-    nameWithOwner: string,
+    name_with_owner: string,
     workflow_status: string
   ): Promise<UpdateResult | null> {
-    return this.#repo.update({ nameWithOwner }, { workflow_status });
+    return this.#repo.update({ name_with_owner }, { workflow_status });
   }
 }

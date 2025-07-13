@@ -30,16 +30,16 @@ export class GitHubContributorIssuePrEntity {
   state?: string;
 
   @Column({ nullable: true })
-  createdAt?: string;
+  created_at?: string;
 
   @Column({ nullable: true })
-  updatedAt?: string;
+  updated_at?: string;
 
   @Column({ nullable: true })
-  closedAt?: string;
+  closed_at?: string;
 
   @Column({ nullable: true })
-  mergedAt?: string;
+  merged_at?: string;
 
   @Column({ type: 'boolean', nullable: true })
   merged?: boolean;

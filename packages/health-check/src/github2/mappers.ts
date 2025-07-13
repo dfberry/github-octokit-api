@@ -26,17 +26,17 @@ export function mapOctokitWorkflowToEntity(
 ): Partial<GitHubWorkflowEntity> {
   return {
     id: wf.id, // keep as number if that's what your entity expects
-    orgRepo,
+    org_repo: orgRepo,
     name: wf.name,
     path: wf.path,
     state: wf.state,
     created_at: wf.created_at ?? undefined,
     updated_at: wf.updated_at ?? undefined,
     url: wf.html_url ?? undefined,
-    lastRunId: lastRun?.id ? String(lastRun.id) : undefined,
-    lastRunStatus: lastRun?.status ?? undefined,
-    lastRunDate: lastRun?.created_at ?? undefined,
-    lastRunUrl: lastRun?.url ?? undefined,
+    last_run_id: lastRun?.id ? String(lastRun.id) : undefined,
+    last_run_status: lastRun?.status ?? undefined,
+    last_run_date: lastRun?.created_at ?? undefined,
+    last_run_url: lastRun?.url ?? undefined,
   };
 }
 
@@ -68,25 +68,25 @@ export function mapOctokitRepoToEntity(
   return {
     id: repo.node_id,
     name: repo.name,
-    nameWithOwner: repo.full_name,
+    name_with_owner: repo.full_name,
     url: repo.html_url,
     description: repo.description ?? undefined,
-    stargazerCount: repo.stargazers_count ?? undefined,
-    forkCount: repo.forks_count ?? undefined,
-    isPrivate: repo.private ?? undefined,
-    isFork: repo.fork ?? undefined,
-    isArchived: repo.archived ?? undefined,
-    isDisabled: repo.disabled ?? undefined,
-    primaryLanguage: repo.language ?? undefined,
-    licenseInfo: repo.license?.name ?? undefined,
-    diskUsage: repo.size ?? undefined,
-    createdAt: repo.created_at ?? undefined,
-    updatedAt: repo.updated_at ?? undefined,
-    pushedAt: repo.pushed_at ?? undefined,
+    stargazer_count: repo.stargazers_count ?? undefined,
+    fork_count: repo.forks_count ?? undefined,
+    is_private: repo.private ?? undefined,
+    is_fork: repo.fork ?? undefined,
+    is_archived: repo.archived ?? undefined,
+    is_disabled: repo.disabled ?? undefined,
+    primary_language: repo.language ?? undefined,
+    license_info: repo.license?.name ?? undefined,
+    disk_usage: repo.size ?? undefined,
+    created_at: repo.created_at ?? undefined,
+    updated_at: repo.updated_at ?? undefined,
+    pushed_at: repo.pushed_at ?? undefined,
     owner: repo.owner?.login ?? undefined,
-    watchersCount: repo.watchers_count ?? undefined,
-    //issuesCount: repo.open_issues_count ?? undefined,
-    //pullRequestsCount: undefined, // Not available directly
+    watchers_count: repo.watchers_count ?? undefined,
+    //issues_count: repo.open_issues_count ?? undefined,
+    //pull_requests_count: undefined, // Not available directly
     topics: Array.isArray(repo.topics) ? repo.topics.join(',') : undefined,
     readme: undefined, // Not available directly
   };
@@ -106,10 +106,10 @@ export function mapOctokitIssueToEntity(
     org: issue.repository_url?.split('/')[4] ?? undefined,
     repo: issue.repository_url?.split('/')[5] ?? undefined,
     state: issue.state ?? undefined,
-    createdAt: issue.created_at ?? undefined,
-    updatedAt: issue.updated_at ?? undefined,
-    closedAt: issue.closed_at ?? undefined,
-    mergedAt: undefined,
+    created_at: issue.created_at ?? undefined,
+    updated_at: issue.updated_at ?? undefined,
+    closed_at: issue.closed_at ?? undefined,
+    merged_at: undefined,
     merged: undefined,
   };
 }
@@ -135,10 +135,10 @@ export function mapOctokitPRToEntity(
     org: pr.base?.repo?.owner?.login ?? undefined,
     repo: pr.base?.repo?.name ?? undefined,
     state: pr.state ?? undefined,
-    createdAt: pr.created_at ?? undefined,
-    updatedAt: pr.updated_at ?? undefined,
-    closedAt: pr.closed_at ?? undefined,
-    mergedAt: hasMergedFields(pr) ? (pr.merged_at ?? undefined) : undefined,
+    created_at: pr.created_at ?? undefined,
+    updated_at: pr.updated_at ?? undefined,
+    closed_at: pr.closed_at ?? undefined,
+    merged_at: hasMergedFields(pr) ? (pr.merged_at ?? undefined) : undefined,
     merged: hasMergedFields(pr) ? (pr.merged ?? undefined) : undefined,
   };
 }
