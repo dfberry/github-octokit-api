@@ -16,6 +16,13 @@ export class GitHubContributorService {
     return this.#repo.insert(data);
   }
 
+  async insertOne(
+    data: Partial<GitHubContributorEntity>
+  ): Promise<InsertResult | null> {
+    if (!data) return null;
+    return this.#repo.insert(data);
+  }
+
   async getById(id: string): Promise<GitHubContributorEntity | null> {
     return this.#repo.findOneBy({ id });
   }

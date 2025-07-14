@@ -1,9 +1,5 @@
-import type { ContributorData, PrSearchItem } from './github2/models.js';
-import { IssueService } from './github2/issue-service.js';
-import logger from './logger.js';
-import type DataConfig from './initialize-with-data.js';
+import logger from './utils/logger.js';
 import { GitHubContributorIssuePrEntity } from '@dfb/db';
-import GitHubApiClient from './github2/api-client.js';
 import {
   normalizePrSearchItemToContributorIssuePrEntity,
   // normalizeIssueToContributorIssuePrEntity,

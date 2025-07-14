@@ -2,8 +2,6 @@ import type {
   GitHubRepositoryEntity,
   GitHubContributorIssuePrEntity,
 } from '@dfb/db';
-import { GitHubRepoModified } from '../github2/repository-service.js';
-import type { ContributorRepo, PrSearchItem } from '../github2/models.js';
 
 /**
  * Extracts org and repo from a GitHub API or web URL.

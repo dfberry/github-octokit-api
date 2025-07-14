@@ -3,14 +3,16 @@ import { dirname } from 'path';
 import path from 'path';
 import 'reflect-metadata';
 import { createTimestampedDirectory } from './utils/file.js';
-import DataConfig from './initialize-with-data.js';
-import GitHubApiClient from './github2/api-client.js';
-import { ContributorData, OctokitSearchIssue } from './github2/models.js';
-import { processContributorIssuesAndPRs } from './issuesAndPrs.js';
-import { processActiveRepos } from './repoAndWorkflow.js';
-import logger from './logger.js';
-import processContributors from './contributors.js';
-import { getUniqueActiveSimpleRepositories } from './repoAndWorkflow.js';
+import DataConfig from './config/index.js';
+//import { processContributorIssuesAndPRs } from './issuesAndPrs.ts.bak';
+//import { processActiveRepos } from './repoAndWorkflow.ts.bak';
+import logger from './utils/logger.js';
+import { fetchContributorsFromGitHub } from './contributors.js';
+//import { getUniqueActiveSimpleRepositories } from './repoAndWorkflow.ts.bak';
+import 'dotenv/config';
+//import { GitHubApiClient } from '@dfb/octokit';
+//import { config } from 'dotenv';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -61,56 +63,49 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  logger.info('Starting health check ...');
-  logger.info('Data directory: %s', configResult.dataDirectory);
-  logger.info('Generated directory: %s', configResult.generatedDirectory);
-
-  const apiClient = new GitHubApiClient();
-  const authenticatedUser = await apiClient.getAndTestGitHubToken();
-  logger.info('***    Authenticated*** as: %s', authenticatedUser.login);
-
   // Get data from GraphQL API, insert into db
-  const contributorData = await processContributors(configResult);
+  const contributorData = await fetchContributorsFromGitHub(configResult);
 
-  if (!contributorData || contributorData.length === 0) {
-    logger.error('No contributor data found. Exiting...');
-    await configResult.db.database.destroy();
-    return;
-  } else {
-    await Promise.all(
-      // process issues and prs for each contributor
-      contributorData.map(contributor =>
-        contributor?.found && contributor?.found == true
-          ? processContributorIssuesAndPRs(configResult, contributor)
-          : Promise.resolve()
-      )
-    );
-    await postProcessing(configResult, contributorData);
-  }
+  // if (!contributorData || contributorData.length === 0) {
+  //   logger.error('No contributor data found. Exiting...');
+  //   await configResult.db.database.destroy();
+  //   return;
+  // } else {
+  //   await Promise.all(
+  //     // process issues and prs for each contributor
+  //     contributorData.map(contributor =>
+  //       contributor?.found && contributor?.found == true
+  //         ? processContributorIssuesAndPRs(configResult, contributor)
+  //         : Promise.resolve()
+  //     )
+  //   );
+  //   await postProcessing(configResult, contributorData);
+  // }
 
   await configResult.db.database.destroy();
   logger.info('Generated directory: %s', configResult.generatedDirectory);
   logger.info('Health check completed successfully.');
-}
-async function postProcessing(
-  configData: DataConfig,
-  contributorData: ContributorData[]
-): Promise<void> {
-  if (!contributorData || contributorData.length === 0) {
-    logger.error('No contributor data found for post-processing.');
-    return;
-  }
+  // }
+  // async function postProcessing(
+  //   configData: DataConfig,
+  //   contributorData: ContributorData[]
+  // ): Promise<void> {
+  //   if (!contributorData || contributorData.length === 0) {
+  //     logger.error('No contributor data found for post-processing.');
+  //     return;
+  //   }
 
-  const uniqueActiveRepos = await getUniqueActiveSimpleRepositories(configData);
-  if (!uniqueActiveRepos || uniqueActiveRepos.length === 0) {
-    logger.error('No unique repositories found in recent PRs.');
-    return;
-  }
+  //   const uniqueActiveRepos = await getUniqueActiveSimpleRepositories(configData);
+  //   if (!uniqueActiveRepos || uniqueActiveRepos.length === 0) {
+  //     logger.error('No unique repositories found in recent PRs.');
+  //     return;
+  //   }
 
-  await processActiveRepos(configData, uniqueActiveRepos);
+  //   await processActiveRepos(configData, uniqueActiveRepos);
 
-  //const uniqueActiveRepos = await processAndInsertActiveRepos(totalPrs);
-  // handle workflows and dependabot alerts for uniqueActiveRepos
+  //   //const uniqueActiveRepos = await processAndInsertActiveRepos(totalPrs);
+  //   // handle workflows and dependabot alerts for uniqueActiveRepos
+  // }
 }
 main().catch((error: unknown) => {
   logger.error(error);

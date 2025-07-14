@@ -1,7 +1,5 @@
-import { OctokitSearchIssue } from '../github2/models.js';
-import DataConfig from '../initialize-with-data.js';
+import DataConfig from '../config/index.js';
 import { extractOrgAndRepo, SimpleRepository } from './regex.js';
-import { GitHubContributorIssuePrEntity } from '@dfb/db';
 
 export function findUniqueRepoUrls(urls: string[]): SimpleRepository[] {
   if (!urls || urls.length === 0) {

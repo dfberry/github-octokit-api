@@ -1,9 +1,7 @@
-import { ContributorService } from './github2/contributor-service.js';
-import logger from './logger.js';
-import type DataConfig from './initialize-with-data.js';
-import type { ContributorData } from './github2/models.js';
-import GitHubApiClient from './github2/api-client.js';
-
+import logger from './utils/logger.js';
+import DataConfig from './config/index.js';
+import { ContributorService, OctokitUser } from '@dfb/octokit';
+import { GitHubContributorEntity } from '@dfb/db';
 /**
  * Generate a contributor index report
  * @param token GitHub API token
@@ -11,114 +9,83 @@ import GitHubApiClient from './github2/api-client.js';
  * @param generatedDirectory Directory to save generated reports
  * @param configData Configuration data for contributors
  */
-// --- Fetch helpers ---
-async function fetchContributorsFromGitHub(
+
+export async function fetchContributorsFromGitHub(
   configData: DataConfig
-): Promise<ContributorData[]> {
-  const apiClient = new GitHubApiClient();
-  const contributorCollector = new ContributorService(apiClient);
+): Promise<void> {
+  if (!configData.githubClient) {
+    logger.error(
+      'GitHub API client is not initialized. Please check your configuration and ensure a valid GitHub token is provided.'
+    );
+    return;
+  }
+
+  const contributorCollector = new ContributorService(configData.githubClient);
   if (configData.microsoftContributors.length === 0) {
     logger.warn('No contributors found in configuration.');
-    return [];
+    return;
   }
   logger.info(
     `🔍 Collecting data for ${configData.microsoftContributors.length} contributors...`
   );
-  const contributorDataList: ContributorData[] = await Promise.all(
+  await Promise.all(
     configData.microsoftContributors.map(async contributor => {
       logger.info(`Processing contributor: ${contributor}`);
       try {
         // Use the GraphQL method for full data
-        const contributorData: ContributorData =
-          await contributorCollector.getContributorGraphql(contributor, 30);
+        const contributorData: OctokitUser | null =
+          await contributorCollector.getContributor(contributor);
 
-        return contributorData as unknown as ContributorData;
+        if (!contributorData) {
+          logger.warn(`No data found for contributor: ${contributor}`);
+          return null;
+        }
+        const dbUser = octokitUserToGitHubContributorEntity(contributorData);
+        const dbInsertResult =
+          await configData.db.databaseServices.contributorService.insertOne(
+            dbUser
+          );
+        if (dbInsertResult) {
+          logger.info(
+            `Inserted/Updated contributor ${contributor} in database.`
+          );
+        } else {
+          logger.warn(
+            `Failed to insert/update contributor ${contributor} in database.`
+          );
+        }
       } catch (error) {
         logger.error(
           `Error processing contributor ${contributor}: ${error instanceof Error ? error.message : String(error)}`
         );
-        const emptyContributorData: ContributorData = {
-          login: contributor,
-          name: '',
-          avatarUrl: '',
-          company: '',
-          blog: '',
-          location: '',
-          bio: '',
-          twitter: '',
-          followers: 0,
-          following: 0,
-          publicRepos: 0,
-          publicGists: 0,
-          repos: [],
-          recentPRs: [],
-        };
-        return emptyContributorData as unknown as ContributorData;
       }
     })
   );
-  // Filter out any nulls (failed fetches)
-  return contributorDataList.filter(Boolean) as ContributorData[];
 }
 
-// --- Insert helpers ---
-// Batch insert contributors
-async function insertContributorsIntoDb(
-  configData: DataConfig,
-  contributorDataList: ContributorData[]
-) {
-  if (!contributorDataList.length) return;
-
-  await configData.db.databaseServices.contributorService.insertBatch(
-    contributorDataList.map(contributorData => ({
-      id: contributorData.login,
-      avatar_url: contributorData.avatarUrl || '',
-      name: contributorData.name,
-      company: contributorData.company,
-      blog: contributorData.blog,
-      location: contributorData.location,
-      bio: contributorData.bio,
-      twitter: contributorData.twitter,
-      followers: contributorData.followers,
-      following: contributorData.following,
-      public_repos: contributorData.publicRepos,
-      public_gists: contributorData.publicGists,
-      // add more fields as needed
-    }))
-  );
-}
-
-// --- Main workflow ---
-export default async function processContributors(
-  configData: DataConfig
-): Promise<ContributorData[]> {
-  try {
-    logger.info(
-      `\n\n🔍 ---------------------------------------\nContributor index `
-    );
-    const contributorDataList: ContributorData[] =
-      await fetchContributorsFromGitHub(configData);
-    // Deduplicate contributors by login
-    const seenLogins = new Set<string>();
-    const uniqueContributors = contributorDataList.filter(c => {
-      if (!c.login) return false;
-      if (seenLogins.has(c.login)) return false;
-      seenLogins.add(c.login);
-      return true;
-    });
-    logger.info(
-      '[TypeORM] Unique contributors to insert:',
-      uniqueContributors.map(c => c.login)
-    );
-    await insertContributorsIntoDb(configData, uniqueContributors);
-    logger.info(
-      `\n📊 Contributor data collected for ${contributorDataList.length} contributors and saved ${uniqueContributors.length} to database\n\n`
-    );
-    return contributorDataList;
-  } catch (error) {
-    logger.error(
-      `Error generating contributor index: ${error instanceof Error ? error.message : String(error)}`
-    );
-    process.exit(1);
-  }
+export function octokitUserToGitHubContributorEntity(
+  user: OctokitUser
+): GitHubContributorEntity {
+  return {
+    id: user.login,
+    name: user.name ?? undefined,
+    company: user.company ?? undefined,
+    blog: user.blog ?? undefined,
+    location: user.location ?? undefined,
+    email: user.email ?? undefined,
+    bio: user.bio ?? undefined,
+    twitter: user.twitter_username ?? undefined,
+    followers: user.followers ?? 0,
+    following: user.following ?? 0,
+    public_repos: user.public_repos ?? 0,
+    public_gists: user.public_gists ?? 0,
+    avatar_url: user.avatar_url ?? undefined,
+    last_updated: new Date(),
+    // The following fields are left undefined unless you want to map them:
+    document_category: undefined,
+    document_summary: undefined,
+    document_summary_embedding: undefined,
+    document: undefined,
+    document_embedding: undefined,
+  };
 }

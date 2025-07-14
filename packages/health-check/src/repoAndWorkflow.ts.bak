@@ -1,19 +1,10 @@
-import GitHubApiClient from './github2/api-client.js';
-import RepositoryService from './github2/repository-service.js';
 import { normalizeGitHubRepositoryToDatabaseRepository } from './utils/normalize.js';
 import type { SimpleRepository } from './utils/regex.js';
-import GithubWorkflowService from './github2/workflow-service.js';
-// import type { WorkflowWithStatus as GithubWorkflowWithStatus } from './github2/workflow-service.js';
-type GithubWorkflowWithStatus = any; // TODO: Replace 'any' with the correct type if/when available
-import { mapOctokitWorkflowToEntity } from './github2/mappers.js';
-import DataConfig from './initialize-with-data.js';
 import pLimit from 'p-limit';
-import logger from './logger.js';
+import logger from './utils/logger.js';
 import { GitHubWorkflowEntity } from '@dfb/db';
-import type { OctokitSearchIssue } from './github2/models.js';
 import { findUniquePrRepos } from './utils/urls.js';
-import { ContributorService } from './github2/contributor-service.js';
-import { GitHubRepoModified } from './github2/repository-service.js';
+
 /**
  * Process PRs, filter to unique active repos, insert repo data, and return unique active SimpleRepositories.
  */

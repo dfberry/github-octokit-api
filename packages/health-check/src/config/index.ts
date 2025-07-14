@@ -1,7 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import logger from './logger.js';
-import { Db, DbManager } from './db/index.js';
+import logger from '../utils/logger.js';
+import { Db, DbManager } from '../db/index.js';
+import { GitHubApiClient } from '@dfb/octokit';
 /**
  * Configuration data class that provides access to repository and contributor information
  */
@@ -10,15 +11,36 @@ export default class DataConfig {
   public generatedDirectory: string;
   public _microsoftContributors: string[] | null = null;
   public db: DbManager;
+  public gitHubToken: string | null = null;
+  public githubClient: GitHubApiClient | null = null;
+  public authenticatedUserLogin: string | null = null;
 
   constructor(dataDirectory: string, generatedDirectory: string) {
     this.dataDirectory = dataDirectory;
     this.generatedDirectory = generatedDirectory;
+    this.gitHubToken = process.env.GITHUB_TOKEN || null;
   }
   public async init() {
     const db = new Db();
     const dbManager = await db.connect(this.generatedDirectory);
     this.db = dbManager;
+
+    this.gitHubToken = process.env.GITHUB_TOKEN || null;
+    if (!this.gitHubToken || this.gitHubToken.length < 10) {
+      logger.error(
+        'GitHub token is missing or invalid. Please set GITHUB_TOKEN in your environment variables.'
+      );
+      process.exit(1);
+    }
+
+    this.githubClient = new GitHubApiClient(this.gitHubToken);
+    const result = await this.githubClient.getAndTestGitHubToken();
+    this.authenticatedUserLogin = result.login;
+
+    logger.info('Starting health check ...');
+    logger.info('Data directory: %s', this.dataDirectory);
+    logger.info('Generated directory: %s', this.generatedDirectory);
+    logger.info('***    Authenticated*** as: %s', this.authenticatedUserLogin);
   }
   public get microsoftContributors(): string[] {
     logger.info(`Getting Microsoft contributors`);
