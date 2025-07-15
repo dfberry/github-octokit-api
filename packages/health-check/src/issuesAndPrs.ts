@@ -1,4 +1,5 @@
 import logger from './utils/logger.js';
+import pLimit from 'p-limit';
 import { GitHubContributorIssuePrEntity } from '@dfb/db';
 import { extractOrgRepoFromIssueUrl } from './utils/urls.js';
 import { IssueService, OctokitSearchIssueRest } from '@dfb/octokit';
@@ -25,28 +26,34 @@ export async function fetchPrsFromGitHub(
   }
 
   const issueService = new IssueService(configData.githubClient);
+  const limit = pLimit(5); // Adjust concurrency as needed
 
-  for await (const contributor of configData.contributors) {
-    if (!contributor || !contributor.id) {
-      logger.warn('Skipping contributor with no login.');
-      continue;
-    }
+  const contributors = Array.from(configData.contributors);
+  await Promise.all(
+    contributors.map(contributor =>
+      limit(async () => {
+        if (!contributor || !contributor.id) {
+          logger.warn('Skipping contributor with no login.');
+          return;
+        }
 
-    const dbItems = await fetchAndInsertContributorIssues(
-      issueService,
-      contributor.id,
-      configData
-    );
-    logger.info(
-      `Fetched ${dbItems.length} issues/PRs for contributor ${contributor.id}`
-    );
-  }
+        const dbItems = await fetchAndInsert(
+          issueService,
+          contributor.id,
+          configData
+        );
+        logger.info(
+          `Fetched ${dbItems.length} issues/PRs for contributor ${contributor.id}`
+        );
+      })
+    )
+  );
 }
 
 /**
  * Fetch recent issues/PRs for a contributor, normalize, add to config, and insert into DB.
  */
-async function fetchAndInsertContributorIssues(
+async function fetchAndInsert(
   issueService: IssueService,
   contributorId: string,
   configData: DataConfig

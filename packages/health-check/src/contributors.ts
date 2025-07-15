@@ -33,44 +33,53 @@ export async function fetchContributorsFromGitHub(
   const limit = pLimit(5); // Adjust concurrency as needed
   await Promise.all(
     configData.microsoftContributors.map(contributor =>
-      limit(async () => {
-        logger.info(`Processing contributor: ${contributor}`);
-        try {
-          // Use the GraphQL method for full data
-          const contributorData: OctokitUser | null =
-            await contributorCollector.getContributor(contributor);
-
-          if (!contributorData) {
-            logger.warn(`No data found for contributor: ${contributor}`);
-            return null;
-          }
-          const dbUser = octokitUserToGitHubContributorEntity(contributorData);
-          configData?.contributors?.add(dbUser);
-
-          const dbInsertResult =
-            await configData.db.databaseServices.contributorService.insertOne(
-              dbUser
-            );
-          if (dbInsertResult) {
-            logger.info(
-              `Inserted/Updated contributor ${contributor} in database.`
-            );
-          } else {
-            logger.warn(
-              `Failed to insert/update contributor ${contributor} in database.`
-            );
-          }
-          logger.info(
-            `Total contributors so far: ${configData?.contributors?.size}`
-          );
-        } catch (error) {
-          logger.error(
-            `Error processing contributor ${contributor}: ${error instanceof Error ? error.message : String(error)}`
-          );
-        }
-      })
+      limit(() =>
+        fetchAndInsertContributor(contributor, contributorCollector, configData)
+      )
     )
   );
+
+  /**
+   * Fetch a contributor from GitHub, normalize, add to config, and insert into DB.
+   */
+  async function fetchAndInsertContributor(
+    contributor: string,
+    contributorCollector: ContributorService,
+    configData: DataConfig
+  ): Promise<void> {
+    logger.info(`Processing contributor: ${contributor}`);
+    try {
+      // Use the GraphQL method for full data
+      const contributorData: OctokitUser | null =
+        await contributorCollector.getContributor(contributor);
+
+      if (!contributorData) {
+        logger.warn(`No data found for contributor: ${contributor}`);
+        return;
+      }
+      const dbUser = octokitUserToGitHubContributorEntity(contributorData);
+      configData?.contributors?.add(dbUser);
+
+      const dbInsertResult =
+        await configData.db.databaseServices.contributorService.insertOne(
+          dbUser
+        );
+      if (dbInsertResult) {
+        logger.info(`Inserted/Updated contributor ${contributor} in database.`);
+      } else {
+        logger.warn(
+          `Failed to insert/update contributor ${contributor} in database.`
+        );
+      }
+      logger.info(
+        `Total contributors so far: ${configData?.contributors?.size}`
+      );
+    } catch (error) {
+      logger.error(
+        `Error processing contributor ${contributor}: ${error instanceof Error ? error.message : String(error)}`
+      );
+    }
+  }
 }
 
 export function octokitUserToGitHubContributorEntity(

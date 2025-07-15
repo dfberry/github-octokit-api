@@ -23,30 +23,39 @@ export async function fetchWorkflowFromGitHub(
     const repos = Array.from(configData.repositories || []);
     await Promise.all(
       repos.map(repo =>
-        limit(async () => {
-          if (!repo || !repo.owner || !repo.name) {
-            logger.warn('Skipping repository with missing org or repo name.');
-            return;
-          }
-
-          const workflows: WorkflowWithStatus[] =
-            await repoService.getWorkflowsWithStatus(repo.owner, repo.name);
-          if (workflows && workflows.length > 0) {
-            const dbWorkflows: GitHubWorkflowEntity[] = workflows.map(wf =>
-              normalizeGitHubWorkflowToEntity(wf, `${repo.owner}/${repo.name}`)
-            );
-
-            for (const dbWorkflow of dbWorkflows) {
-              configData.workflows?.add(dbWorkflow);
-            }
-
-            await configData.db.databaseServices.workflowService.insertBatch(
-              dbWorkflows
-            );
-          }
-        })
+        limit(() => fetchAndInsertWorkflow(repo, repoService, configData))
       )
     );
+
+    /**
+     * Fetch workflows for a repository, normalize, add to config, and insert into DB.
+     */
+    async function fetchAndInsertWorkflow(
+      repo: { owner?: string; name?: string },
+      repoService: WorkflowService,
+      configData: DataConfig
+    ): Promise<void> {
+      if (!repo || !repo.owner || !repo.name) {
+        logger.warn('Skipping repository with missing org or repo name.');
+        return;
+      }
+
+      const workflows: WorkflowWithStatus[] =
+        await repoService.getWorkflowsWithStatus(repo.owner, repo.name);
+      if (workflows && workflows.length > 0) {
+        const dbWorkflows: GitHubWorkflowEntity[] = workflows.map(wf =>
+          normalizeGitHubWorkflowToEntity(wf, `${repo.owner}/${repo.name}`)
+        );
+
+        for (const dbWorkflow of dbWorkflows) {
+          configData.workflows?.add(dbWorkflow);
+        }
+
+        await configData.db.databaseServices.workflowService.insertBatch(
+          dbWorkflows
+        );
+      }
+    }
 
     return;
   } catch (error) {

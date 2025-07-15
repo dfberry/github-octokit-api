@@ -31,34 +31,43 @@ export async function fetchRepositoriesFromGitHub(
   // Fetch repo data in parallel with limited concurrency
   await Promise.all(
     repos.map(repo =>
-      limit(async () => {
-        try {
-          const repoData = await repoService.getRepositoryGraphql(
-            repo.org,
-            repo.repo
-          );
-          if (!repoData) return;
-
-          const normalizedRepo =
-            normalizeGitHubRepositoryToDatabaseRepository(repoData);
-          if (!normalizedRepo) return;
-
-          configData?.repositories?.add(normalizedRepo);
-
-          // Insert the normalized repo into the database
-          await configData?.db?.databaseServices?.repositoryService.insertBatch(
-            [normalizedRepo]
-          );
-          return;
-        } catch (err) {
-          logger.error(
-            `Failed to fetch repo for ${repo.org}/${repo.repo}: ${err instanceof Error ? err.message : String(err)}`
-          );
-          return undefined; // Explicitly return undefined on error
-        }
-      })
+      limit(() => fetchAndInsertRepository(repo, repoService, configData))
     )
   );
+
+  /**
+   * Fetch a repository from GitHub, normalize, add to config, and insert into DB.
+   */
+  async function fetchAndInsertRepository(
+    repo: { org: string; repo: string },
+    repoService: RepositoryService,
+    configData: DataConfig
+  ): Promise<void> {
+    try {
+      const repoData = await repoService.getRepositoryGraphql(
+        repo.org,
+        repo.repo
+      );
+      if (!repoData) return;
+
+      const normalizedRepo =
+        normalizeGitHubRepositoryToDatabaseRepository(repoData);
+      if (!normalizedRepo) return;
+
+      configData?.repositories?.add(normalizedRepo);
+
+      // Insert the normalized repo into the database
+      await configData?.db?.databaseServices?.repositoryService.insertBatch([
+        normalizedRepo,
+      ]);
+      return;
+    } catch (err) {
+      logger.error(
+        `Failed to fetch repo for ${repo.org}/${repo.repo}: ${err instanceof Error ? err.message : String(err)}`
+      );
+      return undefined; // Explicitly return undefined on error
+    }
+  }
 
   return;
 }
