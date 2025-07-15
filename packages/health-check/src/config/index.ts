@@ -3,6 +3,12 @@ import path from 'path';
 import logger from '../utils/logger.js';
 import { Db, DbManager } from '../db/index.js';
 import { GitHubApiClient } from '@dfb/octokit';
+import {
+  GitHubContributorEntity,
+  GitHubContributorIssuePrEntity,
+  GitHubRepositoryEntity,
+  GitHubWorkflowEntity,
+} from '@dfb/db';
 /**
  * Configuration data class that provides access to repository and contributor information
  */
@@ -14,6 +20,11 @@ export default class DataConfig {
   public gitHubToken: string | null = null;
   public githubClient: GitHubApiClient | null = null;
   public authenticatedUserLogin: string | null = null;
+
+  public contributors: Set<GitHubContributorEntity> | null = new Set();
+  public issues: Set<GitHubContributorIssuePrEntity> | null = new Set();
+  public repositories: Set<GitHubRepositoryEntity> | null = new Set();
+  public workflows: Set<GitHubWorkflowEntity> | null = new Set();
 
   constructor(dataDirectory: string, generatedDirectory: string) {
     this.dataDirectory = dataDirectory;

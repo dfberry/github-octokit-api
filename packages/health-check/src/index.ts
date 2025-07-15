@@ -10,6 +10,8 @@ import logger from './utils/logger.js';
 import { fetchContributorsFromGitHub } from './contributors.js';
 //import { getUniqueActiveSimpleRepositories } from './repoAndWorkflow.ts.bak';
 import 'dotenv/config';
+import { fetchPrsFromGitHub } from './issuesAndPrs.js';
+import { fetchRepositoriesFromGitHub } from './repositories.js';
 //import { GitHubApiClient } from '@dfb/octokit';
 //import { config } from 'dotenv';
 
@@ -64,7 +66,9 @@ async function main(): Promise<void> {
   }
 
   // Get data from GraphQL API, insert into db
-  const contributorData = await fetchContributorsFromGitHub(configResult);
+  await fetchContributorsFromGitHub(configResult);
+  await fetchPrsFromGitHub(configResult);
+  await fetchRepositoriesFromGitHub(configResult);
 
   // if (!contributorData || contributorData.length === 0) {
   //   logger.error('No contributor data found. Exiting...');

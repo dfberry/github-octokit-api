@@ -24,6 +24,6 @@
       "experimentalDecorators": true,
       "emitDecoratorMetadata": true
     },
-    "include": ["src/**/*.ts", "src/issuesAndPrs.ts.bak", "src/repoAndWorkflow.ts.bak", "src/utils/normalize.ts.bak"],
+    "include": ["src/**/*.ts", "src/issuesAndPrs.ts", "src/repositories.ts", "src/utils/normalize.ts.bak"],
     "exclude": ["node_modules", "dist"]
   }

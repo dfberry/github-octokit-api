@@ -4,19 +4,6 @@ import type { GitHubRepoFromGraphQlModified } from './models.js';
 export class RepositoryService {
   constructor(private api: GitHubApiClient) {}
 
-  async isActiveRepository(org: string, repo: string): Promise<boolean> {
-    const octokit = this.api.getRest();
-    try {
-      const { data } = await octokit.rest.repos.get({
-        owner: org,
-        repo,
-      });
-      return !data.archived && !data.disabled;
-    } catch {
-      // Optionally handle not found or permission errors
-      return false;
-    }
-  }
   async getRepositoryGraphql(
     owner: string,
     repo: string,

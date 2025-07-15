@@ -1,5 +1,6 @@
 // github2/models.ts
 // Centralized types for all github2 service methods, using @octokit/types
+import { RestEndpointMethodTypes } from '@octokit/rest';
 import { Endpoints } from '@octokit/types';
 
 // ContributorData is a custom shape, but its fields are derived from Octokit user and repo types
@@ -15,6 +16,9 @@ export type OctokitIssue =
   Endpoints['GET /repos/{owner}/{repo}/issues']['response']['data'][0];
 export type OctokitSearchIssue =
   Endpoints['GET /search/issues']['response']['data']['items'][0];
+
+export type OctokitSearchIssueRest =
+  RestEndpointMethodTypes['search']['issuesAndPullRequests']['response']['data']['items'][0];
 
 // Workflow and WorkflowRun types from REST queries
 export type OctokitWorkflow =

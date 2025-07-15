@@ -44,17 +44,30 @@ type OrgRepo = {
   org: string;
   repo: string;
 };
-
-export async function findUniquePrRepos(
+export async function getUniqueReposFromIssues(
   configData: DataConfig
 ): Promise<SimpleRepository[]> {
-  const orgRepos: OrgRepo[] =
-    await configData.db.databaseServices.contributorIssuePrService.getUniqueOrgsAndRepos();
-  if (!orgRepos || orgRepos.length === 0) {
+  const issues = configData?.issues;
+
+  if (!issues || issues.size === 0) {
     return [];
   }
 
-  const simpleArray = orgRepos.map(
+  // get all urls from Set
+  const urls = Array.from(issues).map(issue => issue.url || '');
+
+  return findUniqueRepoUrls(urls);
+}
+export async function findUniquePrRepos(
+  configData: DataConfig
+): Promise<SimpleRepository[]> {
+  const issues = configData.issues;
+
+  if (!issues || issues.size === 0) {
+    return [];
+  }
+
+  const simpleArray = Array.from(issues).map(
     ({ org, repo }) =>
       ({
         org,
@@ -62,5 +75,20 @@ export async function findUniquePrRepos(
         name: `${org}/${repo} (from PRs)`,
       }) as SimpleRepository
   );
+
+  // dedup repos
+  const uniqueRepos = findUniqueSimpleRepos(simpleArray);
+
   return simpleArray;
+}
+export function extractOrgRepoFromIssueUrl(issueUrl: string): [string, string] {
+  if (!issueUrl) {
+    return ['', ''];
+  }
+  // Example URL: https://api.github.com/repos/microsoft/TypeScript/issues/12345
+  const match = issueUrl.match(/repos\/([^\/]+)\/([^\/]+)\/issues\/\d+/);
+  if (match && match.length === 3) {
+    return [match[1], match[2]]; // [org, repo]
+  }
+  return ['', ''];
 }

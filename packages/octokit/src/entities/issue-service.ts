@@ -1,5 +1,5 @@
 import { GitHubApiClient } from './client.js';
-import type { PrSearchItem } from './models.js';
+import type { OctokitSearchIssueRest } from './models.js';
 import { getDaysAgo } from '../utils/datetime.js';
 export class IssueService {
   constructor(private api: GitHubApiClient) {}
@@ -12,12 +12,12 @@ export class IssueService {
   async getRecentInvolvedIssues(
     username: string,
     daysAgo: number
-  ): Promise<PrSearchItem[]> {
+  ): Promise<OctokitSearchIssueRest[]> {
     const octokit = this.api.getRest();
 
     const sinceDate = getDaysAgo(daysAgo);
     const query = `involves:${username} updated:>=${sinceDate}`;
-    const results: PrSearchItem[] = [];
+    const results: OctokitSearchIssueRest[] = [];
     let page = 1;
     let totalCount = 0;
     do {
@@ -30,7 +30,7 @@ export class IssueService {
         page,
       });
       // Include both issues and PRs
-      results.push(...(data.items as PrSearchItem[]));
+      results.push(...(data.items as OctokitSearchIssueRest[]));
       totalCount = data.total_count;
       page++;
       if (page > 10) break;

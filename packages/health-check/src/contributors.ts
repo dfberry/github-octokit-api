@@ -2,6 +2,7 @@ import logger from './utils/logger.js';
 import DataConfig from './config/index.js';
 import { ContributorService, OctokitUser } from '@dfb/octokit';
 import { GitHubContributorEntity } from '@dfb/db';
+
 /**
  * Generate a contributor index report
  * @param token GitHub API token
@@ -13,7 +14,7 @@ import { GitHubContributorEntity } from '@dfb/db';
 export async function fetchContributorsFromGitHub(
   configData: DataConfig
 ): Promise<void> {
-  if (!configData.githubClient) {
+  if (!configData || !configData.githubClient) {
     logger.error(
       'GitHub API client is not initialized. Please check your configuration and ensure a valid GitHub token is provided.'
     );
@@ -41,6 +42,8 @@ export async function fetchContributorsFromGitHub(
           return null;
         }
         const dbUser = octokitUserToGitHubContributorEntity(contributorData);
+        configData?.contributors?.add(dbUser);
+
         const dbInsertResult =
           await configData.db.databaseServices.contributorService.insertOne(
             dbUser
@@ -54,6 +57,9 @@ export async function fetchContributorsFromGitHub(
             `Failed to insert/update contributor ${contributor} in database.`
           );
         }
+        logger.info(
+          `Total contributors so far: ${configData?.contributors?.size}`
+        );
       } catch (error) {
         logger.error(
           `Error processing contributor ${contributor}: ${error instanceof Error ? error.message : String(error)}`
