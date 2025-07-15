@@ -1,4 +1,3 @@
-import type { SimpleRepository } from './utils/regex.js';
 import pLimit from 'p-limit';
 import logger from './utils/logger.js';
 import { RepositoryService, GitHubRepoFromGraphQlModified } from '@dfb/octokit';
@@ -30,7 +29,7 @@ export async function fetchRepositoriesFromGitHub(
   const limit = pLimit(5);
 
   // Fetch repo data in parallel with limited concurrency
-  const repoData = await Promise.all(
+  await Promise.all(
     repos.map(repo =>
       limit(async () => {
         try {

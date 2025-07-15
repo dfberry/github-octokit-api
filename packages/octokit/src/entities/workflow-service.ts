@@ -1,6 +1,6 @@
 import { GitHubApiClient } from './client.js';
 import type { WorkflowWithStatus } from './models.js';
-export class GithubWorkflowService {
+export class WorkflowService {
   constructor(private api: GitHubApiClient) {}
 
   async getWorkflowsWithStatus(
