@@ -1,6 +1,7 @@
 import logger from './utils/logger.js';
 import DataConfig from './config/index.js';
 import { ContributorService, OctokitUser } from '@dfb/octokit';
+import pLimit from 'p-limit';
 import { GitHubContributorEntity } from '@dfb/db';
 
 /**
@@ -29,43 +30,46 @@ export async function fetchContributorsFromGitHub(
   logger.info(
     `🔍 Collecting data for ${configData.microsoftContributors.length} contributors...`
   );
+  const limit = pLimit(5); // Adjust concurrency as needed
   await Promise.all(
-    configData.microsoftContributors.map(async contributor => {
-      logger.info(`Processing contributor: ${contributor}`);
-      try {
-        // Use the GraphQL method for full data
-        const contributorData: OctokitUser | null =
-          await contributorCollector.getContributor(contributor);
+    configData.microsoftContributors.map(contributor =>
+      limit(async () => {
+        logger.info(`Processing contributor: ${contributor}`);
+        try {
+          // Use the GraphQL method for full data
+          const contributorData: OctokitUser | null =
+            await contributorCollector.getContributor(contributor);
 
-        if (!contributorData) {
-          logger.warn(`No data found for contributor: ${contributor}`);
-          return null;
-        }
-        const dbUser = octokitUserToGitHubContributorEntity(contributorData);
-        configData?.contributors?.add(dbUser);
+          if (!contributorData) {
+            logger.warn(`No data found for contributor: ${contributor}`);
+            return null;
+          }
+          const dbUser = octokitUserToGitHubContributorEntity(contributorData);
+          configData?.contributors?.add(dbUser);
 
-        const dbInsertResult =
-          await configData.db.databaseServices.contributorService.insertOne(
-            dbUser
-          );
-        if (dbInsertResult) {
+          const dbInsertResult =
+            await configData.db.databaseServices.contributorService.insertOne(
+              dbUser
+            );
+          if (dbInsertResult) {
+            logger.info(
+              `Inserted/Updated contributor ${contributor} in database.`
+            );
+          } else {
+            logger.warn(
+              `Failed to insert/update contributor ${contributor} in database.`
+            );
+          }
           logger.info(
-            `Inserted/Updated contributor ${contributor} in database.`
+            `Total contributors so far: ${configData?.contributors?.size}`
           );
-        } else {
-          logger.warn(
-            `Failed to insert/update contributor ${contributor} in database.`
+        } catch (error) {
+          logger.error(
+            `Error processing contributor ${contributor}: ${error instanceof Error ? error.message : String(error)}`
           );
         }
-        logger.info(
-          `Total contributors so far: ${configData?.contributors?.size}`
-        );
-      } catch (error) {
-        logger.error(
-          `Error processing contributor ${contributor}: ${error instanceof Error ? error.message : String(error)}`
-        );
-      }
-    })
+      })
+    )
   );
 }
 

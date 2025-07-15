@@ -32,26 +32,41 @@ export async function fetchPrsFromGitHub(
       continue;
     }
 
-    // Use the REST API /search/issues with involves:USERNAME for the last 7 days
-    const gitHubItems: OctokitSearchIssueRest[] =
-      await issueService.getRecentInvolvedIssues(contributor.id, days);
-
-    const dbItems = gitHubItems.map(item => {
-      const dbItem = octokitSearchIssueRestToGitHubContributorIssuePrEntity(
-        item,
-        contributor.id
-      );
-      configData?.issues?.add(dbItem);
-      return dbItem;
-    });
-    await configData?.db?.databaseServices?.contributorIssuePrService.insertBatch(
-      dbItems
+    const dbItems = await fetchAndInsertContributorIssues(
+      issueService,
+      contributor.id,
+      configData
     );
-
     logger.info(
       `Fetched ${dbItems.length} issues/PRs for contributor ${contributor.id}`
     );
   }
+}
+
+/**
+ * Fetch recent issues/PRs for a contributor, normalize, add to config, and insert into DB.
+ */
+async function fetchAndInsertContributorIssues(
+  issueService: IssueService,
+  contributorId: string,
+  configData: DataConfig
+): Promise<GitHubContributorIssuePrEntity[]> {
+  // Use the REST API /search/issues with involves:USERNAME for the last N days
+  const gitHubItems: OctokitSearchIssueRest[] =
+    await issueService.getRecentInvolvedIssues(contributorId, days);
+
+  const dbItems = gitHubItems.map(item => {
+    const dbItem = octokitSearchIssueRestToGitHubContributorIssuePrEntity(
+      item,
+      contributorId
+    );
+    configData?.issues?.add(dbItem);
+    return dbItem;
+  });
+  await configData?.db?.databaseServices?.contributorIssuePrService.insertBatch(
+    dbItems
+  );
+  return dbItems;
 }
 export function octokitSearchIssueRestToGitHubContributorIssuePrEntity(
   item: OctokitSearchIssueRest,
