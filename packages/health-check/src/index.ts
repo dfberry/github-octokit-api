@@ -6,10 +6,10 @@ import { createTimestampedDirectory } from './utils/file.js';
 import DataConfig from './config/index.js';
 import logger from './utils/logger.js';
 import { fetchContributorsFromGitHub } from './contributors.js';
-import 'dotenv/config';
 import { fetchPrsFromGitHub } from './issuesAndPrs.js';
 import { fetchRepositoriesFromGitHub } from './repositories.js';
 import { fetchWorkflowFromGitHub } from './workflows.js';
+import { copyAndUpdateGithubDb } from '@dfb/finddb';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -69,6 +69,11 @@ async function main(): Promise<void> {
 
   await configResult.db.database.destroy();
   logger.info('Generated directory: %s', configResult.generatedDirectory);
+
+  // === Copy generated github.db to ./data/db/github.<timestamp>.db and update github.db.json using @dfb/finddb ===
+
+  await copyAndUpdateGithubDb(configResult.generatedDirectory);
+
   logger.info('Health check completed successfully.');
 }
 main().catch((error: unknown) => {

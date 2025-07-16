@@ -1,7 +1,5 @@
 // Only comments above imports
 import { DataSource, EntityTarget, ObjectLiteral } from 'typeorm';
-import { DocumentTemplateService } from '@dfb/db';
-import { constructCategory } from './index.js';
 import { summarize } from './lib/summarize.js';
 import { embedSummary, embedDocument } from './lib/embedding.js';
 export interface EntityDescriptor {
@@ -9,71 +7,56 @@ export interface EntityDescriptor {
   entity: EntityTarget<ObjectLiteral>;
 }
 
-export async function processOneTable(
-  name: string,
-  entity: EntityTarget<ObjectLiteral>,
-  sourceDataSource: DataSource,
-  documentTemplateService: DocumentTemplateService,
-  jsonToMarkdown: (category: string, row: Record<string, unknown>) => string
-): Promise<{ insertedCount: number; skippedCount: number }> {
-  let insertedCount = 0;
-  let skippedCount = 0;
+/**
+ * Constructs the category string for a row based on the table/entity name and row data.
+ */
+export function constructCategory(
+  tableName: string,
+  row: Record<string, unknown>
+): string | null | undefined {
   try {
-    const rows = await sourceDataSource.getRepository(entity).find();
-    for await (const row of rows as Record<string, unknown>[]) {
-      const category = constructCategory(name, row);
-      if (!category) {
-        console.log(
-          `[SKIP] Could not construct category for table ${name}, row:`,
-          row
-        );
-        skippedCount++;
-        continue;
-      }
-      let text: string;
-      try {
-        text = jsonToMarkdown(category, row);
-      } catch (err) {
-        console.log(
-          `[SKIP] Error converting row to markdown for table ${name}, row:`,
-          row,
-          'Error:',
-          err
-        );
-        skippedCount++;
-        continue;
-      }
-      const dateCreated = new Date().toISOString();
-      await documentTemplateService.insert({ category, text, dateCreated });
-      insertedCount++;
+    switch (tableName) {
+      case 'contributor_issues_prs':
+        if (
+          row.org &&
+          row.repo &&
+          row.username &&
+          row.type &&
+          row.id !== undefined
+        ) {
+          return `${row.type.toString().toUpperCase()}:${row.org}_${row.repo}:${row.username}:${row.id}`;
+        }
+        break;
+      case 'contributors':
+        if (row.id !== undefined) {
+          return `CONTRIBUTOR:${row.id}`;
+        }
+        break;
+      case 'repositories':
+        if (row.owner && row.name && row.id !== undefined) {
+          return `REPOSITORY:${row?.owner}_${row?.name}:${row.id}`;
+        }
+        break;
+      case 'workflows':
+        if (row.org_repo && row.id !== undefined) {
+          const [owner, repo] = (row.org_repo as string).split('/');
+          if (owner && repo) {
+            return `WORKFLOW:${owner}_${repo}:${row.id}`;
+          }
+
+          return `WORKFLOW:${row.id}`;
+        }
+        break;
+      default:
+        return `${tableName.toUpperCase()}:${row.id || 'unknown'}`;
     }
   } catch (err) {
-    console.log(`[SKIP] Error processing table ${name}:`, err);
+    // Defensive: should not throw, but just in case
+    console.log(`Error constructing category for table ${tableName}:`, err);
+    // Return undefined to skip this
+    return null;
   }
-  return { insertedCount, skippedCount };
-}
-
-export async function processTables(
-  entities: EntityDescriptor[],
-  sourceDataSource: DataSource,
-  documentTemplateService: DocumentTemplateService,
-  jsonToMarkdown: (category: string, row: Record<string, unknown>) => string
-): Promise<{ insertedCount: number; skippedCount: number }> {
-  let insertedCount = 0;
-  let skippedCount = 0;
-  for await (const entityDescriptor of entities) {
-    const { name, entity } = entityDescriptor;
-    const result = await processOneTable(
-      name,
-      entity,
-      sourceDataSource,
-      documentTemplateService,
-      jsonToMarkdown
-    );
-    insertedCount += result.insertedCount;
-    skippedCount += result.skippedCount;
-  }
-  return { insertedCount, skippedCount };
+  return null;
 }
 export async function processTablesToSame(
   entities: EntityDescriptor[],
@@ -209,12 +192,6 @@ async function updateEntityRowWithAllFields(
       document_summary_embedding: summaryEmbedding,
     };
     await repository.update({ id: idValue }, updateFields);
-    // console.log(
-    //   '[UPDATE] Updated all document fields in table ' +
-    //     repository.metadata.tableName +
-    //     ' with id ' +
-    //     JSON.stringify(idValue)
-    // );
   } catch (err) {
     console.log(
       '[SKIP] Error updating all document fields in table ' +

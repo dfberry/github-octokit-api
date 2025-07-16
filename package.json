@@ -7,7 +7,12 @@
     "lint": "eslint \"src/**/*.ts\" ",
     "build": "npm run build --workspaces",
     "clean": "find . -type d -name 'dist' -prune -exec rm -rf {} + && find . -type d -name 'generated' -prune -exec rm -rf {} + && find . -name '*.db' -delete && find . -type d -name 'node_modules' -prune -exec rm -rf {} +",
-    "knip": "knip --workspace packages/health-check"
+    "knip": "knip --workspace packages/health-check",
+    "scan-1": "npm run start -w scrape",
+    "data-2": "npm run start -w health-check",
+    "generate-3": "npm run start -w create-document-template-data",
+    "move-4": "npm run start -w sqlite-to-cosmos",
+    "chat-5": "npm run start -w chat"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.0",

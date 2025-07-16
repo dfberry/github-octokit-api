@@ -1,6 +1,4 @@
 import { AzureOpenAI  } from 'openai';
-
-
 import type { AzureOpenAIConfig } from './completion.js';
 
 export async function createEmbedding(

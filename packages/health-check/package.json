@@ -25,6 +25,7 @@
   "description": "",
   "dependencies": {
     "@dfb/db": "file:../sqlite-typeorm-db",
+    "@dfb/finddb": "file:../finddb",
     "@dfb/octokit": "file:../octokit",
     "dotenv": "^16.5.0",
     "reflect-metadata": "^0.2.2",

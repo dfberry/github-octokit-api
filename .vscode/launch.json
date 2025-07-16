@@ -32,8 +32,7 @@
             "type": "node",
             "cwd": "${workspaceFolder}/packages/summary"
         },
-
-               {
+        {
             "name": "Template",
             "request": "launch",
             "runtimeArgs": [
@@ -74,6 +73,20 @@
             ],
             "type": "node",
             "cwd": "${workspaceFolder}/packages/chat"
+        },
+        {
+            "name": "Cosmos",
+            "request": "launch",
+            "runtimeArgs": [
+                "run-script",
+                "start:run"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node",
+            "cwd": "${workspaceFolder}/packages/sqlite-to-cosmos"
         }
     ]
 }

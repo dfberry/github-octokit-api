@@ -48,9 +48,17 @@ export async function embedDocument(text: string): Promise<number[]> {
   try {
     const trimResult = getTrimmedText(text, deployment);
 
-    console.log(
-      `   Embedding document text. Original length: ${text.length}, Trimmed length: ${trimResult.length}`
-    );
+    if(text.length !== trimResult.length){
+      const trimmedCount = text.length - trimResult.length;
+      console.warn(
+        `   Embedding length: ${trimResult.length}: trimmed ${trimmedCount.toLocaleString()}`
+      );
+    } else {
+      console.log(
+        `   Embedding length: ${text.length}: trimmed 0`
+      );
+    }
+
 
     const result = await pRetry(() => createEmbedding(config, trimResult), {
       retries: 3,
