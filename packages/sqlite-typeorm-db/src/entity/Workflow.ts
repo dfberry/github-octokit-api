@@ -1,9 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, Column, PrimaryColumn } from 'typeorm';
 
 @Entity('workflows')
 export class GitHubWorkflowEntity {
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @PrimaryColumn()
+  id!: string; // for cosmos db, use string
 
   @Column({ nullable: true })
   node_id!: string; // GitHub node id

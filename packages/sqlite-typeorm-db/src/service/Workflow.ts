@@ -16,7 +16,7 @@ export class GitHubWorkflowService {
     return this.#repo.insert(data);
   }
 
-  async getById(id: number): Promise<GitHubWorkflowEntity | null> {
+  async getById(id: string): Promise<GitHubWorkflowEntity | null> {
     return this.#repo.findOneBy({ id });
   }
 
