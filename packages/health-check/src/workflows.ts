@@ -75,7 +75,7 @@ function normalizeGitHubWorkflowToEntity(
   repoNameWithOwner: string
 ): GitHubWorkflowEntity {
   return {
-    id: workflow.id,
+    id: workflow.id.toString(), // Convert to string for Cosmos DB
     node_id: workflow.node_id ?? '',
     name: workflow.name ?? '',
     org_repo: repoNameWithOwner,
