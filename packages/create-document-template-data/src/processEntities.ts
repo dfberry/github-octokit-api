@@ -159,8 +159,8 @@ async function processAndUpdateRow({
     category,
     markdown,
     summary,
-    documentEmedding,
-    summaryEmbedding
+    JSON.stringify(documentEmedding),
+    JSON.stringify(summaryEmbedding)
   );
 
   console.log(`[UPDATE COMPLETE] Document for table ${name}, row: ${category}`);
