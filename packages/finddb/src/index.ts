@@ -17,7 +17,14 @@ export async function getCurrentGithubDbPath(dataRootDir: string): Promise<strin
     const dbJson = JSON.parse(jsonStr);
     if (!dbJson.current) return null;
     // Always resolve from the root (absolute path)
-    return path.resolve(dbDir, dbJson.current);
+    const dbPath = path.resolve(dbDir, dbJson.current);
+    try {
+      await fs.access(dbPath);
+    } catch {
+      // File does not exist
+      return null;
+    }
+    return dbPath;
   } catch (err) {
     console.error(`Failed to read current github.db: ${err instanceof Error ? err.message : String(err)}`);
     return null;

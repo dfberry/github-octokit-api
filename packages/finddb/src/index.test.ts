@@ -26,9 +26,19 @@ describe('path tests', () => {
             await fs.rm(tmp, { recursive: true, force: true });
         });
 
+
         it('returns the fully qualified path to the current github.db file', async () => {
             const result = await getCurrentGithubDbPath(tmp);
             expect(result).toBe(path.resolve(dbDir, dbFileName));
+        });
+
+        it('returns null if github.db.json points to a missing db file', async () => {
+            // Remove the db file but keep the pointer
+            await fs.rm(dbFilePath, { force: true });
+            const result = await getCurrentGithubDbPath(tmp);
+            expect(result).toBeNull();
+            // Restore for other tests
+            await fs.writeFile(dbFilePath, 'dummy', 'utf-8');
         });
 
         it('returns null if github.db.json does not exist', async () => {
