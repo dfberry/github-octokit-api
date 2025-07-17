@@ -44,8 +44,10 @@ export async function setupDatabaseAndContainer(): Promise<void> {
 export async function insert(data: any): Promise<any> {
   try {
 
-    if(!data?.context || data?.context.length===0){
-      throw new Error('Data context is empty, skipping insert');
+    console.log(`Inserting document with id: ${data?.id} and category: ${data?.document_category}`);
+
+    if(!data?.id || !data?.document_category){
+      throw new Error('Data id or document_category is empty, skipping insert');
     }
 
     if(process.env.FEATURE_FLAGS_INSERT_INTO_COSMOS_DB !== 'true'){
