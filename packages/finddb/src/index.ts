@@ -7,12 +7,16 @@ import { promises as fs } from 'fs';
  * @returns The absolute path to the current github.db file, or null if not found
  */
 export async function getCurrentGithubDbPath(dataRootDir: string): Promise<string | null> {
-  const dbDir = path.join(dataRootDir, 'db');
+  const dbDir = path.resolve(dataRootDir, 'db');
   const dbJsonPath = path.join(dbDir, 'github.db.json');
+
+  console.log(`Looking for github.db.json at: ${dbJsonPath}`);
+
   try {
     const jsonStr = await fs.readFile(dbJsonPath, 'utf-8');
     const dbJson = JSON.parse(jsonStr);
     if (!dbJson.current) return null;
+    // Always resolve from the root (absolute path)
     return path.resolve(dbDir, dbJson.current);
   } catch (err) {
     console.error(`Failed to read current github.db: ${err instanceof Error ? err.message : String(err)}`);
@@ -24,8 +28,15 @@ export async function getCurrentGithubDbPath(dataRootDir: string): Promise<strin
  * Copy a generated github.db to ./data/db/github.<timestamp>.db and update github.db.json pointer file.
  * @param generatedDirectory Directory where github.db is generated
  */
+
+
 export async function copyAndUpdateGithubDb(
-  generatedDirectory: string
+  generatedDirectory: string,
+  copyFn: (
+    srcPath: string,
+    destPath: string,
+    pointerJsonPath: string
+  ) => Promise<void> = copyDbAndUpdatePointer
 ): Promise<void> {
   const generatedDbPath = path.join(generatedDirectory, 'github.db');
   const timestamp = new Date()
@@ -39,16 +50,30 @@ export async function copyAndUpdateGithubDb(
   const dbJsonPath = path.join(dbDir, 'github.db.json');
 
   try {
-    await fs.copyFile(generatedDbPath, destDbPath);
-    console.log(`Copied ${generatedDbPath} to ${destDbPath}`);
-
-    // Write or update github.db.json to point to the current db file
-    const dbJson = { current: path.basename(destDbPath) };
-    await fs.writeFile(dbJsonPath, JSON.stringify(dbJson, null, 2), 'utf-8');
-    console.log(`Updated ${dbJsonPath} to point to ${dbJson.current}`);
+    await copyFn(generatedDbPath, destDbPath, dbJsonPath);
   } catch (err) {
     console.error(
       `Failed to copy or update github.db: ${err instanceof Error ? err.message : String(err)}`
     );
   }
+}
+
+/**
+ * Copy a db file to a new location and update a pointer JSON file to reference it.
+ * @param srcPath Path to the source db file
+ * @param destPath Path to the destination db file
+ * @param pointerJsonPath Path to the pointer JSON file
+ */
+export async function copyDbAndUpdatePointer(
+  srcPath: string,
+  destPath: string,
+  pointerJsonPath: string
+): Promise<void> {
+  await fs.copyFile(srcPath, destPath);
+  console.log(`Copied ${srcPath} to ${destPath}`);
+
+  // Write or update pointer JSON to point to the current db file
+  const dbJson = { current: path.basename(destPath) };
+  await fs.writeFile(pointerJsonPath, JSON.stringify(dbJson, null, 2), 'utf-8');
+  console.log(`Updated ${pointerJsonPath} to point to ${dbJson.current}`);
 }
