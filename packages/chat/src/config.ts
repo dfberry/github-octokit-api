@@ -22,5 +22,3 @@ export const config = {
 if (!config.endpoint || !config.key || !config.databaseId || !config.containerId || !config.partitionKey || !config.openaiApiKey) {
     throw new Error('Missing configuration. Please set the environment variables.');
 }
-
-console.log(config);

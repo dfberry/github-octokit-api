@@ -19,7 +19,7 @@ export async function getRelevantDocuments(container: Container, queryVector: nu
           ]
         }).fetchAll();
 
-        console.log(`Fetched ${docs.length} relevant documents from Cosmos DB`);
+        console.log(`Fetched ${docs.length} relevant documents from Cosmos DB using the 'document_summary_embedding' field.`);
 
         return docs.map(doc => `## Document: ${doc.category}\n${doc.document_summary}\n\n`).join('');
     } catch (error) {
