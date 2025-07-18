@@ -28,9 +28,9 @@ export async function createCompletion(
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userPrompt },
       ],
-      max_tokens: maxTokens,
-      temperature,
-      stop,
+      max_tokens: maxTokens || 1500,
+      temperature: temperature || 0.7,
+      stop: stop || undefined,
     };
     return openai.chat.completions.create(params);
     

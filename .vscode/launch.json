@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "health-check",
+            "name": "2-health-check",
             "request": "launch",
             "runtimeArgs": [
                 "run-script",
@@ -19,21 +19,7 @@
             "cwd": "${workspaceFolder}/packages/health-check"
         },
         {
-            "name": "summarize",
-            "request": "launch",
-            "runtimeArgs": [
-                "run-script",
-                "start"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "node",
-            "cwd": "${workspaceFolder}/packages/summary"
-        },
-        {
-            "name": "Template",
+            "name": "3-Template",
             "request": "launch",
             "runtimeArgs": [
                 "run-script",
@@ -47,11 +33,11 @@
             "cwd": "${workspaceFolder}/packages/create-document-template-data"
         },
         {
-            "name": "Chat load",
+            "name": "5-Chat",
             "request": "launch",
             "runtimeArgs": [
                 "run-script",
-                "start:load"
+                "start"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -61,25 +47,11 @@
             "cwd": "${workspaceFolder}/packages/chat"
         },
         {
-            "name": "Chat run",
+            "name": "4-Mv Cosmos",
             "request": "launch",
             "runtimeArgs": [
                 "run-script",
-                "start:run"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "node",
-            "cwd": "${workspaceFolder}/packages/chat"
-        },
-        {
-            "name": "Cosmos",
-            "request": "launch",
-            "runtimeArgs": [
-                "run-script",
-                "start:run"
+                "start"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [

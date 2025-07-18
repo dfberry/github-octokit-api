@@ -22,7 +22,9 @@
 				"SanjulaGanepola.github-local-actions",
 				"alexcvzz.vscode-sqlite",
 				"qwtel.sqlite-viewer",
-				"AlexShen.classdiagram-ts"
+				"AlexShen.classdiagram-ts",
+				"ms-windows-ai-studio.windows-ai-studio",
+				"TeamsDevApp.vscode-ai-foundry"
 			]
 		}
 	},
