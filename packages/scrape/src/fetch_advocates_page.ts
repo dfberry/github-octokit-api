@@ -80,7 +80,7 @@ export async function fetchAdvocatesPage(): Promise<Advocate[]> {
              !href.includes('twitter.com');
     });
 
-    for (const el of advocateLinks) {
+    for await(const el of advocateLinks) {
       const $el = $(el);
       const name = $el.text().trim();
       let profileUrl = $el.attr('href') || '';

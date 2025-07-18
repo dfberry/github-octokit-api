@@ -1,0 +1,357 @@
+import type {
+  GitHubRepositoryEntity,
+  GitHubContributorIssuePrEntity,
+} from '@dfb/db';
+
+/**
+ * Extracts org and repo from a GitHub API or web URL.
+ * Supports URLs like:
+ *   - https://api.github.com/repos/org/repo/issues/123
+ *   - https://github.com/org/repo/issues/123
+ * Returns [org, repo] or [undefined, undefined] if not found.
+ */
+export function extractOrgRepoFromIssueUrl(
+  url: string
+): [string | undefined, string | undefined] {
+  if (!url) return [undefined, undefined];
+  // Try web URL first
+  //let match = url.match(/github.com\/(.*?)\/(.*?)\//);
+  //if (!match) {
+  // Try API URL
+  const match = url.match(/github\.com\/repos\/([^/]+)\/([^/]+)/);
+  //}
+  if (match) {
+    return [match[1], match[2]];
+  }
+  return [undefined, undefined];
+}
+
+/**
+ * Normalize a PrSearchItem (from GitHub API) to a GitHubContributorIssuePrEntity shape.
+ */
+export function normalizePrSearchItemToContributorIssuePrEntity(
+  item: PrSearchItem,
+  username: string
+): GitHubContributorIssuePrEntity {
+  // Helper to get a property in snake_case or camelCase
+  function getField<T = string>(
+    obj: Record<string, unknown>,
+    ...keys: string[]
+  ): T | '' {
+    for (const key of keys) {
+      if (typeof obj[key] !== 'undefined') return obj[key] as T;
+    }
+    return '' as T;
+  }
+
+  const [org, repo] = extractOrgRepoFromIssueUrl(
+    (item as Record<string, unknown>).url as string
+  );
+
+  const type =
+    ('pull_request' in item && item.pull_request !== undefined) ||
+    'pull_request_url' in item ||
+    'pull_request_html_url' in item
+      ? 'pr'
+      : 'issue';
+
+  return {
+    id: item.id ? item.id.toString() : '',
+    username,
+    org: org || '',
+    repo: repo || '',
+    url: item.url,
+    type,
+    number: (() => {
+      const n = getField<unknown>(item as Record<string, unknown>, 'number');
+      return typeof n === 'number'
+        ? n
+        : typeof n === 'string' && !isNaN(Number(n))
+          ? Number(n)
+          : 0;
+    })(),
+    title: getField<string>(item as Record<string, unknown>, 'title') ?? '',
+    state: getField<string>(item as Record<string, unknown>, 'state') ?? '',
+    created_at:
+      getField<string>(
+        item as Record<string, unknown>,
+        'created_at',
+        'createdAt'
+      ) || '',
+    updated_at:
+      getField<string>(
+        item as Record<string, unknown>,
+        'updated_at',
+        'updatedAt'
+      ) || '',
+    closed_at:
+      getField<string>(
+        item as Record<string, unknown>,
+        'closed_at',
+        'closedAt'
+      ) || '',
+    merged_at:
+      getField<string>(
+        item as Record<string, unknown>,
+        'merged_at',
+        'mergedAt'
+      ) || '',
+    merged:
+      typeof (item as Record<string, unknown>).merged === 'boolean'
+        ? ((item as Record<string, unknown>).merged as boolean)
+        : false,
+  };
+}
+
+/**
+ * Normalize a GitHubRepository (GraphQL) to a TypeORM Repository entity shape.
+ */
+export function normalizeGitHubRepositoryToDatabaseRepository(
+  repo: GitHubRepoModified
+): Partial<GitHubRepositoryEntity> {
+  return {
+    id: repo.id?.toString() ?? '',
+    name: repo.name || '',
+    name_with_owner: repo.nameWithOwner || '',
+    url: repo.url || '',
+    description: repo.description || '',
+    stargazer_count: repo.stargazerCount ?? 0,
+    fork_count: repo.forkCount ?? 0,
+    is_private: repo.isPrivate ?? false,
+    is_fork: repo.isFork ?? false,
+    is_archived: repo.isArchived ?? false,
+    is_disabled: repo.isDisabled ?? false,
+    primary_language: repo.primaryLanguage?.name ?? undefined,
+    license_info: repo.licenseInfo?.name ?? undefined,
+    owner: repo.owner?.login ?? '',
+    disk_usage: repo.diskUsage ?? undefined,
+    created_at: repo.createdAt ?? undefined,
+    updated_at: repo.updatedAt ?? undefined,
+    pushed_at: repo.pushedAt ?? undefined,
+    watchers_count: repo.watchers?.totalCount ?? undefined,
+    issues_count: repo.issues.totalCount ?? 0,
+    pull_requests_count: repo.pullRequests.totalCount ?? 0,
+    topics: repo.topics.nodes.map(t => t.topic?.name).join(',') || undefined,
+    readme: normalizeReadme(repo?.readme?.text),
+  };
+}
+// Utility functions for normalizing GitHub API data structures
+
+// Helper types for topic nodes
+interface TopicNode {
+  topic?: { name?: string };
+}
+interface TopicsObject {
+  nodes: TopicNode[];
+}
+
+export function normalizeTopics(
+  topics: TopicsObject | { name?: string }[] | string[] | string | undefined
+): string | undefined {
+  if (Array.isArray(topics)) {
+    if (
+      topics.length > 0 &&
+      typeof topics[0] === 'object' &&
+      topics[0] !== null &&
+      'name' in topics[0]
+    ) {
+      return (topics as { name?: string }[])
+        .map(t => t.name)
+        .filter(Boolean)
+        .join(',');
+    }
+    return (topics as string[]).join(',');
+  } else if (typeof topics === 'string') {
+    return topics;
+  } else if (
+    topics &&
+    typeof topics === 'object' &&
+    Array.isArray((topics as TopicsObject).nodes)
+  ) {
+    return (topics as TopicsObject).nodes
+      .map(n => n?.topic?.name)
+      .filter(Boolean)
+      .join(',');
+  }
+  return undefined;
+}
+
+export function normalizeReadme(
+  readme: { text?: string } | string | null | undefined
+): string | undefined {
+  if (readme && typeof readme === 'object' && 'text' in readme) {
+    return readme.text;
+  } else if (typeof readme === 'string') {
+    return readme;
+  }
+  return undefined;
+}
+
+// Normalized repo object type
+export type NormalizedRepo = {
+  id: string;
+  name: string;
+  name_with_owner: string;
+  url: string;
+  description: string;
+  stargazer_count: number;
+  fork_count: number;
+  is_private: boolean;
+  is_fork: boolean;
+  is_archived: boolean;
+  is_disabled: boolean;
+  primary_language?: string;
+  license_info?: string;
+  owner: string;
+  disk_usage?: number;
+  created_at?: string;
+  updated_at?: string;
+  pushed_at?: string;
+  watchers_count?: number;
+  issues_count?: number;
+  pull_requests_count?: number;
+  topics?: string;
+  readme?: string | null;
+};
+
+// Type guards for GraphQL and REST repo shapes
+
+// Accepts both GraphQL-like and REST repo objects
+function isGraphQLRepo(obj: unknown): obj is {
+  id: string | number;
+  name: string;
+  nameWithOwner: string;
+  url: string;
+  description?: string;
+  stargazerCount?: number;
+  forkCount?: number;
+  isPrivate?: boolean;
+  isFork?: boolean;
+  isArchived?: boolean;
+  isDisabled?: boolean;
+  primaryLanguage?: { name: string } | string | null;
+  licenseInfo?: { name: string } | string | null;
+  owner: { login: string } | string;
+  diskUsage?: number;
+  createdAt?: string;
+  updatedAt?: string;
+  pushedAt?: string;
+  watchers?: { totalCount: number };
+  issues?: { totalCount: number };
+  pullRequests?: { totalCount: number };
+  repositoryTopics?: { nodes: { topic?: { name?: string } }[] };
+  topics?: string[] | string;
+  readme?: { text?: string } | string | null;
+} {
+  return (
+    typeof obj === 'object' &&
+    obj !== null &&
+    'nameWithOwner' in obj &&
+    typeof (obj as { nameWithOwner?: unknown }).nameWithOwner === 'string'
+  );
+}
+
+function isRestRepo(obj: unknown): obj is {
+  id: string | number;
+  node_id?: string;
+  name: string;
+  full_name: string;
+  html_url: string;
+  description?: string;
+  stargazers_count?: number;
+  forks_count?: number;
+  private?: boolean;
+  fork?: boolean;
+  archived?: boolean;
+  disabled?: boolean;
+  language?: string | null;
+  license?: { name: string } | null;
+  owner: { login: string } | string;
+  disk_usage?: number;
+  created_at?: string;
+  updated_at?: string;
+  pushed_at?: string;
+  watchers_count?: number;
+  open_issues_count?: number;
+  topics?: string[] | string;
+} {
+  return (
+    typeof obj === 'object' &&
+    obj !== null &&
+    'full_name' in obj &&
+    typeof (obj as { full_name?: unknown }).full_name === 'string'
+  );
+}
+
+export function normalizeRepo(
+  repoObjRaw: ContributorRepo
+): NormalizedRepo | undefined {
+  if (isGraphQLRepo(repoObjRaw)) {
+    // GraphQL-like shape
+    return {
+      id: repoObjRaw.id?.toString() ?? '',
+      name: repoObjRaw.name || '',
+      name_with_owner: repoObjRaw.nameWithOwner,
+      url: repoObjRaw.url || '',
+      description: repoObjRaw.description || '',
+      stargazer_count: repoObjRaw.stargazerCount ?? 0,
+      fork_count: repoObjRaw.forkCount ?? 0,
+      is_private: repoObjRaw.isPrivate ?? false,
+      is_fork: repoObjRaw.isFork ?? false,
+      is_archived: repoObjRaw.isArchived ?? false,
+      is_disabled: repoObjRaw.isDisabled ?? false,
+      primary_language:
+        typeof repoObjRaw.primaryLanguage === 'string'
+          ? repoObjRaw.primaryLanguage || undefined
+          : repoObjRaw.primaryLanguage?.name || undefined,
+      license_info:
+        typeof repoObjRaw.licenseInfo === 'string'
+          ? repoObjRaw.licenseInfo || undefined
+          : repoObjRaw.licenseInfo?.name || undefined,
+      owner:
+        typeof repoObjRaw.owner === 'string'
+          ? repoObjRaw.owner
+          : (repoObjRaw.owner?.login ?? ''),
+      disk_usage: repoObjRaw.diskUsage ?? undefined,
+      created_at: repoObjRaw.createdAt ?? undefined,
+      updated_at: repoObjRaw.updatedAt ?? undefined,
+      pushed_at: repoObjRaw.pushedAt ?? undefined,
+      watchers_count: repoObjRaw.watchers?.totalCount ?? undefined,
+      issues_count: repoObjRaw.issues?.totalCount ?? undefined,
+      pull_requests_count: repoObjRaw.pullRequests?.totalCount ?? undefined,
+      topics: normalizeTopics(repoObjRaw.repositoryTopics ?? repoObjRaw.topics),
+      readme: normalizeReadme(repoObjRaw.readme),
+    };
+  } else if (isRestRepo(repoObjRaw)) {
+    // REST shape
+    return {
+      id: repoObjRaw.id?.toString() ?? repoObjRaw.node_id ?? '',
+      name: repoObjRaw.name || '',
+      name_with_owner: repoObjRaw.full_name || '',
+      url: repoObjRaw.html_url || '',
+      description: repoObjRaw.description || '',
+      stargazer_count: repoObjRaw.stargazers_count ?? 0,
+      fork_count: repoObjRaw.forks_count ?? 0,
+      is_private: repoObjRaw.private ?? false,
+      is_fork: repoObjRaw.fork ?? false,
+      is_archived: repoObjRaw.archived ?? false,
+      is_disabled: repoObjRaw.disabled ?? false,
+      primary_language: repoObjRaw.language || undefined,
+      license_info: repoObjRaw.license?.name || undefined,
+      owner:
+        typeof repoObjRaw.owner === 'string'
+          ? repoObjRaw.owner
+          : (repoObjRaw.owner?.login ?? ''),
+      disk_usage: repoObjRaw.disk_usage ?? undefined,
+      created_at: repoObjRaw.created_at ?? undefined,
+      updated_at: repoObjRaw.updated_at ?? undefined,
+      pushed_at: repoObjRaw.pushed_at ?? undefined,
+      watchers_count: repoObjRaw.watchers_count ?? undefined,
+      issues_count: repoObjRaw.open_issues_count ?? undefined,
+      pull_requests_count: undefined, // REST API does not provide this directly
+      topics: normalizeTopics(repoObjRaw.topics),
+      readme: undefined, // REST API does not provide this directly
+    };
+  }
+  return undefined;
+}

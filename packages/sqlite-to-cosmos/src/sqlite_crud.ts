@@ -1,18 +1,26 @@
-import path, { dirname } from 'path';
+
 import sqlite3 from 'sqlite3';
-import { fileURLToPath } from 'url';
+import type { Database as DatabaseType } from 'sqlite3';
+const { Database } = sqlite3;
 
-export function openDb() {
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = dirname(__filename);
+import { getCurrentGithubDbPath } from '@dfb/finddb';
 
-    const dbPath = process.env.SQLITE_DB_FILE || './data/github.db';
-    const fullPath = path.join(__dirname, "..", dbPath);
 
-    console.log('Opening SQLite database at:', fullPath);
+export async function openDb(): Promise<DatabaseType> {
+
+    const dataRoot = '../../data';
+    const dbPath = await getCurrentGithubDbPath(dataRoot);
+    console.log('Opening SQLite database at:', dbPath);
+
+    if (!dbPath) {
+        throw new Error('Could not determine current github.db file.');
+    }
+
+
+
 
     // Open the SQLite database
-    const db = new sqlite3.Database(fullPath, (err) => {
+    const db = new Database(dbPath, (err) => {
         if (err) {
             console.error('Error opening database:', err);
         } else {
@@ -22,7 +30,7 @@ export function openDb() {
 
     return db;
 }
-export function closeDb(db: any) {
+export function closeDb(db: DatabaseType) {
     if (db) {
         db.close((err: Error | null) => {
             if (err) {
@@ -38,7 +46,7 @@ export function closeDb(db: any) {
 
 
 // Function to get all tables in the database
-export const getAllTables = (db: any): Promise<string[]> => {
+export const getAllTables = (db: DatabaseType): Promise<string[]> => {
     return new Promise((resolve, reject) => {
         db.all("SELECT name FROM sqlite_master WHERE type='table'", (err, rows: { name: string }[]) => {
             console.log(`Getting all tables in the database...${rows.length} tables found.`);
@@ -54,7 +62,7 @@ export const getAllTables = (db: any): Promise<string[]> => {
 };
 
 // Function to check if a table has data
-export const hasData = (db: any, tableName: string): Promise<boolean> => {
+export const hasData = (db: DatabaseType, tableName: string): Promise<boolean> => {
     return new Promise((resolve, reject) => {
         db.get(`SELECT COUNT(*) as count FROM ${tableName}`, (err, row: { count: number }) => {
 
@@ -69,12 +77,12 @@ export const hasData = (db: any, tableName: string): Promise<boolean> => {
 };
 
 // Function to read tables with data
-export const readTablesWithData = async (db: any): Promise<{tables: any[], data: any[]}> => {
+export const readTablesWithData = async (db: DatabaseType): Promise<{ tables: any[], data: any[] }> => {
     try {
         const tables = await getAllTables(db);
         const tablesWithData: string[] = [];
 
-        for (const table of tables) {
+        for await (const table of tables) {
             const hasDataFlag = await hasData(db, table);
             if (hasDataFlag) {
                 console.log(`Table ${table} has data.`);
@@ -85,18 +93,18 @@ export const readTablesWithData = async (db: any): Promise<{tables: any[], data:
         const data = await getAllDataFromTables(db, tablesWithData);
         console.log(`Found ${data.length} data.`);
 
-        return {tables, data} ;
+        return { tables, data };
     } catch (error) {
         console.error('Error reading tables with data:', error);
-        return {tables: [], data: []};
+        return { tables: [], data: [] };
     }
 };
 
 // Update to get all data and return an array of docs representing the table
-export const getAllDataFromTables = async (db: any, tables: string[]): Promise<{ [key: string]: any }[]> => {
+export const getAllDataFromTables = async (db: DatabaseType, tables: string[]): Promise<{ [key: string]: any }[]> => {
     const allData: { [key: string]: any }[] = [];
 
-    for (const table of tables) {
+    for await (const table of tables) {
         console.log(`Reading data from table: ${table}`);
 
         if (table === 'sqlite_sequence') {

@@ -1,0 +1,1 @@
+📊 Building a business intelligence app on a small, daily-updating dataset has taught me a lot about cost control. Even at this tiny scale, a full end-to-end run costs $1—💸 99¢ for LLMs, just 1¢ for everything else. 🔍 Keeping a close eye on these numbers is key as I iterate and grow. 🚀

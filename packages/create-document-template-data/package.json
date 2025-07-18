@@ -1,0 +1,28 @@
+{
+  "name": "create-document-template-data",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build:tsc": "tsc",
+    "build:tsc:debug": "tsc --pretty --traceResolution --noEmit",
+    "build": "npm run clean && npm run format && npm run build:tsc",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\"",
+    "lint": "eslint \"src/**/*.ts\" ",
+    "lint:check": "eslint \"src/**/*.ts\"",
+    "start": "tsc && node -r dotenv/config ./dist/index.js",
+    "test": "vitest run --coverage"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@dfb/db": "file:../sqlite-typeorm-db",
+    "@dfb/finddb": "file:../finddb",
+    "dotenv": "^17.0.1",
+    "p-retry": "^6.2.1"
+  }
+}

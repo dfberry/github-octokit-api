@@ -1,11 +1,16 @@
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import path from 'path';
-import GetContributorData from './contributors.js';
-import { createTimestampedDirectory } from './utils/file.js';
-import DataConfig from './initialize-with-data.js';
 import 'reflect-metadata';
-import GitHubApiClient from './github2/api-client.js';
+import { createTimestampedDirectory } from './utils/file.js';
+import DataConfig from './config/index.js';
+import logger from './utils/logger.js';
+import { fetchContributorsFromGitHub } from './contributors.js';
+import { fetchPrsFromGitHub } from './issuesAndPrs.js';
+import { fetchRepositoriesFromGitHub } from './repositories.js';
+import { fetchWorkflowFromGitHub } from './workflows.js';
+import { copyAndUpdateGithubDb } from '@dfb/finddb';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -20,14 +25,14 @@ export function getConfigData(
   generatedDirectory: string
 ): DataConfig | null {
   if (!dataDirectory || !generatedDirectory) {
-    console.error('Missing required directory configuration');
+    logger.error('Missing required directory configuration');
     return null;
   }
 
   return new DataConfig(dataDirectory, generatedDirectory);
 }
 
-async function init() {
+async function init(): Promise<DataConfig | undefined> {
   const dataDir = process.env.DATA_DIRECTORY || '../../../data';
   const generatedDir = process.env.GENERATED_DIRECTORY || '../generated';
   const generatedDirWithTimestamp = createTimestampedDirectory(generatedDir);
@@ -37,50 +42,41 @@ async function init() {
 
   const configData = new DataConfig(dataDirectory, generatedDirectory);
   if (!configData) {
-    console.error('No configuration data found. Exiting...');
+    logger.error('No configuration data found. Exiting...');
     return;
   }
 
-  const db = null;
-
-  return { dataDirectory, generatedDirectory, configData, db };
-}
-async function shutDown(db: any): Promise<void> {
-  if (db) {
-    console.log('Closing database connection...');
-    await db.close();
+  await configData.init();
+  if (!configData.db) {
+    logger.error('Failed to initialize database connection. Exiting...');
+    return;
   }
-  console.log('Shutdown complete.');
-}
 
+  return configData;
+}
 async function main(): Promise<void> {
-  const result = await init();
-  if (!result) {
-    console.error('Initialization failed. Exiting...');
+  const configResult = await init();
+  if (!configResult) {
+    logger.error('Initialization failed. Exiting...');
     process.exit(1);
   }
-  const { dataDirectory, generatedDirectory, configData, db } = result;
 
-  console.log('Starting health check ...');
-  console.log('Data directory:', dataDirectory);
-  console.log('Generated directory:', generatedDirectory);
+  // Get data from GraphQL API, insert into db
+  await fetchContributorsFromGitHub(configResult);
+  await fetchPrsFromGitHub(configResult);
+  await fetchRepositoriesFromGitHub(configResult);
+  await fetchWorkflowFromGitHub(configResult);
 
-  const apiClient = new GitHubApiClient();
-  const authenticatedUser = await apiClient.getAndTestGitHubToken();
-  console.log('***    Authenticated*** as:', authenticatedUser.login);
+  await configResult.db.database.destroy();
+  logger.info('Generated directory: %s', configResult.generatedDirectory);
 
-  // Get data from GraphQL API
-  await GetContributorData(generatedDirectory, configData);
+  // === Copy generated github.db to ./data/db/github.<timestamp>.db and update github.db.json using @dfb/finddb ===
 
-  // Get Repo data from REST API
-  //await GetExtraRepoData(token, generatedDirectory, configData, db);
+  await copyAndUpdateGithubDb(configResult.generatedDirectory);
 
-  await shutDown(db);
-  console.log('Generated directory:', generatedDirectory);
-  console.log('Health check completed successfully.');
+  logger.info('Health check completed successfully.');
 }
-
 main().catch((error: unknown) => {
-  console.log(error);
+  logger.error(error);
   process.exit(1);
 });

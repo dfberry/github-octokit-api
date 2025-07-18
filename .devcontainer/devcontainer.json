@@ -1,5 +1,9 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
+
+// Precommit hook:  https://medium.com/@ketanpradhan/secure-your-git-repository-with-gitleaks-and-pre-commit-hooks-5f37bb03429b
+// .pre-commit-config.yaml
+// pre-commit install
 {
 	"name": "Node.js & TypeScript",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
@@ -8,12 +12,19 @@
 		"ghcr.io/devcontainers-extra/features/act:1": {},
 		"ghcr.io/devcontainers-extra/features/actionlint:1": {},
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
-		"ghcr.io/jsburckhardt/devcontainer-features/gitleaks:1": {}
+		"ghcr.io/jsburckhardt/devcontainer-features/gitleaks:1": {},
+		"ghcr.io/devcontainers/features/python:1": {},
+		"ghcr.io/devcontainers-extra/features/pre-commit:2": {}
 	},
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"SanjulaGanepola.github-local-actions"
+				"SanjulaGanepola.github-local-actions",
+				"alexcvzz.vscode-sqlite",
+				"qwtel.sqlite-viewer",
+				"AlexShen.classdiagram-ts",
+				"ms-windows-ai-studio.windows-ai-studio",
+				"TeamsDevApp.vscode-ai-foundry"
 			]
 		}
 	},

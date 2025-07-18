@@ -73,7 +73,7 @@ export function extractOrgAndRepo(githubUrls: string[]): SimpleRepository[] {
       org = match[1];
       repo = match[2];
     }
-    console.log(`Extracted org: ${org}, repo: ${repo} from URL: ${url}`);
+
     return {
       name: url,
       org,
@@ -87,7 +87,6 @@ export function extractOrgAndRepoFromFullName(url: string): SimpleRepository {
   if (match) {
     const owner = match[1];
     const repo = match[2];
-    console.log(owner, repo); // CommunityToolkit Aspire
     return {
       name: `${owner}/${repo}`,
       org: owner,

@@ -1,0 +1,26 @@
+{
+  "name": "sqlite-vector",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build:tsc": "tsc",
+    "build:tsc:debug": "tsc --pretty --traceResolution --noEmit",
+    "build": "npm run clean && npm run format && npm run build:tsc",
+    "prestart": "npm run build",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\"",
+    "lint": "eslint \"src/**/*.ts\" ",
+    "lint:check": "eslint \"src/**/*.ts\"",
+    "start": "npm run start:index",
+    "start:index": "node -r dotenv/config ./dist/index.js",
+    "test": "vitest run --coverage"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@libsql/client": "^0.15.9"
+  }
+}
