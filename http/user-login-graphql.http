@@ -3,9 +3,12 @@
 @githubToken = {{$dotenv GITHUB_TOKEN}}
 
 POST https://api.github.com/graphql
-Accept: application/vnd.github+json
+Content-Type: application/json
 Authorization: Bearer {{githubToken}}
+X-REQUEST-TYPE: GraphQL
 
-{
-  "query": "query {\n  viewer {\n    login\n  }\n}"
+query {
+  viewer {
+    login
+  }
 }
