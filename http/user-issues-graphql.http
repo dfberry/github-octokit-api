@@ -1,0 +1,16 @@
+### GitHub GraphQL: First 10 Issues for User (HTTP)
+
+@githubToken = {{$dotenv GITHUB_TOKEN}}
+
+@userName = diberry
+@searchQuery = involves:{{userName}}
+
+POST https://api.github.com/graphql
+Accept: application/vnd.github+json
+Authorization: Bearer {{githubToken}}
+Content-Type: application/json
+
+{
+  "query": "query ($searchQuery: String!) {\n  search(query: $searchQuery, type: ISSUE, first: 10) {\n    issueCount\n    edges {\n      node {\n        ... on Issue {\n          __typename\n          id\n          number\n          title\n          url\n          createdAt\n          state\n        }\n        ... on PullRequest {\n          __typename\n          id\n          number\n          title\n          url\n          createdAt\n          state\n          merged\n        }\n      }\n    }\n  }\n}",
+  "variables": { "searchQuery": "{{searchQuery}}" }
+}
