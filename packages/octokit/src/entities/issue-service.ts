@@ -16,7 +16,8 @@ export class IssueService {
     const octokit = this.api.getRest();
 
     const sinceDate = getDaysAgo(daysAgo);
-    const query = `involves:${username} updated:>=${sinceDate}`;
+    const query = `involves:${username} (created:>=${sinceDate} OR updated:>=${sinceDate} OR merged:>=${sinceDate} OR closed:>=${sinceDate})`;
+
     const results: OctokitSearchIssueRest[] = [];
     let page = 1;
     let totalCount = 0;

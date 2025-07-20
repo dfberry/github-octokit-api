@@ -39,10 +39,29 @@ export class GitHubApiClient {
     return this.graphql;
   }
 
-  async getAndTestGitHubToken(): Promise<OctokitAuthenticatedUser> {
+  async getAndTestGitHubToken(): Promise<{
+    rest: OctokitAuthenticatedUser;
+    graphql: { login: string };
+  }> {
     try {
       const { data } = await this.rest.rest.users.getAuthenticated();
-      return data;
+      console.log(`Authenticated as GitHub user: ${data.login}`);
+
+      const { viewer } = await this.graphql.graphql<{
+        viewer: { login: string };
+      }>(
+        `query {
+          viewer {
+            login
+          }
+        }`
+      );
+      console.log(`Authenticated as GitHub user (GraphQL): ${viewer.login}`);
+
+      return {
+        rest: data,
+        graphql: viewer,
+      };
     } catch (error) {
       console.error('Failed to authenticate with GitHub:', error);
       throw error;

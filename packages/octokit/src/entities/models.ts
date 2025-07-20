@@ -1,6 +1,7 @@
 // github2/models.ts
 // Centralized types for all github2 service methods, using @octokit/types
 import { RestEndpointMethodTypes } from '@octokit/rest';
+
 import { Endpoints } from '@octokit/types';
 
 // ContributorData is a custom shape, but its fields are derived from Octokit user and repo types
