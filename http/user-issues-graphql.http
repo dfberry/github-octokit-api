@@ -2,15 +2,17 @@
 
 @githubToken = {{$dotenv GITHUB_TOKEN}}
 
-@userName = diberry
-@searchQuery = involves:{{userName}}
+@userName = dfberry
+@daysAgo = 7
+@sinceDate = {{$datetime 'YYYY-MM-DD' -{{daysAgo}} d}}
+@searchQuery = involves:{{userName}} (created:>={{sinceDate}} OR updated:>={{sinceDate}} OR merged:>={{sinceDate}} OR closed:>={{sinceDate}})
 
 POST https://api.github.com/graphql
 Authorization: Bearer {{githubToken}}
 Content-Type: application/json
 X-REQUEST-TYPE: GraphQL
 
-query ($searchQuery: String!) {
+query  {
   search(query: $searchQuery, type: ISSUE, first: 10) {
     issueCount
     edges {
@@ -22,7 +24,10 @@ query ($searchQuery: String!) {
           title
           url
           createdAt
+          updatedAt
+          closedAt
           state
+          author { login }
         }
         ... on PullRequest {
           __typename
@@ -31,8 +36,12 @@ query ($searchQuery: String!) {
           title
           url
           createdAt
+          updatedAt
+          closedAt
+          mergedAt
           state
           merged
+          author { login }
         }
       }
     }

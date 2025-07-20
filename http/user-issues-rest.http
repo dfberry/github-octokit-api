@@ -1,0 +1,13 @@
+### GitHub REST: Issues and PRs User Has Touched (HTTP)
+
+## https://github.com/issues/assigned?q=author%3Adfberry%20created%3A%3E%3D2024-07-19
+## returned 206
+
+@githubToken = {{$dotenv GITHUB_TOKEN}}
+@query = is:pr
+@encodedQuery = {{$encodeURIComponent GitHub Octocat in:readme user:defunkt}}
+
+GET https://api.github.com/search/issues?q=Q
+Accept: application/vnd.github.v3+json
+Authorization: Bearer {{githubToken}}
+X-GitHub-Api-Version: 2022-11-28
