@@ -67,27 +67,38 @@ export async function findUniquePrRepos(
     return [];
   }
 
-  const simpleArray = Array.from(issues).map(
-    ({ org, repo }) =>
-      ({
+  const simpleArray = Array.from(issues).map(value => {
+    if (!value?.org && !value?.repo && value?.url) {
+      const [org, repo] = extractOrgRepoFromIssueUrl(value.url);
+      return {
         org,
         repo,
         name: `${org}/${repo} (from PRs)`,
-      }) as SimpleRepository
-  );
+      } as SimpleRepository;
+    }
+    return {
+      org: value.org || '',
+      repo: value.repo || '',
+      name: value.org && value.repo ? `${value.org}/${value.repo}` : '',
+    } as SimpleRepository;
+  });
 
   // dedup repos
   const uniqueRepos = findUniqueSimpleRepos(simpleArray);
 
-  return simpleArray;
+  return uniqueRepos;
 }
 export function extractOrgRepoFromIssueUrl(issueUrl: string): [string, string] {
   if (!issueUrl) {
     return ['', ''];
   }
-  // Example URL: https://api.github.com/repos/microsoft/TypeScript/issues/12345
-  const match = issueUrl.match(/repos\/([^\/]+)\/([^\/]+)\/issues\/\d+/);
-  if (match && match.length === 3) {
+  // Handles both API and web URLs for issues and PRs
+  // API: https://api.github.com/repos/org/repo/issues/12345
+  // Web: https://github.com/org/repo/issues/12345 or .../pull/12345
+  const match = issueUrl.match(
+    /github(?:\.com|\.io)?\/(?:repos\/)?([^\/]+)\/([^\/]+)\/(?:issues|pull)\//
+  );
+  if (match && match.length >= 3) {
     return [match[1], match[2]]; // [org, repo]
   }
   return ['', ''];

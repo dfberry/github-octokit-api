@@ -28,7 +28,7 @@ export async function fetchPrsFromGitHubGraphQL(
     return;
   }
 
-  const issueService = new IssueServiceGraphQL(configData.githubClient);
+  const issueService = new IssueServiceGraphQL();
   const limit = pLimit(configData.pLimit); // Adjust concurrency as needed
 
   const contributors = Array.from(configData.contributors);
@@ -64,6 +64,7 @@ async function fetchAndInsertGraphQL(
   let data: GraphQLUserIssuesAndPRs | null = null;
   try {
     data = await issueService.getRecentInvolvedIssues(
+      configData.gitHubToken!,
       contributorId,
       configData.githubIssuesDaysAgo
     );
@@ -80,9 +81,9 @@ async function fetchAndInsertGraphQL(
   const dbItems: GitHubContributorIssuePrEntity[] = [];
   if (data && data.user) {
     // Issues
-    for (const item of data.user.issues.nodes as GraphQLIssueNode[]) {
+    for (const item of data.user.issues.nodes) {
       const dbItem = graphQlIssueNodeToGitHubContributorIssuePrEntity(
-        item,
+        item as GraphQLIssueNode,
         contributorId,
         'issue'
       );
@@ -90,10 +91,9 @@ async function fetchAndInsertGraphQL(
       dbItems.push(dbItem);
     }
     // PRs
-    for (const item of data.user.pullRequests
-      .nodes as GraphQLPullRequestNode[]) {
+    for (const item of data.user.pullRequests.nodes) {
       const dbItem = graphQlIssueNodeToGitHubContributorIssuePrEntity(
-        item,
+        item as GraphQLPullRequestNode,
         contributorId,
         'pr'
       );
