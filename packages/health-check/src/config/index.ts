@@ -18,6 +18,11 @@ export default class DataConfig {
   public _microsoftContributors: string[] | null = null;
   public db: DbManager;
   public gitHubToken: string | null = null;
+  public githubIssuesDaysAgo: number = parseInt(
+    process.env.GITHUB_DATA_ISSUES_AND_PRS_DAYS || '7',
+    10
+  );
+  public pLimit: number = parseInt(process.env.GITHUB_PLIMIT || '5', 10);
   public githubClient: GitHubApiClient | null = null;
   public authenticatedUserLogin: string | null = null;
 
@@ -46,12 +51,20 @@ export default class DataConfig {
 
     this.githubClient = new GitHubApiClient(this.gitHubToken);
     const result = await this.githubClient.getAndTestGitHubToken();
-    this.authenticatedUserLogin = result.login;
+    this.authenticatedUserLogin = result.rest.login;
 
     logger.info('Starting health check ...');
     logger.info('Data directory: %s', this.dataDirectory);
     logger.info('Generated directory: %s', this.generatedDirectory);
-    logger.info('***    Authenticated*** as: %s', this.authenticatedUserLogin);
+
+    if (this.authenticatedUserLogin) {
+      logger.info(
+        '***    Authenticated user found: %s',
+        this.authenticatedUserLogin
+      );
+    } else {
+      logger.warn('***    No authenticated user found.');
+    }
   }
   public get microsoftContributors(): string[] {
     logger.info(`Getting Microsoft contributors`);

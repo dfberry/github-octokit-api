@@ -6,10 +6,10 @@ import { createTimestampedDirectory } from './utils/file.js';
 import DataConfig from './config/index.js';
 import logger from './utils/logger.js';
 import { fetchContributorsFromGitHub } from './contributors.js';
-import { fetchPrsFromGitHub } from './issuesAndPrs.js';
 import { fetchRepositoriesFromGitHub } from './repositories.js';
 import { fetchWorkflowFromGitHub } from './workflows.js';
 import { copyAndUpdateGithubDb } from '@dfb/finddb';
+import { fetchPrsFromGitHubGraphQL } from './issuesAndPrs-GraphQl.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -63,7 +63,7 @@ async function main(): Promise<void> {
 
   // Get data from GraphQL API, insert into db
   await fetchContributorsFromGitHub(configResult);
-  await fetchPrsFromGitHub(configResult);
+  await fetchPrsFromGitHubGraphQL(configResult);
   await fetchRepositoriesFromGitHub(configResult);
   await fetchWorkflowFromGitHub(configResult);
 

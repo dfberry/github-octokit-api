@@ -3,6 +3,7 @@ import DataConfig from './config/index.js';
 import { ContributorService, OctokitUser } from '@dfb/octokit';
 import pLimit from 'p-limit';
 import { GitHubContributorEntity } from '@dfb/db';
+import { config } from 'dotenv';
 
 /**
  * Generate a contributor index report
@@ -30,7 +31,7 @@ export async function fetchContributorsFromGitHub(
   logger.info(
     `🔍 Collecting data for ${configData.microsoftContributors.length} contributors...`
   );
-  const limit = pLimit(5); // Adjust concurrency as needed
+  const limit = pLimit(configData.pLimit); // Adjust concurrency as needed
   await Promise.all(
     configData.microsoftContributors.map(contributor =>
       limit(() =>
