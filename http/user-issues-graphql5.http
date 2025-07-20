@@ -1,0 +1,28 @@
+### GitHub GraphQL: First 10 Issues for User (HTTP)
+
+@githubToken = {{$dotenv GITHUB_TOKEN}}
+
+@searchQuery = 'involves:dfberry AND (created:>2025-07-01 OR updated:>2025-07-01 OR merged:>2025-07-01 OR closed:>2025-07-01)'
+
+POST https://api.github.com/graphql
+Authorization: Bearer {{githubToken}}
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+query ($query: String!) {
+  search(query: $query, type: ISSUE, first: 5) {
+    edges {
+      node {
+        ... on Issue {
+          number
+          title
+          author { login }
+        }
+      }
+    }
+  }
+}
+
+{
+  "query": "{{searchQuery}}"
+}

@@ -3,45 +3,24 @@
 @githubToken = {{$dotenv GITHUB_TOKEN}}
 
 @userName = dfberry
-@daysAgo = 7
+@daysAgo = 360
 @sinceDate = {{$datetime 'YYYY-MM-DD' -{{daysAgo}} d}}
-@searchQuery = involves:{{userName}} (created:>={{sinceDate}} OR updated:>={{sinceDate}} OR merged:>={{sinceDate}} OR closed:>={{sinceDate}})
+@searchQuery = involves:dfberry AND (created:>2025-07-01 OR updated:>2025-07-01 OR merged:>2025-07-01 OR closed:>2025-07-01 )
+@searchQuery2 = involves:dfberry
+
+
 
 POST https://api.github.com/graphql
 Authorization: Bearer {{githubToken}}
 Content-Type: application/json
 X-REQUEST-TYPE: GraphQL
 
-query {
-  search(query: "involves:dfberry", type: ISSUE, first: 100) {
+query ($searchQuery: String!) {
+  search(query: $searchQuery, type: ISSUE, first: 100) {
     issueCount
-    nodes {
-      __typename
-      ... on Issue {
-        id
-        number
-        title
-        url
-        state
-        createdAt
-        updatedAt
-        closedAt
-        author { login }
-      }
-      ... on PullRequest {
-        id
-        number
-        title
-        url
-        state
-        createdAt
-        updatedAt
-        closedAt
-        mergedAt
-        merged
-        author { login }
-      }
-    }
   }
 }
 
+{
+  "searchQuery": "{{searchQuery}}"
+}
