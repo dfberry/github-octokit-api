@@ -11,12 +11,16 @@ export class IssueService {
    */
   async getRecentInvolvedIssues(
     username: string,
-    daysAgo: number
+    daysAgo: number,
+    query?: string
   ): Promise<OctokitSearchIssueRest[]> {
     const octokit = this.api.getRest();
 
     const sinceDate = getDaysAgo(daysAgo);
-    const query = `involves:${username} (created:>=${sinceDate} OR updated:>=${sinceDate} OR merged:>=${sinceDate} OR closed:>=${sinceDate})`;
+
+    if (!query || query.trim().length === 0) {
+      query = `involves:${username} (created:>=${sinceDate} OR updated:>=${sinceDate} OR merged:>=${sinceDate} OR closed:>=${sinceDate})`;
+    }
 
     const results: OctokitSearchIssueRest[] = [];
     let page = 1;

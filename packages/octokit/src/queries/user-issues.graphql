@@ -1,0 +1,21 @@
+query SearchIssuesByUser($username: String!) {
+  user(login: $username) {
+    issueComments(first: 10) {
+      nodes {
+        repository {
+          nameWithOwner
+        }
+        issue {
+          number
+          title
+          url
+        }
+        body
+      }
+    }
+  }
+}
+
+{
+    username: dfberry
+}

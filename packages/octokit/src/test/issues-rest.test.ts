@@ -13,8 +13,13 @@ describe('IssueService (REST)', () => {
     }
     const username = 'dfberry'; // Use a real GitHub username with public activity
     const daysAgo = 30;
+    const gotDaysAgo = getDaysAgo(daysAgo);
+    //console.log('Using since date:', gotDaysAgo);
 
-    const query = `involves:dfberry AND (created:>2025-07-01 OR updated:>2025-07-01 OR merged:>2025-07-01 OR closed:>2025-07-01)`;
+    //const query = `involves:${username} AND (created:>2025-07-01 OR updated:>2025-07-01 OR merged:>2025-07-01 OR closed:>2025-07-01)`;
+    const query = `involves:${username} AND (created:>${gotDaysAgo} OR updated:>${gotDaysAgo} OR merged:>${gotDaysAgo} OR closed:>${gotDaysAgo})`;
+
+    console.log('Using query:', query);
 
     const result = await githubRestSearchIssues({
       token,

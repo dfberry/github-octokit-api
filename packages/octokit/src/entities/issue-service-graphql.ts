@@ -1,106 +1,109 @@
-import { GitHubApiClient } from './client.js';
+import { getDaysAgo } from '../utils/datetime.js';
+import { githubGraphQLSearchIssues } from './graphql-query.js';
 import type {
   GraphQLUserIssuesAndPRs,
   GraphQLIssueNode,
   GraphQLPullRequestNode,
+  GraphQLSearchResult,
 } from './models-graphql.js';
-import { getDaysAgo } from '../utils/datetime.js';
 
 export class IssueServiceGraphQL {
-  constructor(private api: GitHubApiClient) {}
-
   /**
    * Fetches all issues and PRs a user has touched (author, assignee, commenter) in the last N days using the GraphQL API.
    * @param username - The GitHub username
    * @param daysAgo - Number of days in the past to include
    */
   async getRecentInvolvedIssues(
+    token: string,
     username: string,
     daysAgo: number
   ): Promise<GraphQLUserIssuesAndPRs> {
-    const octokit = this.api.getGraphql();
     const sinceDate = getDaysAgo(daysAgo);
-    let hasNextPage = true;
-    let endCursor: string | null = null;
-    const allNodes: (GraphQLIssueNode | GraphQLPullRequestNode)[] = [];
-
-    while (hasNextPage) {
-      const query = `
-        query($searchQuery: String!, $after: String) {
-          search(query: $searchQuery, type: ISSUE, first: 100, after: $after) {
-            issueCount
+    const gql = `
+      query ($username: String!) {
+        user(login: $username) {
+          login
+          name
+          issues(first: 100, orderBy: {field: CREATED_AT, direction: DESC}) {
+            totalCount
             nodes {
-              __typename
-              ... on Issue {
-                id
-                number
-                title
-                url
-                state
-                createdAt
-                updatedAt
-                closedAt
-                author { login }
-              }
-              ... on PullRequest {
-                id
-                number
-                title
-                url
-                state
-                createdAt
-                updatedAt
-                closedAt
-                mergedAt
-                merged
-                author { login }
-              }
+              id
+              number
+              title
+              url
+              createdAt
+              updatedAt
+              closedAt
+              state
+              author { login }
             }
-            pageInfo {
-              hasNextPage
-              endCursor
+          }
+          pullRequests(first: 100, orderBy: {field: CREATED_AT, direction: DESC}) {
+            totalCount
+            nodes {
+              id
+              number
+              title
+              url
+              createdAt
+              updatedAt
+              closedAt
+              mergedAt
+              state
+              merged
+              author { login }
             }
           }
         }
-      `;
-      const searchQuery = `involves:${username} (created:>=${sinceDate} OR updated:>=${sinceDate} OR merged:>=${sinceDate} OR closed:>=${sinceDate})`;
-      const variables = {
-        searchQuery,
-        after: endCursor,
-      };
-      const data = await octokit.graphql<any>(query, variables);
-      const search = data.search;
-      if (!search) break;
-      if (search.nodes) {
-        allNodes.push(...search.nodes);
       }
-      hasNextPage = search.pageInfo.hasNextPage;
-      endCursor = search.pageInfo.endCursor;
-      if (!hasNextPage) break;
-    }
-    // Filter strictly by date fields in code
-    const since = new Date(sinceDate);
-    const filteredNodes = allNodes.filter(node => {
-      const fields = [
-        'createdAt',
-        'updatedAt',
-        'closedAt',
-        'mergedAt',
-      ] as const;
-      return fields.some(
-        field => node[field] && new Date(node[field]) >= since
-      );
+    `;
+    const response = await githubGraphQLSearchIssues({
+      token,
+      query: gql,
+      queryParams: { username },
     });
-    // Return in the same structure as before for compatibility
+
+    const isAfter = (date: string | null | undefined) =>
+      date && new Date(date) >= new Date(sinceDate);
+
+    const issues = (response.user.issues.nodes || []).filter(
+      (node: GraphQLIssueNode) => {
+        const dateFields: (keyof GraphQLIssueNode)[] = [
+          'createdAt',
+          'updatedAt',
+          'closedAt',
+        ];
+        return dateFields.some(field => {
+          const value = node[field];
+          return typeof value === 'string' && isAfter(value);
+        });
+      }
+    );
+
+    const pullRequests = (response.user.pullRequests.nodes || []).filter(
+      (node: GraphQLPullRequestNode) => {
+        const dateFields: (keyof GraphQLPullRequestNode)[] = [
+          'createdAt',
+          'updatedAt',
+          'closedAt',
+          'mergedAt',
+        ];
+        return dateFields.some(field => {
+          const value = node[field];
+          return typeof value === 'string' && isAfter(value);
+        });
+      }
+    );
+
     return {
       user: {
         issues: {
-          nodes: filteredNodes.filter(n => n.__typename === 'Issue'),
-          pageInfo: { hasNextPage: false, endCursor: null },
+          ...response.user.issues,
+          nodes: issues,
         },
         pullRequests: {
-          nodes: filteredNodes.filter(n => n.__typename === 'PullRequest'),
-          pageInfo: { hasNextPage: false, endCursor: null },
+          ...response.user.pullRequests,
+          nodes: pullRequests,
         },
       },
     };
