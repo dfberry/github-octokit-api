@@ -2,6 +2,8 @@
 import { DataSource, EntityTarget, ObjectLiteral } from 'typeorm';
 import { summarize } from './lib/summarize.js';
 import { embedSummary, embedDocument } from './lib/embedding.js';
+import { OpenAiConfigModels } from './lib/config.js';
+
 export interface EntityDescriptor {
   name: string;
   entity: EntityTarget<ObjectLiteral>;
@@ -59,6 +61,7 @@ export function constructCategory(
   return null;
 }
 export async function processTablesToSame(
+  config: OpenAiConfigModels,
   entities: EntityDescriptor[],
   sourceDataSource: DataSource,
   jsonToMarkdown: (category: string, row: Record<string, unknown>) => string
@@ -68,6 +71,7 @@ export async function processTablesToSame(
   for await (const entityDescriptor of entities) {
     const { name, entity } = entityDescriptor;
     const result = await processOneTableToSame(
+      config,
       name,
       entity,
       sourceDataSource,
@@ -81,6 +85,7 @@ export async function processTablesToSame(
 // Create the document template value and update table with value
 
 export async function processOneTableToSame(
+  config: OpenAiConfigModels,
   name: string,
   entity: EntityTarget<ObjectLiteral>,
   sourceDataSource: DataSource,
@@ -92,6 +97,7 @@ export async function processOneTableToSame(
     const rows = await sourceDataSource.getRepository(entity).find();
     for await (const row of rows as Record<string, unknown>[]) {
       const result = await processAndUpdateRow({
+        config,
         name,
         entity,
         sourceDataSource,
@@ -112,12 +118,14 @@ export async function processOneTableToSame(
 
 // Helper for processing and updating a single row
 async function processAndUpdateRow({
+  config,
   name,
   entity,
   sourceDataSource,
   row,
   jsonToMarkdown,
 }: {
+  config: OpenAiConfigModels;
   name: string;
   entity: EntityTarget<ObjectLiteral>;
   sourceDataSource: DataSource;
@@ -137,7 +145,7 @@ async function processAndUpdateRow({
   let summary: string = '';
   try {
     markdown = jsonToMarkdown(category, row);
-    summary = await summarize(markdown);
+    summary = await summarize(config.aiSummaryConfig, markdown);
   } catch (err) {
     console.log(
       `[SKIP] Error converting row to markdown or summarizing for table ${name}, row:`,
@@ -149,8 +157,14 @@ async function processAndUpdateRow({
   }
 
   // You may want to generate or fetch the embeddings here; for now, pass null or a placeholder
-  const documentEmedding = await embedDocument(markdown);
-  const summaryEmbedding = await embedSummary(summary);
+  const documentEmedding = await embedDocument(
+    config.aiEmbeddingConfig,
+    markdown
+  );
+  const summaryEmbedding = await embedSummary(
+    config.aiEmbeddingConfig,
+    summary
+  );
 
   await updateEntityRowWithAllFields(
     sourceDataSource,

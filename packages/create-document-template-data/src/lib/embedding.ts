@@ -1,25 +1,26 @@
 import pRetry from 'p-retry';
-import { createEmbedding, AzureOpenAIConfig, getTrimmedText } from '@dfb/ai';
+import { createEmbedding, getTrimmedText, AzureOpenAIConfig } from '@dfb/ai';
 
-const apiKey = process.env.OPENAI_API_KEY;
-const endpoint = process.env.OPENAI_ENDPOINT;
-const deployment = process.env.OPENAI_EMBEDDING_DEPLOYMENT_NAME;
-const apiVersion = process.env.OPENAI_API_VERSION;
-
-const config: AzureOpenAIConfig = { endpoint, apiKey, deployment, apiVersion };
-
-export async function embedSummary(text: string): Promise<number[]> {
+export async function embedSummary(
+  aiConfig: AzureOpenAIConfig,
+  text: string
+): Promise<number[]> {
   if (!text || text.trim().length === 0) {
     return [];
   }
-  if (!apiKey || !endpoint || !deployment || !apiVersion) {
+  if (
+    !aiConfig.apiKey ||
+    !aiConfig.endpoint ||
+    !aiConfig.deployment ||
+    !aiConfig.apiVersion
+  ) {
     console.warn(
-      'OpenAI configuration is missing. Please set OPENAI_API_KEY, OPENAI_ENDPOINT, OPENAI_SUMMARIZATION_MODEL_NAME, and OPENAI_SUMMARIZATION_API_VERSION environment variables.'
+      'create-document-template-data:lib/embedding.ts - OpenAI configuration is missing. Please set OPENAI_API_KEY, OPENAI_ENDPOINT, OPENAI_EMBEDDING_DEPLOYMENT_NAME, and OPENAI_API_VERSION environment variables.'
     );
     return [];
   }
   try {
-    const result = await pRetry(() => createEmbedding(config, text), {
+    const result = await pRetry(() => createEmbedding(aiConfig, text), {
       retries: 3,
       minTimeout: 5000,
       maxTimeout: 15000,
@@ -35,18 +36,26 @@ export async function embedSummary(text: string): Promise<number[]> {
     return [];
   }
 }
-export async function embedDocument(text: string): Promise<number[]> {
+export async function embedDocument(
+  aiConfig: AzureOpenAIConfig,
+  text: string
+): Promise<number[]> {
   if (!text || text.trim().length === 0) {
     return [];
   }
-  if (!apiKey || !endpoint || !deployment || !apiVersion) {
+  if (
+    !aiConfig.apiKey ||
+    !aiConfig.endpoint ||
+    !aiConfig.deployment ||
+    !aiConfig.apiVersion
+  ) {
     console.warn(
-      'OpenAI configuration is missing. Please set OPENAI_API_KEY, OPENAI_ENDPOINT, OPENAI_SUMMARIZATION_MODEL_NAME, and OPENAI_SUMMARIZATION_API_VERSION environment variables.'
+      'create-document-template-data:lib/embedding.ts - OpenAI configuration is missing. Please set OPENAI_API_KEY, OPENAI_ENDPOINT, OPENAI_EMBEDDING_DEPLOYMENT_NAME, and OPENAI_API_VERSION environment variables.'
     );
     return [];
   }
   try {
-    const trimResult = getTrimmedText(text, deployment);
+    const trimResult = getTrimmedText(text, aiConfig.deployment);
 
     if (text.length !== trimResult.length) {
       const trimmedCount = text.length - trimResult.length;
@@ -57,7 +66,7 @@ export async function embedDocument(text: string): Promise<number[]> {
       console.log(`   Embedding length: ${text.length}: trimmed 0`);
     }
 
-    const result = await pRetry(() => createEmbedding(config, trimResult), {
+    const result = await pRetry(() => createEmbedding(aiConfig, trimResult), {
       retries: 3,
       minTimeout: 5000,
       maxTimeout: 15000,
