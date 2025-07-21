@@ -5,6 +5,8 @@ const key = process.env.COSMOS_DB_KEY || '';
 const databaseId = process.env.COSMOS_DB_DATABASE || '';
 const containerId = process.env.COSMOS_DB_CONTAINER || '';
 
+export const DbEnv = { endpoint, databaseId, containerId };
+
 if (!endpoint || !key || !databaseId || !containerId) {
   throw new Error('Missing Cosmos DB configuration. Please set the environment variables.');
 }
