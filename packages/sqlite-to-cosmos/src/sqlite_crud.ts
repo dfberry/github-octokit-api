@@ -16,9 +16,6 @@ export async function openDb(): Promise<DatabaseType> {
         throw new Error('Could not determine current github.db file.');
     }
 
-
-
-
     // Open the SQLite database
     const db = new Database(dbPath, (err) => {
         if (err) {

@@ -6,15 +6,16 @@ import { defineConfig } from "eslint/config";
 import path from "path";
 
 export default defineConfig([
+  { ignores: ["dist/**", "coverage/**"] },
   { files: ["**/*.{js,mjs,cjs,ts,mts,cts}"], plugins: { js }, extends: ["js/recommended"] },
   { files: ["**/*.{js,mjs,cjs,ts,mts,cts}"], languageOptions: { globals: globals.node } },
   {
-    files: ["**/*.{js,mjs,cjs,ts,mts,cts}"],
+    files: ["src/**/*.{js,mjs,cjs,ts,mts,cts}", "test/**/*.{js,mjs,cjs,ts,mts,cts}"],
     plugins: { "@typescript-eslint": tseslint.plugin },
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
-        project: path.resolve("./tsconfig.json"), // or the correct path to your tsconfig
+        project: path.resolve("./tsconfig.json"),
         tsconfigRootDir: path.resolve("."),
       },
     },
