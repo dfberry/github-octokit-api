@@ -12,10 +12,10 @@
 ### Shared @dfb/* Packages
 | Package         | Path                          | Purpose                                      |
 |----------------|-------------------------------|----------------------------------------------|
-| @dfb/ai        | packages/ai-models            | Core AI utilities and OpenAI integration     |
-| @dfb/db        | packages/sqlite-typeorm-db    | TypeORM-based database models and logic      |
-| @dfb/finddb    | packages/finddb               | Utility for finding and working with DB files|
-| @dfb/octokit   | packages/octokit              | GitHub API and workflow integration          |
+| @dfb/ai        | packages/@dfb/ai              | Core AI utilities and OpenAI integration     |
+| @dfb/db        | packages/@dfb/db              | TypeORM-based database models and logic      |
+| @dfb/finddb    | packages/@dfb/finddb          | Utility for finding and working with DB files|
+| @dfb/octokit   | packages/@dfb/octokit         | GitHub API and workflow integration          |
 
 ### Database & Entities
 - Use `snake_case` for all database column names.

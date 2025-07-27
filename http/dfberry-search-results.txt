@@ -1,0 +1,26 @@
+Dfberry/0630 vector db
+Status: Merged (completed).
+dfberry/github-octokit-apinumber 3#3 In dfberry/github-octokit-api;· by dfberry was closed 2 days ago
+Dependabot
+Status: Merged (completed).
+dfberry/github-octokit-apinumber 2#2 In dfberry/github-octokit-api;· by dfberry was closed 3 weeks ago
+Cannot find package '@typespec/ts-http-runtime' from @azure/core-util/dist/esm/index.js
+Azure.Core
+Client
+This issue points to a problem in the data-plane of the library.
+customer-reported
+Issues that are reported by GitHub users external to the Azure organization.
+needs-team-attention
+Workflow: This issue needs attention from Azure service team or SDK team
+question
+The issue doesn't require a change to the product in order to be resolved. Most issues start as that
+Service Attention
+Workflow: This issue is responsible by Azure service team.
+Status: Open.
+Azure/azure-sdk-for-jsnumber 35039#35039 In Azure/azure-sdk-for-js;· dfberry opened 3 weeks ago
+6
+comments
+timovv
+e2e
+Status: Closed (abandoned).
+dfberry/github-octokit-apinumber 1#1 In dfberry/github-octokit-api;· by dfberry was closed 3 weeks ago

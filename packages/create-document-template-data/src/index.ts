@@ -8,6 +8,7 @@ import {
   GitHubWorkflowEntity,
 } from '@dfb/db';
 import { getCurrentGithubDbPath } from '@dfb/finddb';
+import { OpenAiConfigModels, setupConfigForAi } from './lib/config.js';
 
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -27,6 +28,7 @@ export async function createDocumentTemplateDataSingleDb(
   existingDbPath: string
 ) {
   const entities = getRelevantTables();
+  const config: OpenAiConfigModels = setupConfigForAi();
 
   // Connect to source DB
   const sourceOptions: DataSourceOptions = {
@@ -38,6 +40,7 @@ export async function createDocumentTemplateDataSingleDb(
   await sourceDataSource.initialize();
 
   const { insertedCount, skippedCount } = await processTablesToSame(
+    config,
     entities as EntityDescriptor[],
     sourceDataSource,
     jsonToMarkdown

@@ -2,10 +2,13 @@ import type { Database as DatabaseType } from 'sqlite3';
 
 import * as sqlite from './sqlite_crud.js';
 import * as Cosmos from './cosmos_crud.js';
+import { DbEnv } from './cosmos_crud.js';
 
 async function main(): Promise<void> {
 
     const tokensList = {};
+    let rows = 0;
+    let table = '';
 
     try {
         const db: DatabaseType = await sqlite.openDb();
@@ -31,11 +34,29 @@ async function main(): Promise<void> {
                 }
             }
             console.log('Processing document:', doc.id);
+            const tableName = doc.category.split(":")[0];
+
+            if (table !== tableName) {
+                if (table) {
+                    console.log(`Finished processing table ${table}, total rows: ${rows}`);
+                    tokensList[table] = rows;
+                }
+                table = tableName;
+                rows = 0;
+                console.log(`Starting processing table ${table}`);
+                
+            }
+
             const result = await Cosmos.insert(doc);
             console.log('Insert result:', result);
+            rows += 1;
+            
         }
+        console.log(`Finished processing table ${table}, total rows: ${rows}`);
+        tokensList[table] = rows;
 
         console.log(tokensList);
+        console.log(`Cosmos DB: Endpoint=${DbEnv.endpoint}, Database=${DbEnv.databaseId}, Container=${DbEnv.containerId}`);
         await sqlite.closeDb(db);
 
     } catch (error) {

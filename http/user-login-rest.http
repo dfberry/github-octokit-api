@@ -1,0 +1,7 @@
+### GitHub REST API Viewer Login (HTTP)
+
+@githubToken = {{$dotenv GITHUB_TOKEN}}
+
+GET https://api.github.com/user
+Accept: application/vnd.github+json
+Authorization: Bearer {{githubToken}}

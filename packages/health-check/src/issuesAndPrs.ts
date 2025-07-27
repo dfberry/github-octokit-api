@@ -5,8 +5,6 @@ import { extractOrgRepoFromIssueUrl } from './utils/urls.js';
 import { IssueService, OctokitSearchIssueRest } from '@dfb/octokit';
 import DataConfig from './config/index.js';
 
-const days = 15;
-
 /**
  * Insert unique issues and PRs for a contributor into the database.
  */
@@ -26,7 +24,7 @@ export async function fetchPrsFromGitHub(
   }
 
   const issueService = new IssueService(configData.githubClient);
-  const limit = pLimit(5); // Adjust concurrency as needed
+  const limit = pLimit(configData.pLimit); // Adjust concurrency as needed
 
   const contributors = Array.from(configData.contributors);
   await Promise.all(
@@ -60,7 +58,10 @@ async function fetchAndInsert(
 ): Promise<GitHubContributorIssuePrEntity[]> {
   // Use the REST API /search/issues with involves:USERNAME for the last N days
   const gitHubItems: OctokitSearchIssueRest[] =
-    await issueService.getRecentInvolvedIssues(contributorId, days);
+    await issueService.getRecentInvolvedIssues(
+      contributorId,
+      configData.githubIssuesDaysAgo
+    );
 
   const dbItems = gitHubItems.map(item => {
     const dbItem = octokitSearchIssueRestToGitHubContributorIssuePrEntity(

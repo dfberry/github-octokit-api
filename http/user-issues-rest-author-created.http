@@ -1,0 +1,16 @@
+### GitHub REST: Issues and PRs User Has Touched (HTTP)
+
+## https://github.com/issues/assigned?q=author%3Adfberry%20created%3A%3E%3D2024-07-19
+## returned 206
+
+@githubToken = {{$dotenv GITHUB_TOKEN}}
+@userName = dfberry
+@daysAgo = 30
+@sinceDate = {{$datetime 'YYYY-MM-DD' -{{daysAgo}} d}}
+@searchQuery = author:@me created:>={{sinceDate}}
+# hand encoded
+@encodedQuery = author%3Adfberry%20created%3A%3E%3D2025-07-01
+
+GET https://api.github.com/search/issues?q={{encodedQuery}}&sort=updated&order=desc&per_page=100&page=1
+Accept: application/vnd.github.v3+json
+Authorization: Bearer {{githubToken}}

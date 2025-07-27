@@ -1,0 +1,14 @@
+### GitHub GraphQL Viewer Login (HTTP)
+
+@githubToken = {{$dotenv GITHUB_TOKEN}}
+
+POST https://api.github.com/graphql
+Content-Type: application/json
+Authorization: Bearer {{githubToken}}
+X-REQUEST-TYPE: GraphQL
+
+query {
+  viewer {
+    login
+  }
+}

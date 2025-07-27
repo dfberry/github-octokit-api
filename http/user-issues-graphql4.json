@@ -1,0 +1,2818 @@
+{
+  "data": {
+    "user": {
+      "login": "dfberry",
+      "name": "Dina Berry (personal)",
+      "issues": {
+        "totalCount": 167,
+        "nodes": [
+          {
+            "id": "I_kwDOBnSy6c6-GrYB",
+            "number": 35039,
+            "title": "Cannot find package '@typespec/ts-http-runtime' from  @azure/core-util/dist/esm/index.js",
+            "url": "https://github.com/Azure/azure-sdk-for-js/issues/35039",
+            "createdAt": "2025-06-30T18:11:19Z",
+            "updatedAt": "2025-07-10T16:45:02Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOCpmcWs64QMo6",
+            "number": 10984,
+            "title": "mcr.microsoft.com/devcontainers/universal:2-linux is missing",
+            "url": "https://github.com/microsoft/vscode-remote-release/issues/10984",
+            "createdAt": "2025-05-26T13:36:01Z",
+            "updatedAt": "2025-07-19T23:30:40Z",
+            "closedAt": "2025-06-04T12:33:23Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOLMHFq86wO-Ei",
+            "number": 304,
+            "title": "Add router chain",
+            "url": "https://github.com/Abraxas-365/langchain-rust/issues/304",
+            "createdAt": "2025-03-28T17:11:17Z",
+            "updatedAt": "2025-03-28T17:11:17Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOLMHFq86wMnTS",
+            "number": 303,
+            "title": "Add example and documentation for custom tool",
+            "url": "https://github.com/Abraxas-365/langchain-rust/issues/303",
+            "createdAt": "2025-03-28T13:01:01Z",
+            "updatedAt": "2025-03-28T17:13:25Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOCcSpD86vI7mJ",
+            "number": 2702,
+            "title": "Fails to install arkade due to x509",
+            "url": "https://github.com/nektos/act/issues/2702",
+            "createdAt": "2025-03-21T13:06:32Z",
+            "updatedAt": "2025-04-21T00:50:31Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOMrVEF86uD6vo",
+            "number": 2,
+            "title": "DB Backup test - issue with sql",
+            "url": "https://github.com/dfberry/source-board-docs/issues/2",
+            "createdAt": "2025-03-14T13:37:11Z",
+            "updatedAt": "2025-03-14T13:37:11Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOMiNbCs6trqY7",
+            "number": 72,
+            "title": "Personal repos",
+            "url": "https://github.com/dfberry/rust-axum-server/issues/72",
+            "createdAt": "2025-03-12T13:02:25Z",
+            "updatedAt": "2025-03-12T13:02:25Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOMiNbCs6trp1f",
+            "number": 71,
+            "title": "Caching",
+            "url": "https://github.com/dfberry/rust-axum-server/issues/71",
+            "createdAt": "2025-03-12T13:01:34Z",
+            "updatedAt": "2025-03-12T13:01:34Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOMiNbCs6trpUt",
+            "number": 70,
+            "title": "Team management",
+            "url": "https://github.com/dfberry/rust-axum-server/issues/70",
+            "createdAt": "2025-03-12T13:00:47Z",
+            "updatedAt": "2025-03-12T13:00:47Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOMiNbCs6trozm",
+            "number": 69,
+            "title": "User data backup",
+            "url": "https://github.com/dfberry/rust-axum-server/issues/69",
+            "createdAt": "2025-03-12T13:00:00Z",
+            "updatedAt": "2025-03-12T13:00:00Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOMhN2Rs6trm_E",
+            "number": 49,
+            "title": "Caching",
+            "url": "https://github.com/dfberry/source-board/issues/49",
+            "createdAt": "2025-03-12T12:57:53Z",
+            "updatedAt": "2025-03-12T12:57:53Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOMhN2Rs6trmaU",
+            "number": 48,
+            "title": "Personal repo stats",
+            "url": "https://github.com/dfberry/source-board/issues/48",
+            "createdAt": "2025-03-12T12:57:13Z",
+            "updatedAt": "2025-03-12T12:57:13Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOMhN2Rs6trlSt",
+            "number": 47,
+            "title": "Feature: team list of repos",
+            "url": "https://github.com/dfberry/source-board/issues/47",
+            "createdAt": "2025-03-12T12:55:51Z",
+            "updatedAt": "2025-03-12T12:55:51Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOFBsj186qXGU8",
+            "number": 2497,
+            "title": "Axum example fails because v8 changed capture group syntax",
+            "url": "https://github.com/SeaQL/sea-orm/issues/2497",
+            "createdAt": "2025-02-17T15:34:55Z",
+            "updatedAt": "2025-02-18T07:55:31Z",
+            "closedAt": "2025-02-18T07:55:31Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOMrVEF86pnMEV",
+            "number": 1,
+            "title": "FE jest tests",
+            "url": "https://github.com/dfberry/source-board-docs/issues/1",
+            "createdAt": "2025-02-11T14:50:26Z",
+            "updatedAt": "2025-02-11T14:50:26Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOI6n6iM6kpOuE",
+            "number": 7445,
+            "title": "DOC: Cosmos DB cache sample has incorrect link to documentation",
+            "url": "https://github.com/langchain-ai/langchainjs/issues/7445",
+            "createdAt": "2024-12-29T14:20:41Z",
+            "updatedAt": "2024-12-30T02:29:39Z",
+            "closedAt": "2024-12-30T02:29:39Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOI6n6iM6koKpI",
+            "number": 7442,
+            "title": "DOC: PGVectorStore setup instructions missing init.sql (which is found in text)",
+            "url": "https://github.com/langchain-ai/langchainjs/issues/7442",
+            "createdAt": "2024-12-28T22:15:13Z",
+            "updatedAt": "2025-01-02T22:15:00Z",
+            "closedAt": "2025-01-02T22:15:00Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOI6n6iM6koGvi",
+            "number": 7440,
+            "title": "DOC: Vector store sample code for PG has doc URL which is 404",
+            "url": "https://github.com/langchain-ai/langchainjs/issues/7440",
+            "createdAt": "2024-12-28T21:51:34Z",
+            "updatedAt": "2024-12-30T02:37:11Z",
+            "closedAt": "2024-12-30T02:37:11Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOHcpoRM6iaYfy",
+            "number": 476,
+            "title": "Postgres example throws error",
+            "url": "https://github.com/geofmureithi/apalis/issues/476",
+            "createdAt": "2024-12-07T21:42:11Z",
+            "updatedAt": "2024-12-10T04:55:14Z",
+            "closedAt": "2024-12-10T04:55:14Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOGP-FUs6a7ZHU",
+            "number": 1322,
+            "title": "Feature Request:  Improve AZ CLI docs - remove env vars",
+            "url": "https://github.com/microsoft/azure-container-apps/issues/1322",
+            "createdAt": "2024-10-19T14:49:28Z",
+            "updatedAt": "2024-11-03T06:34:53Z",
+            "closedAt": "2024-11-03T06:34:53Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOMiNbCs6ZOc2g",
+            "number": 13,
+            "title": "fix smoke test by making cargo.toml version available in middleware",
+            "url": "https://github.com/dfberry/rust-axum-server/issues/13",
+            "createdAt": "2024-10-07T14:59:04Z",
+            "updatedAt": "2024-11-29T14:11:53Z",
+            "closedAt": "2024-11-29T14:11:53Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOMiNbCs6ZNG4f",
+            "number": 11,
+            "title": "is repo archived",
+            "url": "https://github.com/dfberry/rust-axum-server/issues/11",
+            "createdAt": "2024-10-07T12:50:01Z",
+            "updatedAt": "2024-10-07T14:57:37Z",
+            "closedAt": "2024-10-07T14:57:37Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOMhN2Rs6ZNGxT",
+            "number": 25,
+            "title": "Is repo archived",
+            "url": "https://github.com/dfberry/source-board/issues/25",
+            "createdAt": "2024-10-07T12:49:49Z",
+            "updatedAt": "2024-10-19T21:26:38Z",
+            "closedAt": "2024-10-19T21:26:38Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOMiNbCs6U_HVo",
+            "number": 2,
+            "title": "Move dotenv to dotenvy",
+            "url": "https://github.com/dfberry/rust-axum-server/issues/2",
+            "createdAt": "2024-09-01T16:39:03Z",
+            "updatedAt": "2024-09-01T22:32:12Z",
+            "closedAt": "2024-09-01T22:32:12Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOD4Ga3s6UAHV0",
+            "number": 681,
+            "title": "Serialize a page from a search",
+            "url": "https://github.com/XAMPPRocky/octocrab/issues/681",
+            "createdAt": "2024-08-23T12:38:12Z",
+            "updatedAt": "2024-08-23T12:38:12Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOGP-FUs6TSZKv",
+            "number": 1260,
+            "title": "Next.js deploy: The TargetPort 3000 does not match the listening port 80. ",
+            "url": "https://github.com/microsoft/azure-container-apps/issues/1260",
+            "createdAt": "2024-08-16T21:33:18Z",
+            "updatedAt": "2024-09-11T22:04:50Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOGP-FUs6S9Nac",
+            "number": 1254,
+            "title": "Secret length is 20 but registry password is longer",
+            "url": "https://github.com/microsoft/azure-container-apps/issues/1254",
+            "createdAt": "2024-08-14T10:56:29Z",
+            "updatedAt": "2024-08-14T22:58:54Z",
+            "closedAt": "2024-08-14T22:58:54Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOKPjnTc6JSFOi",
+            "number": 87,
+            "title": "Local dev container fails on Mac M1",
+            "url": "https://github.com/Azure-Samples/azure-search-openai-demo-java/issues/87",
+            "createdAt": "2024-05-17T17:01:12Z",
+            "updatedAt": "2024-08-05T11:06:15Z",
+            "closedAt": "2024-08-05T11:06:15Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOBFUV4s6Ild1V",
+            "number": 122430,
+            "title": "Turn this into a table for scannability",
+            "url": "https://github.com/MicrosoftDocs/azure-docs/issues/122430",
+            "createdAt": "2024-05-12T22:09:23Z",
+            "updatedAt": "2024-05-13T04:12:25Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOBKYLcM6Ildp_",
+            "number": 3677,
+            "title": "CosmosDB error -   Can't figure out which ctor to call.",
+            "url": "https://github.com/Azure/azure-functions-core-tools/issues/3677",
+            "createdAt": "2024-05-12T22:07:10Z",
+            "updatedAt": "2024-05-12T23:01:26Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOLOwDjM6H4sGQ",
+            "number": 64,
+            "title": "Failed to deploy (twice)",
+            "url": "https://github.com/Azure-Samples/serverless-chat-langchainjs/issues/64",
+            "createdAt": "2024-05-05T23:16:58Z",
+            "updatedAt": "2024-05-06T19:50:02Z",
+            "closedAt": "2024-05-06T19:50:01Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOJN_DVs6H2pp8",
+            "number": 290,
+            "title": "Add dev container to repo",
+            "url": "https://github.com/sobelio/llm-chain/issues/290",
+            "createdAt": "2024-05-05T00:18:38Z",
+            "updatedAt": "2024-05-06T15:05:39Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOI7h_Ps6HiH1c",
+            "number": 1575,
+            "title": "Search resource fails in swedencentral",
+            "url": "https://github.com/Azure-Samples/azure-search-openai-demo/issues/1575",
+            "createdAt": "2024-05-01T17:18:06Z",
+            "updatedAt": "2024-10-07T22:17:34Z",
+            "closedAt": "2024-10-07T22:17:33Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOJau1Jc6HIBJC",
+            "number": 62,
+            "title": "Convert eslintignore to eslint \"ignores\" property",
+            "url": "https://github.com/Azure-Samples/azure-typescript-e2e-apps/issues/62",
+            "createdAt": "2024-04-27T13:52:38Z",
+            "updatedAt": "2025-03-21T19:20:19Z",
+            "closedAt": "2025-03-21T19:20:19Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOHnONX86FnVSC",
+            "number": 3707,
+            "title": "[Issue] azd not installed correctly on mac m1 dev container for ",
+            "url": "https://github.com/Azure/azure-dev/issues/3707",
+            "createdAt": "2024-04-13T18:04:25Z",
+            "updatedAt": "2025-04-24T04:04:54Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOCpmcWs6GQMBg",
+            "number": 9798,
+            "title": "Prebuild dev container incorrectly loads extensions which aren't listed",
+            "url": "https://github.com/microsoft/vscode-remote-release/issues/9798",
+            "createdAt": "2024-04-08T12:52:52Z",
+            "updatedAt": "2024-06-10T23:23:52Z",
+            "closedAt": "2024-04-26T12:27:57Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOKlLZkc6E6t_m",
+            "number": 45,
+            "title": "Add datetime to tag for image and resources",
+            "url": "https://github.com/dfberry/cloud-native-todo/issues/45",
+            "createdAt": "2024-04-07T22:23:36Z",
+            "updatedAt": "2024-04-07T22:24:20Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOFALlo86E4Hqy",
+            "number": 75,
+            "title": "Support for all files or glob? ",
+            "url": "https://github.com/rdilweb/docusaurus-plugin-remote-content/issues/75",
+            "createdAt": "2024-04-06T15:52:15Z",
+            "updatedAt": "2024-04-07T21:20:52Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOEhYBI86E3_Z0",
+            "number": 127,
+            "title": "Which language referece terms are supported? ",
+            "url": "https://github.com/saucelabs/docusaurus-theme-github-codeblock/issues/127",
+            "createdAt": "2024-04-06T14:20:17Z",
+            "updatedAt": "2024-04-06T14:29:04Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOHnONX86ENvnS",
+            "number": 3625,
+            "title": "Single service principal for local dev, provisioning, and ci deployment of containers",
+            "url": "https://github.com/Azure/azure-dev/issues/3625",
+            "createdAt": "2024-04-01T12:49:22Z",
+            "updatedAt": "2024-04-18T16:00:39Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDODvxa3s6EFiKS",
+            "number": 889,
+            "title": "How do I create an app with no api? ",
+            "url": "https://github.com/microsoft/vscode-azurestaticwebapps/issues/889",
+            "createdAt": "2024-03-29T22:08:22Z",
+            "updatedAt": "2024-05-19T05:00:32Z",
+            "closedAt": "2024-04-03T18:04:20Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOBjkHfc6EE4Np",
+            "number": 4063,
+            "title": "Can't deploy from subfolder ",
+            "url": "https://github.com/microsoft/vscode-azurefunctions/issues/4063",
+            "createdAt": "2024-03-29T19:00:04Z",
+            "updatedAt": "2024-05-14T05:00:25Z",
+            "closedAt": "2024-03-29T21:23:35Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOKlLZkc6BErI1",
+            "number": 40,
+            "title": "Playwright - fix expect",
+            "url": "https://github.com/dfberry/cloud-native-todo/issues/40",
+            "createdAt": "2024-03-03T18:35:57Z",
+            "updatedAt": "2024-03-03T18:42:08Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOBFUV4s5-ytK2",
+            "number": 119697,
+            "title": "Paid tier for Computer vision",
+            "url": "https://github.com/MicrosoftDocs/azure-docs/issues/119697",
+            "createdAt": "2024-02-09T14:06:24Z",
+            "updatedAt": "2024-02-15T19:52:18Z",
+            "closedAt": "2024-02-15T19:52:18Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOFkhYAc5-KTyp",
+            "number": 276,
+            "title": "imageTag - comman separated list doesn't work",
+            "url": "https://github.com/devcontainers/ci/issues/276",
+            "createdAt": "2024-02-03T18:25:03Z",
+            "updatedAt": "2024-03-04T11:59:17Z",
+            "closedAt": "2024-03-04T11:59:17Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOCt-FHc59a_iY",
+            "number": 33,
+            "title": "Update for monorepo? ",
+            "url": "https://github.com/microsoft/vscode-remote-try-rust/issues/33",
+            "createdAt": "2024-01-28T15:53:35Z",
+            "updatedAt": "2024-01-28T15:53:35Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOHnONX859M7ot",
+            "number": 3230,
+            "title": "[Issue] azd auth login in local vscode dev container fails to redirect back to vscode after auth",
+            "url": "https://github.com/Azure/azure-dev/issues/3230",
+            "createdAt": "2024-01-25T14:41:29Z",
+            "updatedAt": "2024-01-29T18:15:33Z",
+            "closedAt": "2024-01-29T18:15:32Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOKlLZkc58ea_I",
+            "number": 22,
+            "title": "add npm type-coverage to repo health check",
+            "url": "https://github.com/dfberry/cloud-native-todo/issues/22",
+            "createdAt": "2024-01-18T13:59:15Z",
+            "updatedAt": "2024-01-18T13:59:15Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOKv-Fzc57-OUF",
+            "number": 10,
+            "title": "Calculating overall metrics occasionally fails with error on return int(rating) >= 4",
+            "url": "https://github.com/Azure-Samples/ai-rag-chat-evaluator/issues/10",
+            "createdAt": "2024-01-13T00:09:05Z",
+            "updatedAt": "2024-02-16T21:42:14Z",
+            "closedAt": "2024-02-16T21:42:14Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOKv-Fzc57-LWC",
+            "number": 9,
+            "title": "Can the generate script create the output dir/path if it doesn't exist? ",
+            "url": "https://github.com/Azure-Samples/ai-rag-chat-evaluator/issues/9",
+            "createdAt": "2024-01-12T23:52:44Z",
+            "updatedAt": "2024-01-16T20:26:21Z",
+            "closedAt": "2024-01-16T20:25:48Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOKv-Fzc579sOf",
+            "number": 7,
+            "title": "Is the .env.sample correct?",
+            "url": "https://github.com/Azure-Samples/ai-rag-chat-evaluator/issues/7",
+            "createdAt": "2024-01-12T21:46:32Z",
+            "updatedAt": "2024-01-12T22:07:13Z",
+            "closedAt": "2024-01-12T22:07:13Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOHnONX8579RT0",
+            "number": 3195,
+            "title": "[Issue] Get deployment error detail that doesn't map to bicep files",
+            "url": "https://github.com/Azure/azure-dev/issues/3195",
+            "createdAt": "2024-01-12T20:28:12Z",
+            "updatedAt": "2024-06-19T21:36:43Z",
+            "closedAt": "2024-06-19T21:36:42Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOKv-Fzc572Slu",
+            "number": 4,
+            "title": "script: module 'openai' has no attribute 'error'",
+            "url": "https://github.com/Azure-Samples/ai-rag-chat-evaluator/issues/4",
+            "createdAt": "2024-01-12T00:36:32Z",
+            "updatedAt": "2024-01-12T14:30:19Z",
+            "closedAt": "2024-01-12T14:23:57Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOKv-Fzc572DWN",
+            "number": 3,
+            "title": "Deploy in Container apps job? ",
+            "url": "https://github.com/Azure-Samples/ai-rag-chat-evaluator/issues/3",
+            "createdAt": "2024-01-11T23:23:20Z",
+            "updatedAt": "2024-01-12T05:38:25Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOH8jP4c572Ciy",
+            "number": 428,
+            "title": "[Chore] Update azure-functions-core-tools to support mac m1/docker",
+            "url": "https://github.com/Azure-Samples/contoso-real-estate/issues/428",
+            "createdAt": "2024-01-11T23:19:12Z",
+            "updatedAt": "2024-02-14T13:01:07Z",
+            "closedAt": "2024-02-14T13:01:07Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOHnONX857yQ1I",
+            "number": 3193,
+            "title": "[Issue] azd package hangs(?) when host is container app",
+            "url": "https://github.com/Azure/azure-dev/issues/3193",
+            "createdAt": "2024-01-11T14:11:59Z",
+            "updatedAt": "2024-01-27T00:00:22Z",
+            "closedAt": "2024-01-27T00:00:22Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOKMz5mc57jfAa",
+            "number": 173,
+            "title": "Create modular component to verify quality of response",
+            "url": "https://github.com/Azure-Samples/azure-search-openai-javascript/issues/173",
+            "createdAt": "2024-01-09T18:07:48Z",
+            "updatedAt": "2024-03-18T01:45:28Z",
+            "closedAt": "2024-03-18T01:45:28Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOH8jP4c57hqh4",
+            "number": 427,
+            "title": "[Chore] Postgres fails to install in container - container starts in safe mode",
+            "url": "https://github.com/Azure-Samples/contoso-real-estate/issues/427",
+            "createdAt": "2024-01-09T13:58:18Z",
+            "updatedAt": "2024-01-09T14:22:49Z",
+            "closedAt": "2024-01-09T14:22:48Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOH8jP4c57cAUN",
+            "number": 426,
+            "title": "[Chore] CICD versus local dev for post-create-command",
+            "url": "https://github.com/Azure-Samples/contoso-real-estate/issues/426",
+            "createdAt": "2024-01-08T17:40:42Z",
+            "updatedAt": "2024-02-16T13:28:50Z",
+            "closedAt": "2024-02-16T13:28:50Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOH8jP4c57bspz",
+            "number": 425,
+            "title": "[Chore] Add Azure resources vscode extension",
+            "url": "https://github.com/Azure-Samples/contoso-real-estate/issues/425",
+            "createdAt": "2024-01-08T16:50:12Z",
+            "updatedAt": "2024-02-14T13:22:53Z",
+            "closedAt": "2024-02-14T13:22:52Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOHnONX857VbTo",
+            "number": 3180,
+            "title": "Deployment iteration ID as environment variable",
+            "url": "https://github.com/Azure/azure-dev/issues/3180",
+            "createdAt": "2024-01-07T17:26:27Z",
+            "updatedAt": "2024-01-08T20:45:18Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOH8jP4c57VLpq",
+            "number": 423,
+            "title": "[Question] How are URIs injected into Blog/Next Docker image? ",
+            "url": "https://github.com/Azure-Samples/contoso-real-estate/issues/423",
+            "createdAt": "2024-01-07T14:24:11Z",
+            "updatedAt": "2024-01-08T11:38:34Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOI7h_Ps57EbpN",
+            "number": 1115,
+            "title": "Is App Service easy auth token refresh working?",
+            "url": "https://github.com/Azure-Samples/azure-search-openai-demo/issues/1115",
+            "createdAt": "2024-01-03T23:01:07Z",
+            "updatedAt": "2024-12-02T20:37:06Z",
+            "closedAt": "2024-12-02T20:37:06Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOIWG9ls561qRW",
+            "number": 1,
+            "title": "Add Key Vault and MI to table? ",
+            "url": "https://github.com/pamelafox/pamelafox/issues/1",
+            "createdAt": "2023-12-30T23:53:21Z",
+            "updatedAt": "2024-01-05T18:22:40Z",
+            "closedAt": "2024-01-05T18:22:40Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOHnONX856z9_U",
+            "number": 3165,
+            "title": "[Issue] Does todo-nodejs-mongo-aca use SWA? ",
+            "url": "https://github.com/Azure/azure-dev/issues/3165",
+            "createdAt": "2023-12-29T22:38:32Z",
+            "updatedAt": "2024-06-19T21:38:36Z",
+            "closedAt": "2024-06-19T21:38:36Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOABwkG856zSrs",
+            "number": 2226,
+            "title": "Azure cloud example for Todo",
+            "url": "https://github.com/tastejs/todomvc/issues/2226",
+            "createdAt": "2023-12-29T17:08:25Z",
+            "updatedAt": "2023-12-29T17:08:25Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOHnONX856cLOj",
+            "number": 3159,
+            "title": "[Issue] Templates with React UI are not responsive",
+            "url": "https://github.com/Azure/azure-dev/issues/3159",
+            "createdAt": "2023-12-22T16:54:42Z",
+            "updatedAt": "2024-01-05T18:00:25Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOHnONX856WffA",
+            "number": 3157,
+            "title": "[Issue] `azd up` fails first time on todo-nodejs-mongo-aca",
+            "url": "https://github.com/Azure/azure-dev/issues/3157",
+            "createdAt": "2023-12-21T16:20:01Z",
+            "updatedAt": "2024-01-09T00:39:37Z",
+            "closedAt": "2024-01-09T00:39:36Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOH8jP4c56QbB3",
+            "number": 420,
+            "title": "[Chore] Update apollo dependencies",
+            "url": "https://github.com/Azure-Samples/contoso-real-estate/issues/420",
+            "createdAt": "2023-12-20T19:11:39Z",
+            "updatedAt": "2024-03-08T21:18:51Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOH8jP4c56QE2O",
+            "number": 419,
+            "title": "[Chore] Postgresql failed to restore in `azd provision`",
+            "url": "https://github.com/Azure-Samples/contoso-real-estate/issues/419",
+            "createdAt": "2023-12-20T18:02:49Z",
+            "updatedAt": "2024-01-11T21:56:48Z",
+            "closedAt": "2024-01-11T21:00:49Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOKlLZkc556NaB",
+            "number": 12,
+            "title": "006-related api logs should be in their own subdir",
+            "url": "https://github.com/dfberry/cloud-native-todo/issues/12",
+            "createdAt": "2023-12-17T17:27:32Z",
+            "updatedAt": "2023-12-19T02:22:54Z",
+            "closedAt": "2023-12-19T02:22:54Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOKlLZkc556K_W",
+            "number": 10,
+            "title": "006-related launch fix",
+            "url": "https://github.com/dfberry/cloud-native-todo/issues/10",
+            "createdAt": "2023-12-17T16:56:21Z",
+            "updatedAt": "2023-12-17T20:14:55Z",
+            "closedAt": "2023-12-17T20:14:55Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOKlLZkc556K7O",
+            "number": 9,
+            "title": "006-related - API test fails",
+            "url": "https://github.com/dfberry/cloud-native-todo/issues/9",
+            "createdAt": "2023-12-17T16:55:36Z",
+            "updatedAt": "2023-12-19T02:23:46Z",
+            "closedAt": "2023-12-19T02:23:46Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOHnONX854-Mnj",
+            "number": 3074,
+            "title": "[Issue] Deploy failed to SWA with Still in WaitingForDeployment state",
+            "url": "https://github.com/Azure/azure-dev/issues/3074",
+            "createdAt": "2023-12-06T23:31:16Z",
+            "updatedAt": "2025-04-24T04:05:28Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOKMz5mc547_vQ",
+            "number": 161,
+            "title": "AZD UP - deployment fails with indexer - logging into container registry ",
+            "url": "https://github.com/Azure-Samples/azure-search-openai-javascript/issues/161",
+            "createdAt": "2023-12-06T16:57:06Z",
+            "updatedAt": "2024-03-22T09:53:02Z",
+            "closedAt": "2024-03-22T09:53:02Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOHnONX85479WP",
+            "number": 3072,
+            "title": "[Issue] azd versus BICEP - organize repo into projects with separate provision/deploy",
+            "url": "https://github.com/Azure/azure-dev/issues/3072",
+            "createdAt": "2023-12-06T16:51:13Z",
+            "updatedAt": "2025-02-05T07:18:19Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOHnONX854jvoV",
+            "number": 3055,
+            "title": "[Issue] azd pipeline config - questions for documentation",
+            "url": "https://github.com/Azure/azure-dev/issues/3055",
+            "createdAt": "2023-12-03T17:33:41Z",
+            "updatedAt": "2024-03-06T06:31:54Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOHnONX854jssH",
+            "number": 3054,
+            "title": "[Issue] azure-dev.yml - needs a name at the top of all template files",
+            "url": "https://github.com/Azure/azure-dev/issues/3054",
+            "createdAt": "2023-12-03T16:58:47Z",
+            "updatedAt": "2024-03-06T06:30:52Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOH8jP4c54Q0bR",
+            "number": 409,
+            "title": "[Chore] Add playwright dependencies",
+            "url": "https://github.com/Azure-Samples/contoso-real-estate/issues/409",
+            "createdAt": "2023-11-30T00:52:11Z",
+            "updatedAt": "2024-03-08T21:52:49Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOH8jP4c54Q0Fo",
+            "number": 408,
+            "title": "[Chore] API endpoint array should have API endpoint",
+            "url": "https://github.com/Azure-Samples/contoso-real-estate/issues/408",
+            "createdAt": "2023-11-30T00:50:23Z",
+            "updatedAt": "2023-11-30T21:23:52Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDODTssw8530YtX",
+            "number": 28331,
+            "title": "[BUG] Docs: install then test doesn't work without dependencies",
+            "url": "https://github.com/microsoft/playwright/issues/28331",
+            "createdAt": "2023-11-24T21:06:53Z",
+            "updatedAt": "2023-11-29T20:45:57Z",
+            "closedAt": "2023-11-29T20:45:57Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOHnONX853Q_ho",
+            "number": 3005,
+            "title": "[Issue] `azd hooks run --help` includes hooks and their syntax?",
+            "url": "https://github.com/Azure/azure-dev/issues/3005",
+            "createdAt": "2023-11-19T17:02:24Z",
+            "updatedAt": "2024-03-06T06:10:22Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOHTpI2853Pn-8",
+            "number": 761,
+            "title": "typescript dev container + azd + docker-in-docker",
+            "url": "https://github.com/devcontainers/features/issues/761",
+            "createdAt": "2023-11-18T21:21:16Z",
+            "updatedAt": "2023-11-18T22:27:51Z",
+            "closedAt": "2023-11-18T22:27:50Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOHnONX853Pkp_",
+            "number": 3004,
+            "title": "[Issue] `azd init` adds container but doesn't add requirements to next-steps.md",
+            "url": "https://github.com/Azure/azure-dev/issues/3004",
+            "createdAt": "2023-11-18T20:36:50Z",
+            "updatedAt": "2024-09-18T16:17:01Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOC92QXM53Pc4q",
+            "number": 1298,
+            "title": "Is a step missing? ",
+            "url": "https://github.com/MicrosoftDocs/azure-dev-docs/issues/1298",
+            "createdAt": "2023-11-18T19:02:29Z",
+            "updatedAt": "2024-04-01T20:43:11Z",
+            "closedAt": "2024-04-01T20:43:11Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOHnONX8525wGM",
+            "number": 2984,
+            "title": "[Issue] Don't allow azd to download new bicep/azd ",
+            "url": "https://github.com/Azure/azure-dev/issues/2984",
+            "createdAt": "2023-11-15T14:07:43Z",
+            "updatedAt": "2024-03-06T06:05:54Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOHnONX85213N0",
+            "number": 2977,
+            "title": "[Issue] Azd provision fails saying still provisioning from last provision which failed on postprovision script",
+            "url": "https://github.com/Azure/azure-dev/issues/2977",
+            "createdAt": "2023-11-15T00:58:20Z",
+            "updatedAt": "2024-03-06T06:04:36Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOHnONX8521zLs",
+            "number": 2976,
+            "title": "[Issue] add new command - `azd auth account`",
+            "url": "https://github.com/Azure/azure-dev/issues/2976",
+            "createdAt": "2023-11-15T00:36:46Z",
+            "updatedAt": "2023-11-15T18:48:17Z",
+            "closedAt": "2023-11-15T18:48:17Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOHnONX8521ybd",
+            "number": 2975,
+            "title": "[Issue] azd provision with a postprovision script - how is az cli auth handled? ",
+            "url": "https://github.com/Azure/azure-dev/issues/2975",
+            "createdAt": "2023-11-15T00:32:42Z",
+            "updatedAt": "2023-11-26T01:59:53Z",
+            "closedAt": "2023-11-26T01:59:53Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOHsl-d8520jt_",
+            "number": 196,
+            "title": "Node.js v4 pm: Incorrect route triggered",
+            "url": "https://github.com/Azure/azure-functions-nodejs-library/issues/196",
+            "createdAt": "2023-11-14T20:10:35Z",
+            "updatedAt": "2023-11-27T18:10:56Z",
+            "closedAt": "2023-11-27T18:10:56Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOBjkHfc52s5-k",
+            "number": 3894,
+            "title": "How can I create a new Azure Function app in monorepo",
+            "url": "https://github.com/microsoft/vscode-azurefunctions/issues/3894",
+            "createdAt": "2023-11-13T21:04:40Z",
+            "updatedAt": "2024-01-07T05:00:22Z",
+            "closedAt": "2023-11-22T19:21:00Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOH8jP4c52sVVY",
+            "number": 405,
+            "title": "[Chore] Azure Functions API: switch `console.` to `context.`",
+            "url": "https://github.com/Azure-Samples/contoso-real-estate/issues/405",
+            "createdAt": "2023-11-13T19:30:52Z",
+            "updatedAt": "2023-12-27T12:07:52Z",
+            "closedAt": "2023-12-27T12:07:51Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOBT4x9s5-uT35",
+            "number": 734,
+            "title": "Node.js v4 migration - .funcignore additiona of .tsconfig.json",
+            "url": "https://github.com/Azure/azure-functions-nodejs-worker/issues/734",
+            "createdAt": "2023-11-10T23:43:30Z",
+            "updatedAt": "2024-02-09T01:50:25Z",
+            "closedAt": "2024-02-09T01:50:16Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDODx1Acc52fFgm",
+            "number": 1333,
+            "title": "SWA app insights unavailable even when the resource is linked to functions",
+            "url": "https://github.com/Azure/static-web-apps/issues/1333",
+            "createdAt": "2023-11-10T15:39:06Z",
+            "updatedAt": "2023-11-16T09:13:37Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOH8jP4c52eQWr",
+            "number": 402,
+            "title": "[Chore] Azure.yml service names - imply order from alphanum name",
+            "url": "https://github.com/Azure-Samples/contoso-real-estate/issues/402",
+            "createdAt": "2023-11-10T13:35:37Z",
+            "updatedAt": "2023-11-10T13:35:37Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOAok9Sc52R0rc",
+            "number": 9672,
+            "title": "Node v4 pm doesn't load APIS - error `has already been registered`",
+            "url": "https://github.com/Azure/azure-functions-host/issues/9672",
+            "createdAt": "2023-11-08T00:39:06Z",
+            "updatedAt": "2023-11-12T23:26:30Z",
+            "closedAt": "2023-11-12T23:26:30Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOH8jP4c52BWBp",
+            "number": 399,
+            "title": "[Chore] Weird error during deployment - stripe plugin",
+            "url": "https://github.com/Azure-Samples/contoso-real-estate/issues/399",
+            "createdAt": "2023-11-06T21:09:26Z",
+            "updatedAt": "2024-02-28T16:04:50Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOBFUV4s51noT4",
+            "number": 116684,
+            "title": "How do storage mounts work if the component is a Dapr component? ",
+            "url": "https://github.com/MicrosoftDocs/azure-docs/issues/116684",
+            "createdAt": "2023-11-02T00:59:53Z",
+            "updatedAt": "2024-07-16T16:06:09Z",
+            "closedAt": "2024-07-16T16:06:08Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOBKYLcM50QnYs",
+            "number": 3494,
+            "title": "Issue with listenercount - project fails to start",
+            "url": "https://github.com/Azure/azure-functions-core-tools/issues/3494",
+            "createdAt": "2023-10-18T19:37:02Z",
+            "updatedAt": "2023-12-06T10:41:29Z",
+            "closedAt": null,
+            "state": "OPEN",
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "I_kwDOH8jP4c50P8Ey",
+            "number": 386,
+            "title": "[Chore] npm install issues",
+            "url": "https://github.com/Azure-Samples/contoso-real-estate/issues/386",
+            "createdAt": "2023-10-18T17:56:31Z",
+            "updatedAt": "2024-01-05T00:35:01Z",
+            "closedAt": "2024-01-05T00:35:01Z",
+            "state": "CLOSED",
+            "author": {
+              "login": "dfberry"
+            }
+          }
+        ]
+      },
+      "pullRequests": {
+        "totalCount": 435,
+        "nodes": [
+          {
+            "id": "PR_kwDOOoZBdc6flrnN",
+            "number": 3,
+            "title": "Dfberry/0630 vector db",
+            "url": "https://github.com/dfberry/github-octokit-api/pull/3",
+            "createdAt": "2025-07-18T14:42:10Z",
+            "updatedAt": "2025-07-18T14:42:27Z",
+            "closedAt": "2025-07-18T14:42:21Z",
+            "mergedAt": "2025-07-18T14:42:21Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOOoZBdc6cwdnA",
+            "number": 2,
+            "title": "Dependabot",
+            "url": "https://github.com/dfberry/github-octokit-api/pull/2",
+            "createdAt": "2025-06-30T19:41:24Z",
+            "updatedAt": "2025-06-30T20:54:26Z",
+            "closedAt": "2025-06-30T20:54:26Z",
+            "mergedAt": "2025-06-30T20:54:26Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOOoZBdc6bruig",
+            "number": 1,
+            "title": "e2e",
+            "url": "https://github.com/dfberry/github-octokit-api/pull/1",
+            "createdAt": "2025-06-23T14:48:45Z",
+            "updatedAt": "2025-06-30T19:41:36Z",
+            "closedAt": "2025-06-30T19:41:36Z",
+            "mergedAt": null,
+            "state": "CLOSED",
+            "merged": false,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOO58r3s6anqEI",
+            "number": 1,
+            "title": "Updates",
+            "url": "https://github.com/diberry/typescript-cosmosdb-business-intelligence-ai/pull/1",
+            "createdAt": "2025-06-15T22:46:02Z",
+            "updatedAt": "2025-06-16T21:56:30Z",
+            "closedAt": "2025-06-16T21:56:30Z",
+            "mergedAt": "2025-06-16T21:56:30Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6Xf3OO",
+            "number": 86,
+            "title": "Fix: dev container shell displays branch name",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/86",
+            "createdAt": "2025-05-24T12:49:21Z",
+            "updatedAt": "2025-05-24T12:49:29Z",
+            "closedAt": "2025-05-24T12:49:29Z",
+            "mergedAt": "2025-05-24T12:49:29Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6Xf2Jf",
+            "number": 85,
+            "title": "infra update, dev container, azd, api config",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/85",
+            "createdAt": "2025-05-24T12:41:36Z",
+            "updatedAt": "2025-05-24T12:41:43Z",
+            "closedAt": "2025-05-24T12:41:43Z",
+            "mergedAt": "2025-05-24T12:41:43Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6XQX4I",
+            "number": 84,
+            "title": "infra update, dev container, azd, api config",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/84",
+            "createdAt": "2025-05-22T16:04:20Z",
+            "updatedAt": "2025-05-22T16:04:58Z",
+            "closedAt": "2025-05-22T16:04:58Z",
+            "mergedAt": "2025-05-22T16:04:58Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6SZlme",
+            "number": 83,
+            "title": "4 - dockerfile",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/83",
+            "createdAt": "2025-04-13T17:44:57Z",
+            "updatedAt": "2025-04-13T17:45:35Z",
+            "closedAt": "2025-04-13T17:45:27Z",
+            "mergedAt": "2025-04-13T17:45:27Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6SZkCn",
+            "number": 82,
+            "title": "create resources and max revisions",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/82",
+            "createdAt": "2025-04-13T17:28:19Z",
+            "updatedAt": "2025-04-13T17:29:06Z",
+            "closedAt": "2025-04-13T17:28:45Z",
+            "mergedAt": "2025-04-13T17:28:45Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6SZVGJ",
+            "number": 81,
+            "title": "hardcode 4000",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/81",
+            "createdAt": "2025-04-13T14:50:10Z",
+            "updatedAt": "2025-04-13T14:50:10Z",
+            "closedAt": null,
+            "mergedAt": null,
+            "state": "OPEN",
+            "merged": false,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6SZLDT",
+            "number": 80,
+            "title": "docker port 4000",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/80",
+            "createdAt": "2025-04-13T13:00:47Z",
+            "updatedAt": "2025-04-13T14:50:23Z",
+            "closedAt": "2025-04-13T13:00:55Z",
+            "mergedAt": "2025-04-13T13:00:55Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6SZFB2",
+            "number": 79,
+            "title": "Target port error 1",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/79",
+            "createdAt": "2025-04-13T11:58:10Z",
+            "updatedAt": "2025-04-13T12:21:43Z",
+            "closedAt": "2025-04-13T11:58:24Z",
+            "mergedAt": "2025-04-13T11:58:24Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6SZCw3",
+            "number": 78,
+            "title": "Validate 3",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/78",
+            "createdAt": "2025-04-13T11:30:10Z",
+            "updatedAt": "2025-04-13T11:30:24Z",
+            "closedAt": "2025-04-13T11:30:24Z",
+            "mergedAt": "2025-04-13T11:30:24Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6SZBrK",
+            "number": 77,
+            "title": "validate again",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/77",
+            "createdAt": "2025-04-13T11:16:27Z",
+            "updatedAt": "2025-04-13T11:16:35Z",
+            "closedAt": "2025-04-13T11:16:35Z",
+            "mergedAt": "2025-04-13T11:16:35Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6SYzpE",
+            "number": 76,
+            "title": "Fix deploy verify",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/76",
+            "createdAt": "2025-04-13T08:31:19Z",
+            "updatedAt": "2025-04-13T08:31:34Z",
+            "closedAt": "2025-04-13T08:31:29Z",
+            "mergedAt": "2025-04-13T08:31:29Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6STPIk",
+            "number": 75,
+            "title": "Create resources",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/75",
+            "createdAt": "2025-04-11T18:33:05Z",
+            "updatedAt": "2025-04-12T13:37:06Z",
+            "closedAt": "2025-04-12T13:37:02Z",
+            "mergedAt": "2025-04-12T13:37:02Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOLKehCc6Qltmy",
+            "number": 18,
+            "title": "Custom tool example",
+            "url": "https://github.com/dfberry/rust/pull/18",
+            "createdAt": "2025-03-28T17:12:12Z",
+            "updatedAt": "2025-03-28T17:12:12Z",
+            "closedAt": null,
+            "mergedAt": null,
+            "state": "OPEN",
+            "merged": false,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOLKehCc6Qjh9n",
+            "number": 17,
+            "title": "openai_llm",
+            "url": "https://github.com/dfberry/rust/pull/17",
+            "createdAt": "2025-03-28T12:53:46Z",
+            "updatedAt": "2025-03-28T12:53:58Z",
+            "closedAt": "2025-03-28T12:53:58Z",
+            "mergedAt": "2025-03-28T12:53:58Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOLKehCc6QjdDz",
+            "number": 16,
+            "title": "Fix jsonb deserialize",
+            "url": "https://github.com/dfberry/rust/pull/16",
+            "createdAt": "2025-03-28T12:43:16Z",
+            "updatedAt": "2025-03-28T12:43:29Z",
+            "closedAt": "2025-03-28T12:43:26Z",
+            "mergedAt": "2025-03-28T12:43:26Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOLKehCc6QjZAR",
+            "number": 15,
+            "title": "fix jsonb insert",
+            "url": "https://github.com/dfberry/rust/pull/15",
+            "createdAt": "2025-03-28T12:34:31Z",
+            "updatedAt": "2025-03-28T12:34:39Z",
+            "closedAt": "2025-03-28T12:34:39Z",
+            "mergedAt": "2025-03-28T12:34:39Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOLKehCc6Qe3AH",
+            "number": 14,
+            "title": "Diberry/optional datetime",
+            "url": "https://github.com/dfberry/rust/pull/14",
+            "createdAt": "2025-03-28T00:05:27Z",
+            "updatedAt": "2025-03-28T00:08:41Z",
+            "closedAt": "2025-03-28T00:08:38Z",
+            "mergedAt": "2025-03-28T00:08:38Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOLKehCc6Qe2eQ",
+            "number": 13,
+            "title": "Diberry/0317 boolean 2",
+            "url": "https://github.com/dfberry/rust/pull/13",
+            "createdAt": "2025-03-28T00:02:55Z",
+            "updatedAt": "2025-03-28T00:03:36Z",
+            "closedAt": "2025-03-28T00:03:32Z",
+            "mergedAt": "2025-03-28T00:03:32Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDONFwWlc6PzKuu",
+            "number": 19,
+            "title": "sys log",
+            "url": "https://github.com/dfberry/source-board-crates/pull/19",
+            "createdAt": "2025-03-24T03:59:47Z",
+            "updatedAt": "2025-03-24T04:01:50Z",
+            "closedAt": null,
+            "mergedAt": null,
+            "state": "OPEN",
+            "merged": false,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOLKehCc6PBZOA",
+            "number": 12,
+            "title": "Bool diesel",
+            "url": "https://github.com/dfberry/rust/pull/12",
+            "createdAt": "2025-03-18T02:30:01Z",
+            "updatedAt": "2025-03-18T02:30:10Z",
+            "closedAt": "2025-03-18T02:30:10Z",
+            "mergedAt": "2025-03-18T02:30:10Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOLKehCc6PA5gZ",
+            "number": 11,
+            "title": "Diberry/optional-datetime",
+            "url": "https://github.com/dfberry/rust/pull/11",
+            "createdAt": "2025-03-18T00:46:12Z",
+            "updatedAt": "2025-03-18T01:42:44Z",
+            "closedAt": "2025-03-18T01:42:44Z",
+            "mergedAt": "2025-03-18T01:42:44Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOLKehCc6O1PUx",
+            "number": 10,
+            "title": "Dfberry/0316 admin auth",
+            "url": "https://github.com/dfberry/rust/pull/10",
+            "createdAt": "2025-03-16T20:57:00Z",
+            "updatedAt": "2025-03-28T00:10:40Z",
+            "closedAt": "2025-03-16T20:57:37Z",
+            "mergedAt": "2025-03-16T20:57:37Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6Oznpe",
+            "number": 73,
+            "title": "0.6.0 - Sys logs",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/73",
+            "createdAt": "2025-03-16T04:57:23Z",
+            "updatedAt": "2025-03-19T13:01:22Z",
+            "closedAt": null,
+            "mergedAt": null,
+            "state": "OPEN",
+            "merged": false,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDONFwWlc6OxiXQ",
+            "number": 18,
+            "title": "Pass env variables",
+            "url": "https://github.com/dfberry/source-board-crates/pull/18",
+            "createdAt": "2025-03-15T13:54:06Z",
+            "updatedAt": "2025-03-15T16:02:57Z",
+            "closedAt": "2025-03-15T16:02:54Z",
+            "mergedAt": "2025-03-15T16:02:54Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDONFwWlc6Oxg2s",
+            "number": 17,
+            "title": "Trim pg backups from Storage",
+            "url": "https://github.com/dfberry/source-board-crates/pull/17",
+            "createdAt": "2025-03-15T13:39:47Z",
+            "updatedAt": "2025-03-15T16:22:12Z",
+            "closedAt": "2025-03-15T13:45:46Z",
+            "mergedAt": "2025-03-15T13:45:46Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDONFwWlc6OxcF_",
+            "number": 16,
+            "title": "Pg Backup v1",
+            "url": "https://github.com/dfberry/source-board-crates/pull/16",
+            "createdAt": "2025-03-15T13:04:35Z",
+            "updatedAt": "2025-03-15T13:25:00Z",
+            "closedAt": "2025-03-15T13:05:20Z",
+            "mergedAt": "2025-03-15T13:05:19Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDONFwWlc6OxbH1",
+            "number": 15,
+            "title": "new branch",
+            "url": "https://github.com/dfberry/source-board-crates/pull/15",
+            "createdAt": "2025-03-15T12:56:09Z",
+            "updatedAt": "2025-03-15T13:25:02Z",
+            "closedAt": "2025-03-15T13:05:11Z",
+            "mergedAt": null,
+            "state": "CLOSED",
+            "merged": false,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDONFwWlc6Obhf1",
+            "number": 14,
+            "title": "fix docker error",
+            "url": "https://github.com/dfberry/source-board-crates/pull/14",
+            "createdAt": "2025-03-13T01:53:27Z",
+            "updatedAt": "2025-03-15T12:51:37Z",
+            "closedAt": "2025-03-13T01:53:35Z",
+            "mergedAt": "2025-03-13T01:53:35Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDONFwWlc6Obf36",
+            "number": 13,
+            "title": "test pg dump",
+            "url": "https://github.com/dfberry/source-board-crates/pull/13",
+            "createdAt": "2025-03-13T01:48:25Z",
+            "updatedAt": "2025-03-15T12:51:39Z",
+            "closedAt": "2025-03-13T01:48:32Z",
+            "mergedAt": "2025-03-13T01:48:32Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDONFwWlc6ObPiH",
+            "number": 12,
+            "title": "dump uploaded as artifact",
+            "url": "https://github.com/dfberry/source-board-crates/pull/12",
+            "createdAt": "2025-03-13T00:49:55Z",
+            "updatedAt": "2025-03-15T12:51:40Z",
+            "closedAt": "2025-03-13T00:50:01Z",
+            "mergedAt": "2025-03-13T00:50:01Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDONFwWlc6ObCnV",
+            "number": 11,
+            "title": "test pg dump",
+            "url": "https://github.com/dfberry/source-board-crates/pull/11",
+            "createdAt": "2025-03-13T00:19:06Z",
+            "updatedAt": "2025-03-15T12:51:47Z",
+            "closedAt": "2025-03-13T00:19:30Z",
+            "mergedAt": "2025-03-13T00:19:30Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDONFwWlc6OXkR1",
+            "number": 10,
+            "title": "uploda to cool tier",
+            "url": "https://github.com/dfberry/source-board-crates/pull/10",
+            "createdAt": "2025-03-12T15:45:48Z",
+            "updatedAt": "2025-03-15T12:51:49Z",
+            "closedAt": "2025-03-12T15:45:55Z",
+            "mergedAt": "2025-03-12T15:45:55Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDONFwWlc6OXeDX",
+            "number": 9,
+            "title": "remove set to cold storage",
+            "url": "https://github.com/dfberry/source-board-crates/pull/9",
+            "createdAt": "2025-03-12T15:35:58Z",
+            "updatedAt": "2025-03-12T15:36:29Z",
+            "closedAt": "2025-03-12T15:36:29Z",
+            "mergedAt": "2025-03-12T15:36:29Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDONFwWlc6OXVVI",
+            "number": 8,
+            "title": "timestamp as env",
+            "url": "https://github.com/dfberry/source-board-crates/pull/8",
+            "createdAt": "2025-03-12T15:22:11Z",
+            "updatedAt": "2025-03-12T15:22:30Z",
+            "closedAt": "2025-03-12T15:22:25Z",
+            "mergedAt": "2025-03-12T15:22:24Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDONFwWlc6OXClY",
+            "number": 7,
+            "title": "timestamp on file",
+            "url": "https://github.com/dfberry/source-board-crates/pull/7",
+            "createdAt": "2025-03-12T14:52:08Z",
+            "updatedAt": "2025-03-15T12:51:53Z",
+            "closedAt": "2025-03-12T14:52:16Z",
+            "mergedAt": "2025-03-12T14:52:16Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDONFwWlc6OW5wQ",
+            "number": 6,
+            "title": "cold storage",
+            "url": "https://github.com/dfberry/source-board-crates/pull/6",
+            "createdAt": "2025-03-12T14:38:49Z",
+            "updatedAt": "2025-03-12T14:39:43Z",
+            "closedAt": "2025-03-12T14:39:34Z",
+            "mergedAt": "2025-03-12T14:39:34Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDONFwWlc6OWtu7",
+            "number": 5,
+            "title": "PG Backup to Azure Storage",
+            "url": "https://github.com/dfberry/source-board-crates/pull/5",
+            "createdAt": "2025-03-12T14:21:14Z",
+            "updatedAt": "2025-03-15T12:51:55Z",
+            "closedAt": "2025-03-12T14:21:40Z",
+            "mergedAt": "2025-03-12T14:21:39Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMhN2Rs6OQoN_",
+            "number": 46,
+            "title": "1.2.7 - User watched repos trend logs",
+            "url": "https://github.com/dfberry/source-board/pull/46",
+            "createdAt": "2025-03-12T01:43:11Z",
+            "updatedAt": "2025-03-12T01:49:19Z",
+            "closedAt": "2025-03-12T01:49:19Z",
+            "mergedAt": "2025-03-12T01:49:19Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6OKvYz",
+            "number": 67,
+            "title": "0.5.15 x-source-board-version test",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/67",
+            "createdAt": "2025-03-11T13:38:00Z",
+            "updatedAt": "2025-03-11T14:05:21Z",
+            "closedAt": "2025-03-11T14:05:16Z",
+            "mergedAt": "2025-03-11T14:05:16Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMhN2Rs6N6evc",
+            "number": 45,
+            "title": "1.2.6 Google analytics",
+            "url": "https://github.com/dfberry/source-board/pull/45",
+            "createdAt": "2025-03-09T23:16:34Z",
+            "updatedAt": "2025-03-12T12:53:03Z",
+            "closedAt": "2025-03-10T00:38:07Z",
+            "mergedAt": "2025-03-10T00:38:07Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMhN2Rs6N6U-h",
+            "number": 44,
+            "title": "1.2.5 User watches from backend ",
+            "url": "https://github.com/dfberry/source-board/pull/44",
+            "createdAt": "2025-03-09T21:36:08Z",
+            "updatedAt": "2025-03-12T12:53:05Z",
+            "closedAt": "2025-03-09T22:17:58Z",
+            "mergedAt": "2025-03-09T22:17:58Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6N4XdK",
+            "number": 65,
+            "title": " 0.5.14 /Log api",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/65",
+            "createdAt": "2025-03-08T21:00:53Z",
+            "updatedAt": "2025-03-09T22:29:21Z",
+            "closedAt": "2025-03-09T22:17:34Z",
+            "mergedAt": "2025-03-09T22:17:34Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6NT3Ma",
+            "number": 63,
+            "title": "0.5.13 - PG apis for /user and /user/:id/watch",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/63",
+            "createdAt": "2025-03-04T13:14:23Z",
+            "updatedAt": "2025-03-09T22:29:23Z",
+            "closedAt": "2025-03-06T16:10:22Z",
+            "mergedAt": "2025-03-06T16:10:22Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOI5VpZs6MNbAM",
+            "number": 15,
+            "title": "Dfberry/0812 rust deploy 1",
+            "url": "https://github.com/dfberry/dfberry.github.io/pull/15",
+            "createdAt": "2025-02-23T21:05:09Z",
+            "updatedAt": "2025-02-23T21:05:09Z",
+            "closedAt": null,
+            "mergedAt": null,
+            "state": "OPEN",
+            "merged": false,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOFBsj186LelmL",
+            "number": 2498,
+            "title": "Fix  - Axum {capture} in 8.0",
+            "url": "https://github.com/SeaQL/sea-orm/pull/2498",
+            "createdAt": "2025-02-17T15:35:44Z",
+            "updatedAt": "2025-02-18T07:55:30Z",
+            "closedAt": "2025-02-18T07:55:30Z",
+            "mergedAt": "2025-02-18T07:55:30Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDONFwWlc6LX9B7",
+            "number": 4,
+            "title": "Dfberry/0214 update api postgres",
+            "url": "https://github.com/dfberry/source-board-crates/pull/4",
+            "createdAt": "2025-02-16T16:53:00Z",
+            "updatedAt": "2025-03-15T13:25:04Z",
+            "closedAt": "2025-03-15T12:52:25Z",
+            "mergedAt": null,
+            "state": "CLOSED",
+            "merged": false,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDONFwWlc6LLlxb",
+            "number": 3,
+            "title": "Update GitHub actions",
+            "url": "https://github.com/dfberry/source-board-crates/pull/3",
+            "createdAt": "2025-02-14T02:08:23Z",
+            "updatedAt": "2025-02-14T02:12:36Z",
+            "closedAt": "2025-02-14T02:12:33Z",
+            "mergedAt": "2025-02-14T02:12:33Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMhN2Rs6KuibJ",
+            "number": 43,
+            "title": "1.2.5 fix: build error",
+            "url": "https://github.com/dfberry/source-board/pull/43",
+            "createdAt": "2025-02-10T23:40:26Z",
+            "updatedAt": "2025-03-12T12:53:07Z",
+            "closedAt": "2025-03-11T15:39:03Z",
+            "mergedAt": null,
+            "state": "CLOSED",
+            "merged": false,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMhN2Rs6Kt2eZ",
+            "number": 42,
+            "title": "1.2.5 - log UI, Google analytics",
+            "url": "https://github.com/dfberry/source-board/pull/42",
+            "createdAt": "2025-02-10T21:51:27Z",
+            "updatedAt": "2025-03-12T12:53:08Z",
+            "closedAt": "2025-03-12T12:51:38Z",
+            "mergedAt": null,
+            "state": "CLOSED",
+            "merged": false,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6Kklgs",
+            "number": 61,
+            "title": "0.5.13 fix - create new watch",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/61",
+            "createdAt": "2025-02-10T00:36:25Z",
+            "updatedAt": "2025-03-09T22:29:24Z",
+            "closedAt": "2025-03-09T22:19:04Z",
+            "mergedAt": null,
+            "state": "CLOSED",
+            "merged": false,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDONtrdQM6KNiXG",
+            "number": 1,
+            "title": "First edit",
+            "url": "https://github.com/pepperberry/RoboticArm/pull/1",
+            "createdAt": "2025-02-06T01:11:46Z",
+            "updatedAt": "2025-02-06T03:30:04Z",
+            "closedAt": "2025-02-06T03:30:04Z",
+            "mergedAt": "2025-02-06T03:30:04Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6JyC4r",
+            "number": 59,
+            "title": "Update Cargo.toml",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/59",
+            "createdAt": "2025-02-03T02:27:51Z",
+            "updatedAt": "2025-02-03T02:28:10Z",
+            "closedAt": "2025-02-03T02:28:07Z",
+            "mergedAt": "2025-02-03T02:28:07Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6JyCwi",
+            "number": 58,
+            "title": "Update CHANGELOG.md",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/58",
+            "createdAt": "2025-02-03T02:27:16Z",
+            "updatedAt": "2025-03-09T22:29:25Z",
+            "closedAt": "2025-02-03T02:27:24Z",
+            "mergedAt": "2025-02-03T02:27:24Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6JyAdU",
+            "number": 57,
+            "title": "Update azure-deploys-stage.yml",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/57",
+            "createdAt": "2025-02-03T02:16:53Z",
+            "updatedAt": "2025-02-04T00:49:41Z",
+            "closedAt": "2025-02-04T00:49:30Z",
+            "mergedAt": "2025-02-04T00:49:30Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6JxqBV",
+            "number": 56,
+            "title": "Dfberry/0202 touch version",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/56",
+            "createdAt": "2025-02-03T00:20:07Z",
+            "updatedAt": "2025-02-03T00:20:17Z",
+            "closedAt": "2025-02-03T00:20:13Z",
+            "mergedAt": "2025-02-03T00:20:13Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6JxoND",
+            "number": 55,
+            "title": "Update azure-deploys-stage.yml",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/55",
+            "createdAt": "2025-02-03T00:06:47Z",
+            "updatedAt": "2025-02-03T00:07:05Z",
+            "closedAt": "2025-02-03T00:06:55Z",
+            "mergedAt": "2025-02-03T00:06:55Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6JxnH-",
+            "number": 54,
+            "title": "fix test - created new PAT",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/54",
+            "createdAt": "2025-02-02T23:56:20Z",
+            "updatedAt": "2025-02-03T00:00:03Z",
+            "closedAt": "2025-02-02T23:59:59Z",
+            "mergedAt": "2025-02-02T23:59:59Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6Jxj3s",
+            "number": 53,
+            "title": "why is live action running on push",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/53",
+            "createdAt": "2025-02-02T23:26:43Z",
+            "updatedAt": "2025-02-02T23:27:01Z",
+            "closedAt": "2025-02-02T23:26:57Z",
+            "mergedAt": "2025-02-02T23:26:57Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6JxirF",
+            "number": 52,
+            "title": "github action env vals",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/52",
+            "createdAt": "2025-02-02T23:11:53Z",
+            "updatedAt": "2025-02-02T23:14:19Z",
+            "closedAt": "2025-02-02T23:14:16Z",
+            "mergedAt": "2025-02-02T23:14:16Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6JxhHh",
+            "number": 51,
+            "title": "checkout code",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/51",
+            "createdAt": "2025-02-02T22:54:12Z",
+            "updatedAt": "2025-02-02T22:58:49Z",
+            "closedAt": "2025-02-02T22:58:02Z",
+            "mergedAt": "2025-02-02T22:58:02Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6JxfUm",
+            "number": 50,
+            "title": "fix github action - checkout repo before validation",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/50",
+            "createdAt": "2025-02-02T22:39:56Z",
+            "updatedAt": "2025-03-09T22:29:38Z",
+            "closedAt": "2025-02-02T22:40:05Z",
+            "mergedAt": "2025-02-02T22:40:05Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6Jxd6M",
+            "number": 49,
+            "title": "Dfberry/pr merge fix",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/49",
+            "createdAt": "2025-02-02T22:25:28Z",
+            "updatedAt": "2025-02-02T22:25:39Z",
+            "closedAt": "2025-02-02T22:25:36Z",
+            "mergedAt": "2025-02-02T22:25:36Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6JxQFq",
+            "number": 48,
+            "title": "Update azure_deploys.yml",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/48",
+            "createdAt": "2025-02-02T20:02:02Z",
+            "updatedAt": "2025-03-09T22:29:39Z",
+            "closedAt": "2025-02-02T20:02:38Z",
+            "mergedAt": null,
+            "state": "CLOSED",
+            "merged": false,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6JxOB-",
+            "number": 47,
+            "title": "Update azure_deploys.yml",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/47",
+            "createdAt": "2025-02-02T19:36:19Z",
+            "updatedAt": "2025-03-09T22:29:40Z",
+            "closedAt": "2025-02-02T20:02:31Z",
+            "mergedAt": "2025-02-02T20:02:31Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6JxMxH",
+            "number": 46,
+            "title": "0.5.9 fix bicep",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/46",
+            "createdAt": "2025-02-02T19:21:01Z",
+            "updatedAt": "2025-03-09T22:29:41Z",
+            "closedAt": "2025-02-02T19:22:37Z",
+            "mergedAt": "2025-02-02T19:22:36Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6JxMVo",
+            "number": 45,
+            "title": "0.5.8 validate deployment",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/45",
+            "createdAt": "2025-02-02T19:15:38Z",
+            "updatedAt": "2025-03-09T22:29:42Z",
+            "closedAt": "2025-02-02T19:17:14Z",
+            "mergedAt": "2025-02-02T19:17:14Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6JxIn9",
+            "number": 44,
+            "title": "0.5.7 fix secrets scripts",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/44",
+            "createdAt": "2025-02-02T18:31:19Z",
+            "updatedAt": "2025-03-09T22:29:43Z",
+            "closedAt": "2025-02-02T18:50:38Z",
+            "mergedAt": "2025-02-02T18:50:38Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6JxApt",
+            "number": 43,
+            "title": "0.5.6 eprintln for config",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/43",
+            "createdAt": "2025-02-02T17:04:29Z",
+            "updatedAt": "2025-02-02T17:06:51Z",
+            "closedAt": "2025-02-02T17:06:46Z",
+            "mergedAt": "2025-02-02T17:06:46Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6JCLib",
+            "number": 42,
+            "title": "5.5.5 - Mongo for /log",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/42",
+            "createdAt": "2025-01-27T04:39:23Z",
+            "updatedAt": "2025-02-02T16:11:51Z",
+            "closedAt": "2025-02-02T16:11:44Z",
+            "mergedAt": "2025-02-02T16:11:44Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMfuBbM6Iaets",
+            "number": 27,
+            "title": "Client - Material UI - autocomplete",
+            "url": "https://github.com/Azure-Samples/azure-search-static-web-app/pull/27",
+            "createdAt": "2025-01-20T22:14:37Z",
+            "updatedAt": "2025-01-22T18:37:06Z",
+            "closedAt": "2025-01-22T18:37:06Z",
+            "mergedAt": "2025-01-22T18:37:06Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMfuBbM6IRg8f",
+            "number": 26,
+            "title": "Client - update - React 19",
+            "url": "https://github.com/Azure-Samples/azure-search-static-web-app/pull/26",
+            "createdAt": "2025-01-19T17:11:42Z",
+            "updatedAt": "2025-01-21T17:05:52Z",
+            "closedAt": "2025-01-21T17:05:52Z",
+            "mergedAt": "2025-01-21T17:05:52Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMfuBbM6IRc93",
+            "number": 25,
+            "title": "fix client .gitignore",
+            "url": "https://github.com/Azure-Samples/azure-search-static-web-app/pull/25",
+            "createdAt": "2025-01-19T16:28:15Z",
+            "updatedAt": "2025-01-21T17:05:31Z",
+            "closedAt": "2025-01-21T17:05:31Z",
+            "mergedAt": "2025-01-21T17:05:31Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMfuBbM6HFXBZ",
+            "number": 12,
+            "title": "Fix .gitignore",
+            "url": "https://github.com/Azure-Samples/azure-search-static-web-app/pull/12",
+            "createdAt": "2025-01-08T14:26:00Z",
+            "updatedAt": "2025-01-08T16:33:34Z",
+            "closedAt": "2025-01-08T16:33:34Z",
+            "mergedAt": "2025-01-08T16:33:34Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOI6n6iM6GYp-b",
+            "number": 7446,
+            "title": "fix(docs): Cosmos Db Cache sample link",
+            "url": "https://github.com/langchain-ai/langchainjs/pull/7446",
+            "createdAt": "2024-12-29T14:22:04Z",
+            "updatedAt": "2024-12-30T02:29:39Z",
+            "closedAt": "2024-12-30T02:29:38Z",
+            "mergedAt": "2024-12-30T02:29:38Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOI6n6iM6GXuUU",
+            "number": 7441,
+            "title": "fix(docs): link to setup for PGVectorStore",
+            "url": "https://github.com/langchain-ai/langchainjs/pull/7441",
+            "createdAt": "2024-12-28T21:57:00Z",
+            "updatedAt": "2024-12-30T02:37:10Z",
+            "closedAt": "2024-12-30T02:37:10Z",
+            "mergedAt": "2024-12-30T02:37:10Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMaTjls6GHaKD",
+            "number": 72,
+            "title": "Feature: add python/Jupyter dev container",
+            "url": "https://github.com/langchain-ai/langchain-academy/pull/72",
+            "createdAt": "2024-12-23T20:46:42Z",
+            "updatedAt": "2025-01-30T00:25:32Z",
+            "closedAt": "2025-01-30T00:24:52Z",
+            "mergedAt": "2025-01-30T00:24:52Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDONFwWlc6Fp_hD",
+            "number": 2,
+            "title": "0.2.0 PG all the way",
+            "url": "https://github.com/dfberry/source-board-crates/pull/2",
+            "createdAt": "2024-12-18T14:20:10Z",
+            "updatedAt": "2024-12-18T14:21:44Z",
+            "closedAt": "2024-12-18T14:20:38Z",
+            "mergedAt": "2024-12-18T14:20:38Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDONFwWlc6FRQMs",
+            "number": 1,
+            "title": "0.1.0 first version - github-data-graphql-database-pg",
+            "url": "https://github.com/dfberry/source-board-crates/pull/1",
+            "createdAt": "2024-12-15T17:04:55Z",
+            "updatedAt": "2025-03-15T12:52:47Z",
+            "closedAt": "2024-12-15T17:05:22Z",
+            "mergedAt": "2024-12-15T17:05:22Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6EafBv",
+            "number": 41,
+            "title": "0.5.4 fix - /generate/uniqueid as JSON",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/41",
+            "createdAt": "2024-12-07T16:15:42Z",
+            "updatedAt": "2025-03-09T22:29:45Z",
+            "closedAt": "2024-12-07T16:15:56Z",
+            "mergedAt": "2024-12-07T16:15:56Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6EY72S",
+            "number": 40,
+            "title": "0.5.3 /generate/uniqueid",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/40",
+            "createdAt": "2024-12-07T01:09:38Z",
+            "updatedAt": "2025-03-09T22:29:46Z",
+            "closedAt": "2024-12-07T01:09:56Z",
+            "mergedAt": "2024-12-07T01:09:56Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6EHMJM",
+            "number": 39,
+            "title": "User Session and User Token routes and db",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/39",
+            "createdAt": "2024-12-05T01:03:10Z",
+            "updatedAt": "2025-03-09T22:29:58Z",
+            "closedAt": "2025-03-09T22:29:58Z",
+            "mergedAt": null,
+            "state": "CLOSED",
+            "merged": false,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6DqukD",
+            "number": 38,
+            "title": "0.5.2 /config admin_key comparison",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/38",
+            "createdAt": "2024-12-01T16:02:58Z",
+            "updatedAt": "2025-03-09T22:30:00Z",
+            "closedAt": "2024-12-01T16:03:18Z",
+            "mergedAt": "2024-12-01T16:03:18Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6Dqrx8",
+            "number": 37,
+            "title": "0.5.1 smoke test",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/37",
+            "createdAt": "2024-12-01T15:36:55Z",
+            "updatedAt": "2025-03-09T22:30:00Z",
+            "closedAt": "2024-12-01T15:39:13Z",
+            "mergedAt": "2024-12-01T15:39:13Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6DqoKM",
+            "number": 36,
+            "title": "Config route smoke test with admin_key",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/36",
+            "createdAt": "2024-12-01T15:22:46Z",
+            "updatedAt": "2025-03-09T22:30:21Z",
+            "closedAt": "2024-12-01T15:27:24Z",
+            "mergedAt": "2024-12-01T15:27:23Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6DqfLD",
+            "number": 35,
+            "title": "Fix smoke test for /config route admin_key",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/35",
+            "createdAt": "2024-12-01T14:26:51Z",
+            "updatedAt": "2025-03-09T22:30:18Z",
+            "closedAt": "2024-12-01T14:28:17Z",
+            "mergedAt": "2024-12-01T14:28:17Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6DqdzB",
+            "number": 34,
+            "title": "0.5.0 add, get, delete user config",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/34",
+            "createdAt": "2024-12-01T14:14:08Z",
+            "updatedAt": "2024-12-01T14:15:44Z",
+            "closedAt": "2024-12-01T14:15:39Z",
+            "mergedAt": "2024-12-01T14:15:39Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMhN2Rs6Dqb0L",
+            "number": 40,
+            "title": "1.2.4 User config settings uses backend server",
+            "url": "https://github.com/dfberry/source-board/pull/40",
+            "createdAt": "2024-12-01T13:56:11Z",
+            "updatedAt": "2025-03-12T12:53:18Z",
+            "closedAt": "2024-12-01T14:03:06Z",
+            "mergedAt": "2024-12-01T14:03:06Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6Dmvq3",
+            "number": 33,
+            "title": "0.4.9 fix smoke test - remove .only",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/33",
+            "createdAt": "2024-11-29T21:48:58Z",
+            "updatedAt": "2024-11-29T21:50:03Z",
+            "closedAt": "2024-11-29T21:49:58Z",
+            "mergedAt": "2024-11-29T21:49:58Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6Dmjyv",
+            "number": 32,
+            "title": "0.4.9 fix smoke test - remove .only",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/32",
+            "createdAt": "2024-11-29T20:38:30Z",
+            "updatedAt": "2024-11-29T21:50:04Z",
+            "closedAt": "2024-11-29T20:39:40Z",
+            "mergedAt": "2024-11-29T20:39:40Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6Dmi1h",
+            "number": 31,
+            "title": "0.4.8 paging to querystring",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/31",
+            "createdAt": "2024-11-29T20:31:56Z",
+            "updatedAt": "2025-03-09T22:30:18Z",
+            "closedAt": "2024-11-29T20:33:42Z",
+            "mergedAt": "2024-11-29T20:33:42Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6DlW0D",
+            "number": 30,
+            "title": "1 aca secret script",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/30",
+            "createdAt": "2024-11-29T15:37:37Z",
+            "updatedAt": "2024-11-29T15:39:00Z",
+            "closedAt": "2024-11-29T15:38:52Z",
+            "mergedAt": "2024-11-29T15:38:52Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6DkybK",
+            "number": 29,
+            "title": "Update deploy action versions",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/29",
+            "createdAt": "2024-11-29T14:09:17Z",
+            "updatedAt": "2024-11-29T14:11:32Z",
+            "closedAt": "2024-11-29T14:11:29Z",
+            "mergedAt": "2024-11-29T14:11:29Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6DfQvr",
+            "number": 28,
+            "title": "Update OSSF action",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/28",
+            "createdAt": "2024-11-28T15:40:04Z",
+            "updatedAt": "2024-11-28T15:47:54Z",
+            "closedAt": "2024-11-28T15:47:50Z",
+            "mergedAt": "2024-11-28T15:47:50Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6De4Kr",
+            "number": 27,
+            "title": "Fix/update smoke test",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/27",
+            "createdAt": "2024-11-28T14:41:47Z",
+            "updatedAt": "2024-11-28T15:17:09Z",
+            "closedAt": "2024-11-28T15:17:05Z",
+            "mergedAt": "2024-11-28T15:17:05Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6DZv57",
+            "number": 26,
+            "title": "0.4.7 fix paging for users and watches",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/26",
+            "createdAt": "2024-11-28T00:40:45Z",
+            "updatedAt": "2024-11-28T00:41:47Z",
+            "closedAt": "2024-11-28T00:41:43Z",
+            "mergedAt": "2024-11-28T00:41:43Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          },
+          {
+            "id": "PR_kwDOMiNbCs6C9P56",
+            "number": 25,
+            "title": "Dfberry/1124-http-test-cleanup",
+            "url": "https://github.com/dfberry/rust-axum-server/pull/25",
+            "createdAt": "2024-11-25T00:35:14Z",
+            "updatedAt": "2025-03-09T22:30:17Z",
+            "closedAt": "2024-11-25T00:35:30Z",
+            "mergedAt": "2024-11-25T00:35:30Z",
+            "state": "MERGED",
+            "merged": true,
+            "author": {
+              "login": "dfberry"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

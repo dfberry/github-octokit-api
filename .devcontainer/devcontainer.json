@@ -24,7 +24,8 @@
 				"qwtel.sqlite-viewer",
 				"AlexShen.classdiagram-ts",
 				"ms-windows-ai-studio.windows-ai-studio",
-				"TeamsDevApp.vscode-ai-foundry"
+				"TeamsDevApp.vscode-ai-foundry",
+				"humao.rest-client"
 			]
 		}
 	},

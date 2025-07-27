@@ -26,7 +26,7 @@ export async function fetchRepositoriesFromGitHub(
   const repoService = new RepositoryService(apiClient);
 
   // Limit concurrency to avoid API rate limits and DB overload
-  const limit = pLimit(5);
+  const limit = pLimit(configData.pLimit);
 
   // Fetch repo data in parallel with limited concurrency
   await Promise.all(

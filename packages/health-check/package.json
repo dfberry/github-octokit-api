@@ -24,9 +24,9 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@dfb/db": "file:../sqlite-typeorm-db",
-    "@dfb/finddb": "file:../finddb",
-    "@dfb/octokit": "file:../octokit",
+    "@dfb/db": "file:../@dfb/db",
+    "@dfb/finddb": "file:../@dfb/finddb",
+    "@dfb/octokit": "file:../@dfb/octokit",
     "dotenv": "^16.5.0",
     "reflect-metadata": "^0.2.2",
     "sqlite3": "^5.1.7",

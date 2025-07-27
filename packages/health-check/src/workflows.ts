@@ -18,7 +18,7 @@ export async function fetchWorkflowFromGitHub(
     const apiClient = configData.githubClient;
     const repoService = new WorkflowService(apiClient);
 
-    const limit = pLimit(5); // Limit concurrency to 5
+    const limit = pLimit(configData.pLimit); // Limit concurrency to configData.pLimit
 
     const repos = Array.from(configData.repositories || []);
     await Promise.all(

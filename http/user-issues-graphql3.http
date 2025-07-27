@@ -1,0 +1,34 @@
+### GitHub GraphQL: First 10 Issues for User (HTTP)
+
+@githubToken = {{$dotenv GITHUB_TOKEN}}
+
+@userName = dfberry
+@sinceDate = 2025-07-01
+@searchQuery = involves:{{userName}} (created:>={{sinceDate}} OR updated:>={{sinceDate}} OR merged:>={{sinceDate}} OR closed:>={{sinceDate}})
+
+POST https://api.github.com/graphql
+Authorization: Bearer {{githubToken}}
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+query {
+search(query: "involves:dfberry AND (created:>=2025-07-01 OR updated:>=2025-07-01 OR merged:>=2025-07-01 OR closed:>=2025-07-01) sort:updated-desc", type: ISSUE, first: 5) {
+    issueCount
+    nodes {
+      __typename
+      ... on Issue {
+        id
+        number
+        title
+        author { login }
+      }
+      ... on PullRequest {
+        id
+        number
+        title
+        author { login }
+      }
+    }
+  }
+}
+
